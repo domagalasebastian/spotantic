@@ -1,12 +1,13 @@
-from abc import ABC, abstractmethod
-import atexit
-import asyncio
+from abc import ABC
+from abc import abstractmethod
 from typing import Optional
 
 from pydantic.networks import HttpUrl
+
 from pyspotify._utils.auth import AuthSettings
-from aiohttp import ClientSession
+
 from .access_token_info import AccessTokenInfo
+
 
 class AuthManagerBase(ABC):
     def __init__(
@@ -21,7 +22,7 @@ class AuthManagerBase(ABC):
             self.__auth_settings = AuthSettings(_env_file=env_file_path)
         else:
             self.__auth_settings = AuthSettings()
-        
+
         self._store_access_token = self.__auth_settings.store_access_token
         self._access_token_file_path = self.__auth_settings.access_token_file_path
         self.__client_id = client_id or self.__auth_settings.client_id
@@ -62,6 +63,4 @@ class AuthManagerBase(ABC):
         self.__scope = value
 
     @abstractmethod
-    async def authorize(self) -> AccessTokenInfo:
-        ...
-
+    async def authorize(self) -> AccessTokenInfo: ...

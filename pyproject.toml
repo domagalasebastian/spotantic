@@ -1,5 +1,5 @@
 [project]
-name = "spotify-async"
+name = "PySpotify"
 version = "0.1.0"
 description = "Async Spotify API client"
 readme = "README.md"

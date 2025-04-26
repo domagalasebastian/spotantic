@@ -1,8 +1,13 @@
 from __future__ import annotations
-from datetime import datetime, timedelta
+
 import json
+from datetime import datetime
+from datetime import timedelta
 from pathlib import Path
-from typing import Literal, Any, Optional
+from typing import Any
+from typing import Literal
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -17,7 +22,7 @@ class AccessTokenInfo(BaseModel):
     def model_post_init(self, context: Any, /) -> None:
         if self.expires_at is None:
             self.expires_at = datetime.now() + timedelta(seconds=self.expires_in)
-        
+
         return super().model_post_init(context)
 
     def store_token(self, file_path: Path) -> None:
