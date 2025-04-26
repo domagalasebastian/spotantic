@@ -5,6 +5,7 @@ __pycache__/
 
 venv/
 .env
+.token_info_cache
 
 .vscode/
 .idea/
