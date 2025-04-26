@@ -1,7 +1,7 @@
+import base64
+import hashlib
 import secrets
 import string
-import hashlib
-import base64
 
 
 def generate_random_string(length) -> str:
@@ -11,5 +11,4 @@ def generate_random_string(length) -> str:
 
 def generate_oauth2_state(random_string: str) -> str:
     hashed = hashlib.sha256(random_string.encode("ascii")).digest()
-    return base64.urlsafe_b64encode(hashed).rstrip(b'=').decode('ascii')
-
+    return base64.urlsafe_b64encode(hashed).rstrip(b"=").decode("ascii")

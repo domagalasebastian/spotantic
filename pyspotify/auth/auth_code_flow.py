@@ -1,12 +1,18 @@
 import asyncio
-from typing import Optional
 import webbrowser
-from aiohttp import BasicAuth, web, ClientSession
+from typing import Optional
+from urllib.parse import urlencode
+from urllib.parse import urlparse
 
-from pyspotify._utils.auth.generate_state import generate_oauth2_state, generate_random_string
-from .auth_manager_base import AuthManagerBase
-from urllib.parse import urlencode, urlparse
+from aiohttp import BasicAuth
+from aiohttp import ClientSession
+from aiohttp import web
+
+from pyspotify._utils.auth.generate_state import generate_oauth2_state
+from pyspotify._utils.auth.generate_state import generate_random_string
+
 from .access_token_info import AccessTokenInfo
+from .auth_manager_base import AuthManagerBase
 
 
 class AuthCodeFlowManager(AuthManagerBase):
@@ -39,14 +45,13 @@ class AuthCodeFlowManager(AuthManagerBase):
             self.client_secret,
         )
 
-
     def __build_auth_url(self, state: str) -> str:
         params = {
             "client_id": self.client_id,
             "response_type": "code",
             "redirect_uri": self.redirect_uri,
             "scope": self.scope,
-            "state": state
+            "state": state,
         }
 
         return f"{self.__AUTH_URL}?{urlencode(params)}"
@@ -73,6 +78,7 @@ class AuthCodeFlowManager(AuthManagerBase):
     async def __get_code(self) -> str:
         state = generate_oauth2_state(generate_random_string(64))
         code = None
+
         async def callback(request) -> web.Response:
             nonlocal code
             r_state = request.query.get("state")
@@ -81,7 +87,7 @@ class AuthCodeFlowManager(AuthManagerBase):
 
             code = request.query.get("code")
             return web.Response(text="OK")
-        
+
         target_url = self.__build_auth_url(state)
         server_address_parsed = urlparse(str(self.redirect_uri))
         app = web.Application()
