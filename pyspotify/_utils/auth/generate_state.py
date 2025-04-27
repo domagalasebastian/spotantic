@@ -9,6 +9,6 @@ def generate_random_string(length) -> str:
     return "".join(secrets.choice(allowed_chars) for _ in range(length))
 
 
-def generate_oauth2_state(random_string: str) -> str:
+def generate_hashed_state(random_string: str) -> str:
     hashed = hashlib.sha256(random_string.encode("ascii")).digest()
     return base64.urlsafe_b64encode(hashed).rstrip(b"=").decode("ascii")
