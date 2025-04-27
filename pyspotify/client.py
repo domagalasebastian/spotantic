@@ -9,7 +9,7 @@ from typing import Optional
 from aiohttp.client import ClientSession
 
 from .auth import AccessTokenInfo
-from .auth import AuthManagerBase
+from .auth.auth_manager_base import AuthManagerBase
 
 
 class __PySpotifyClientMetaClass(type):
