@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import json
 from datetime import datetime
 from datetime import timedelta
 from pathlib import Path
@@ -32,8 +31,6 @@ class AccessTokenInfo(BaseModel):
     @classmethod
     def load_token(cls, file_path: Path) -> AccessTokenInfo:
         with open(file_path, "r") as fd:
-            data = fd.read()
+            json_data = fd.read()
 
-        json_data = json.loads(data)
-
-        return cls(**json_data)
+        return cls.model_validate_json(json_data=json_data)
