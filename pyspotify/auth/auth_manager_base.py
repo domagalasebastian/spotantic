@@ -1,6 +1,8 @@
 from abc import ABC
 from abc import abstractmethod
 
+from pyspotify._utils.logger import logger
+
 from .access_token_info import AccessTokenInfo
 from .auth_settings import AuthSettings
 
@@ -8,6 +10,7 @@ from .auth_settings import AuthSettings
 class AuthManagerBase(ABC):
     def __init__(self, auth_settings: AuthSettings) -> None:
         self.__auth_settings = auth_settings
+        self._logger = logger.getChild("auth")
 
     @property
     def auth_settings(self) -> AuthSettings:
