@@ -5,6 +5,7 @@ from typing import Union
 from pydantic import FilePath
 from pydantic import HttpUrl
 from pydantic import NewPath
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings
 from pydantic_settings import SettingsConfigDict
 
@@ -17,7 +18,7 @@ class AuthSettings(BaseSettings):
     )
 
     client_id: Optional[str] = None
-    client_secret: Optional[str] = None
+    client_secret: Optional[SecretStr] = None
     redirect_uri: Optional[HttpUrl] = None
     scope: Optional[str] = None
     store_access_token: bool = False

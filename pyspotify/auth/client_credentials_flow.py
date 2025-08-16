@@ -14,7 +14,7 @@ class ClientCredentialsFlowManager(AuthManagerBase):
         assert self.auth_settings.client_id is not None, "Client ID must be set"
         assert self.auth_settings.client_secret is not None, "Client Secret must be set"
 
-        auth_header = BasicAuth(self.auth_settings.client_id, self.auth_settings.client_secret)
+        auth_header = BasicAuth(self.auth_settings.client_id, self.auth_settings.client_secret.get_secret_value())
         data = {
             "grant_type": CLIENT_CREDENTIALS_FLOW_GRANT_TYPE,
         }
