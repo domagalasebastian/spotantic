@@ -10,7 +10,7 @@ from aiohttp import BasicAuth
 from aiohttp import ClientSession
 from aiohttp import web
 
-from .access_token_info import AccessTokenInfo
+from ._access_token_info import AccessTokenInfo
 
 AUTH_URL = "https://accounts.spotify.com/authorize"
 TOKEN_URL = "https://accounts.spotify.com/api/token"

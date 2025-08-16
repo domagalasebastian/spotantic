@@ -13,8 +13,8 @@ from pyspotify._utils.logger import logger
 from pyspotify._utils.utils import drop_items_with_none_values
 
 from .auth import AccessTokenInfo
-from .auth.auth_manager_base import AuthManagerBase
-from .auth.auth_manager_base import RefreshableAuthManager
+from .auth._auth_manager_base import AuthManagerBase
+from .auth._auth_manager_base import RefreshableAuthManager
 
 
 class PySpotifyClient:
