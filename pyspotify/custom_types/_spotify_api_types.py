@@ -29,6 +29,11 @@ SpotifyMarketID = Annotated[
     ),
 ]
 
+SpotifyLocaleID = Annotated[
+    str,
+    StringConstraints(strip_whitespace=True, pattern=r"^[A-Za-z]{2}_[A-Za-z]{2}$"),
+]
+
 SpotifyItemID = Annotated[
     str,
     StringConstraints(

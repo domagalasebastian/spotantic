@@ -8,6 +8,7 @@ from ._spotify_api_types import SpotifyEpisodeURI
 from ._spotify_api_types import SpotifyItemID
 from ._spotify_api_types import SpotifyItemType
 from ._spotify_api_types import SpotifyItemURI
+from ._spotify_api_types import SpotifyLocaleID
 from ._spotify_api_types import SpotifyMarketID
 from ._spotify_api_types import SpotifyPlaylistURI
 from ._spotify_api_types import SpotifyShowURI
@@ -24,6 +25,7 @@ __all__ = [
     "SpotifyItemID",
     "SpotifyItemType",
     "SpotifyItemURI",
+    "SpotifyLocaleID",
     "SpotifyMarketID",
     "SpotifyPlaylistURI",
     "SpotifyShowURI",
