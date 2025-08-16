@@ -1,8 +1,8 @@
 from aiohttp import BasicAuth
 
-from .access_token_info import AccessTokenInfo
-from .auth_manager_base import AuthManagerBase
-from .auth_requests import get_access_token
+from ._access_token_info import AccessTokenInfo
+from ._auth_manager_base import AuthManagerBase
+from ._auth_requests import get_access_token
 
 CLIENT_CREDENTIALS_FLOW_GRANT_TYPE = "client_credentials"
 

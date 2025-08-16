@@ -3,8 +3,8 @@ from abc import abstractmethod
 
 from pyspotify._utils.logger import logger
 
-from .access_token_info import AccessTokenInfo
-from .auth_settings import AuthSettings
+from ._access_token_info import AccessTokenInfo
+from ._auth_settings import AuthSettings
 
 
 class AuthManagerBase(ABC):
