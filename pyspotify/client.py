@@ -7,52 +7,81 @@ from typing import Dict
 from typing import Optional
 
 from aiohttp.client import ClientSession
+from pydantic import Json
+
+from pyspotify._utils.logger import logger
+from pyspotify._utils.utils import drop_items_with_none_values
 
 from .auth import AccessTokenInfo
 from .auth.auth_manager_base import AuthManagerBase
+from .auth.auth_manager_base import RefreshableAuthManager
 
 
-class __PySpotifyClientMetaClass(type):
-    __instance = None
-
-    async def __call__(cls, *args, **kwargs) -> PySpotifyClient:
-        if cls.__instance is None:
-            cls.__instance = PySpotifyClient.__new__(cls)
-            await cls.__instance.__init__(*args, **kwargs)
-
-        return cls.__instance
-
-
-class PySpotifyClient(metaclass=__PySpotifyClientMetaClass):
+class PySpotifyClient:
     __API_BASE = "https://api.spotify.com/v1/"
 
-    async def __init__(
-        self, auth: Optional[AuthManagerBase] = None, access_token_info: Optional[AccessTokenInfo] = None
-    ) -> None:
-        self.__auth = auth
+    def __init__(self, auth_manager: AuthManagerBase, access_token_info: AccessTokenInfo) -> None:
+        self._logger = logger.getChild("client")
+        self.__auth_manager = auth_manager
         self.__access_token_info = access_token_info
-        if self.__auth is None and self.__access_token_info is None:
-            raise ValueError("Auth object or Access Token Info is required")
+        self.__session = None
+        atexit.register(lambda: asyncio.run(self.close_session()))
 
-        if self.__access_token_info is None and self.__auth is not None:
-            self.__access_token_info = await self.__auth.authorize()
+    @property
+    def access_token_info(self) -> AccessTokenInfo:
+        return self.__access_token_info
 
+    async def setup_client_session(self) -> None:
+        self._logger.info("Setting up new client session")
         headers = {
-            "Authorization": f"{self.__access_token_info.token_type} {self.__access_token_info.access_token}",
+            "Authorization": f"{self.access_token_info.token_type} {self.access_token_info.access_token}",
         }
-        self.__session = ClientSession(base_url=self.__API_BASE, headers=headers)
-        atexit.register(lambda: asyncio.run(self.__close_session()))
 
-    async def __close_session(self) -> None:
-        if not self.__session.closed:
+        # TODO: Add custom checker
+        self.__session = ClientSession(base_url=self.__API_BASE, headers=headers)
+
+    async def close_session(self) -> None:
+        if self.__session is not None and not self.__session.closed:
+            self._logger.info("Closing client session")
             await self.__session.close()
 
-    async def get(self, url: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
-        if params is None:
-            params = {}
-        else:
-            params = {k: v for k, v in params.items() if v is not None}
+    async def refresh_access_token(self) -> None:
+        refresh_token = self.access_token_info.refresh_token
+        assert isinstance(
+            self.__auth_manager, RefreshableAuthManager
+        ), f"Cannot refresh access token with {type(self.__auth_manager)}"
+        assert refresh_token is not None, "Refresh token was not provided!"
 
+        await self.close_session()
+        self.__access_token_info = await self.__auth_manager.refresh(refresh_token)
+        await self.setup_client_session()
+
+    async def get(self, url: str, params: Optional[Dict[str, Any]] = None) -> Optional[Json[Any]]:
+        assert self.__session is not None, "Initialize session first!"
+        if params is not None:
+            params = drop_items_with_none_values(params)
+
+        self._logger.debug(f"GET request with {url=} and {params=}")
         async with self.__session.get(url, params=params) as resp:
+            assert resp.status == 200
+            return await resp.json()
+
+    async def put(self, url: str, params: Optional[Dict[str, Any]] = None) -> Optional[Json[Any]]:
+        assert self.__session is not None, "Initialize session first!"
+        if params is not None:
+            params = drop_items_with_none_values(params)
+
+        self._logger.debug(f"PUT request with {url=} and {params=}")
+        async with self.__session.put(url, params=params) as resp:
+            assert resp.status == 200
+            return await resp.json()
+
+    async def delete(self, url: str, params: Optional[Dict[str, Any]] = None) -> Optional[Json[Any]]:
+        assert self.__session is not None, "Initialize session first!"
+        if params is not None:
+            params = drop_items_with_none_values(params)
+
+        self._logger.debug(f"DELETE request with {url=} and {params=}")
+        async with self.__session.delete(url, params=params) as resp:
             assert resp.status == 200
             return await resp.json()
