@@ -22,7 +22,7 @@ class AuthCodeFlowManager(RefreshableAuthManager):
         assert self.auth_settings.redirect_uri is not None, "Redirect URI must be set"
         assert self.auth_settings.scope is not None, "Scope must be set"
 
-        auth_header = BasicAuth(self.auth_settings.client_id, self.auth_settings.client_secret)
+        auth_header = BasicAuth(self.auth_settings.client_id, self.auth_settings.client_secret.get_secret_value())
         state = generate_hashed_state(generate_random_string(64))
         redirect_uri = str(self.auth_settings.redirect_uri)
 
@@ -58,7 +58,7 @@ class AuthCodeFlowManager(RefreshableAuthManager):
         assert self.auth_settings.client_id is not None, "Client ID must be set"
         assert self.auth_settings.client_secret is not None, "Client Secret must be set"
 
-        auth_header = BasicAuth(self.auth_settings.client_id, self.auth_settings.client_secret)
+        auth_header = BasicAuth(self.auth_settings.client_id, self.auth_settings.client_secret.get_secret_value())
         data = {
             "grant_type": REFRESH_AUTH_CODE_FLOW_GRANT_TYPE,
             "refresh_token": refresh_token,
