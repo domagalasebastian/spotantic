@@ -13,6 +13,13 @@ class SpotifyItemType(str, Enum):
     TRACK = "track"
 
 
+class AlbumTypes(str, Enum):
+    ALBUM = "album"
+    SINGLE = "single"
+    APPEARS_ON = "appears_on"
+    COMPILATION = "compilation"
+
+
 SpotifyMarketID = Annotated[
     str,
     StringConstraints(

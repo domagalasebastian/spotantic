@@ -10,3 +10,4 @@ T = TypeVar("T")
 BoundedInt1to50 = Annotated[int, Field(ge=1, le=50)]
 
 SequenceMaxLen20 = Annotated[Sequence[T], Field(max_length=20)]
+SequenceMaxLen50 = Annotated[Sequence[T], Field(max_length=50)]
