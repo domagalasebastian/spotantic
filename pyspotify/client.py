@@ -66,13 +66,33 @@ class PySpotifyClient:
             assert resp.status == 200
             return await resp.json()
 
-    async def put(self, url: str, params: Optional[Dict[str, Any]] = None) -> Optional[Json[Any]]:
+    async def put(
+        self, url: str, params: Optional[Dict[str, Any]] = None, data: Optional[Dict[str, Any]] = None
+    ) -> Optional[Json[Any]]:
         assert self.__session is not None, "Initialize session first!"
         if params is not None:
             params = drop_items_with_none_values(params)
 
+        if data is not None:
+            data = drop_items_with_none_values(data)
+
         self._logger.debug(f"PUT request with {url=} and {params=}")
-        async with self.__session.put(url, params=params) as resp:
+        async with self.__session.put(url, params=params, data=data) as resp:
+            assert resp.status == 200
+            return await resp.json()
+
+    async def post(
+        self, url: str, params: Optional[Dict[str, Any]] = None, data: Optional[Dict[str, Any]] = None
+    ) -> Optional[Json[Any]]:
+        assert self.__session is not None, "Initialize session first!"
+        if params is not None:
+            params = drop_items_with_none_values(params)
+
+        if data is not None:
+            data = drop_items_with_none_values(data)
+
+        self._logger.debug(f"POST request with {url=} and {params=}")
+        async with self.__session.post(url, params=params, data=data) as resp:
             assert resp.status == 200
             return await resp.json()
 
