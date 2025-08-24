@@ -11,6 +11,8 @@ from pydantic import Json
 
 from pyspotify._utils.logger import logger
 from pyspotify._utils.utils import drop_items_with_none_values
+from pyspotify.custom_types import APIResponse
+from pyspotify.models import RequestModel
 
 from .auth import AccessTokenInfo
 from .auth._auth_manager_base import AuthManagerBase
@@ -18,8 +20,6 @@ from .auth._auth_manager_base import RefreshableAuthManager
 
 
 class PySpotifyClient:
-    __API_BASE = "https://api.spotify.com/v1/"
-
     def __init__(self, auth_manager: AuthManagerBase, access_token_info: AccessTokenInfo) -> None:
         self._logger = logger.getChild("client")
         self.__auth_manager = auth_manager
@@ -38,7 +38,7 @@ class PySpotifyClient:
         }
 
         # TODO: Add custom checker
-        self.__session = ClientSession(base_url=self.__API_BASE, headers=headers)
+        self.__session = ClientSession(headers=headers)
 
     async def close_session(self) -> None:
         if self.__session is not None and not self.__session.closed:
@@ -55,6 +55,17 @@ class PySpotifyClient:
         await self.close_session()
         self.__access_token_info = await self.__auth_manager.refresh(refresh_token)
         await self.setup_client_session()
+
+    async def request(self, request: RequestModel) -> APIResponse:
+        assert self.__session is not None, "Initialize session first!"
+        self._logger.debug(f"Request: {request}")
+        method = request.method_type
+        url = str(request.url)
+        params = request.params.model_dump(exclude_none=True) if request.params is not None else None
+        data = request.body.model_dump(exclude_none=True) if request.body is not None else None
+        async with self.__session.request(method=method, url=url, params=params, data=data) as resp:
+            assert resp.status == 200
+            return await resp.json()
 
     async def get(self, url: str, params: Optional[Dict[str, Any]] = None) -> Optional[Json[Any]]:
         assert self.__session is not None, "Initialize session first!"

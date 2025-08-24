@@ -72,7 +72,7 @@ SpotifyItemURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
-        pattern=rf"^spotify:{"|".join(item for item in SpotifyItemType)}:[A-Za-z0-9]{{22}}$",
+        pattern=rf"^spotify:{"|".join(item.value for item in SpotifyItemType)}:[A-Za-z0-9]{{22}}$",
     ),
 ]
 
@@ -80,7 +80,7 @@ SpotifyAlbumURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
-        pattern=rf"^spotify:{SpotifyItemType.ALBUM}:[A-Za-z0-9]{{22}}$",
+        pattern=rf"^spotify:{SpotifyItemType.ALBUM.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
 
@@ -88,7 +88,7 @@ SpotifyArtistURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
-        pattern=rf"^spotify:{SpotifyItemType.ARTIST}:[A-Za-z0-9]{{22}}$",
+        pattern=rf"^spotify:{SpotifyItemType.ARTIST.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
 
@@ -96,7 +96,7 @@ SpotifyEpisodeURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
-        pattern=rf"^spotify:{SpotifyItemType.EPISODE}:[A-Za-z0-9]{{22}}$",
+        pattern=rf"^spotify:{SpotifyItemType.EPISODE.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
 
@@ -104,7 +104,7 @@ SpotifyPlaylistURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
-        pattern=rf"^spotify:{SpotifyItemType.PLAYLIST}:[A-Za-z0-9]{{22}}$",
+        pattern=rf"^spotify:{SpotifyItemType.PLAYLIST.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
 
@@ -112,7 +112,7 @@ SpotifyShowURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
-        pattern=rf"^spotify:{SpotifyItemType.SHOW}:[A-Za-z0-9]{{22}}$",
+        pattern=rf"^spotify:{SpotifyItemType.SHOW.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
 
@@ -120,6 +120,6 @@ SpotifyTrackURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
-        pattern=rf"^spotify:{SpotifyItemType.TRACK}:[A-Za-z0-9]{{22}}$",
+        pattern=rf"^spotify:{SpotifyItemType.TRACK.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]

@@ -1,3 +1,8 @@
+from typing import Any
+from typing import Optional
+
+from pydantic.types import Json
+
 from ._generic_custom_types import BoundedInt0to100
 from ._generic_custom_types import BoundedInt1to50
 from ._generic_custom_types import SequenceMaxLen1
@@ -18,7 +23,10 @@ from ._spotify_api_types import SpotifyPlaylistURI
 from ._spotify_api_types import SpotifyShowURI
 from ._spotify_api_types import SpotifyTrackURI
 
+APIResponse = Optional[Json[Any]]
+
 __all__ = [
+    "APIResponse",
     "AlbumTypes",
     "BoundedInt0to100",
     "BoundedInt1to50",
