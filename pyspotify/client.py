@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import atexit
+from http import HTTPStatus
 from typing import Any
 from typing import Dict
 from typing import Optional
@@ -38,7 +39,7 @@ class PySpotifyClient:
         }
 
         # TODO: Add custom checker
-        self.__session = ClientSession(headers=headers)
+        self.__session = ClientSession(headers=headers, raise_for_status=True)
 
     async def close_session(self) -> None:
         if self.__session is not None and not self.__session.closed:
@@ -56,16 +57,27 @@ class PySpotifyClient:
         self.__access_token_info = await self.__auth_manager.refresh(refresh_token)
         await self.setup_client_session()
 
-    async def request(self, request: RequestModel) -> APIResponse:
+    async def request(self, request: RequestModel, *, empty_response: bool = False) -> APIResponse:
         assert self.__session is not None, "Initialize session first!"
         self._logger.debug(f"Request: {request}")
         method = request.method_type
         url = str(request.url)
         params = request.params.model_dump(exclude_none=True) if request.params is not None else None
-        data = request.body.model_dump(exclude_none=True) if request.body is not None else None
+        data = request.body.model_dump_json(exclude_none=True) if request.body is not None else None
         async with self.__session.request(method=method, url=url, params=params, data=data) as resp:
-            assert resp.status == 200
-            return await resp.json()
+            status = resp.status
+            self._logger.debug(f"Response status: {status}")
+            if empty_response:
+                # Temporary workaround for broken API endpoints which return some text data,
+                # while documentation specifies that they are supposed to not return any data
+                response_data = await resp.read()
+                if status != HTTPStatus.NO_CONTENT:
+                    self._logger.warning(f"Endpoint is supposed to not return any data, but the {response_data=}")
+
+                return None
+
+            content_type = "application/json" if status != HTTPStatus.NO_CONTENT else None
+            return await resp.json(content_type=content_type)
 
     async def get(self, url: str, params: Optional[Dict[str, Any]] = None) -> Optional[Json[Any]]:
         assert self.__session is not None, "Initialize session first!"
