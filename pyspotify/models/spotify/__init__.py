@@ -1,4 +1,5 @@
 from ._album_model import AlbumModel
+from ._category_model import CategoryModel
 from ._currently_playing_item_model import CurrentlyPlayingItemModel
 from ._device_model import DeviceModel
 from ._paged_result_model import PagedResultModel
@@ -12,6 +13,7 @@ from ._user_queue_model import UserQueueModel
 
 __all__ = [
     "AlbumModel",
+    "CategoryModel",
     "CurrentlyPlayingItemModel",
     "DeviceModel",
     "PagedResultModel",
