@@ -17,6 +17,6 @@ async def remove_user_saved_albums(
             album_ids=album_ids,
         ),
     )
-    response = await client.request(request)
+    response = await client.request(request, empty_response=True)
 
     return APICallModel(request=request, response=response, data=None)
