@@ -1,4 +1,5 @@
 from ._album_model import AlbumModel
+from ._artist_model import ArtistModel
 from ._category_model import CategoryModel
 from ._currently_playing_item_model import CurrentlyPlayingItemModel
 from ._device_model import DeviceModel
@@ -11,10 +12,12 @@ from ._saved_album_model import SavedAlbumModel
 from ._saved_episode_model import SavedEpisodeModel
 from ._simplified_album_model import SimplifiedAlbumModel
 from ._simplified_track_model import SimplifiedTrackModel
+from ._track_model import TrackModel
 from ._user_queue_model import UserQueueModel
 
 __all__ = [
     "AlbumModel",
+    "ArtistModel",
     "CategoryModel",
     "CurrentlyPlayingItemModel",
     "DeviceModel",
@@ -27,5 +30,6 @@ __all__ = [
     "SavedEpisodeModel",
     "SimplifiedAlbumModel",
     "SimplifiedTrackModel",
+    "TrackModel",
     "UserQueueModel",
 ]
