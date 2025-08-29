@@ -3,14 +3,8 @@ from typing import Optional
 
 from pydantic.types import Json
 
-from ._generic_custom_types import BoundedInt0to100
-from ._generic_custom_types import BoundedInt1to50
 from ._generic_custom_types import ParamsBool
-from ._generic_custom_types import SequenceMaxLen1
-from ._generic_custom_types import SequenceMaxLen20
-from ._generic_custom_types import SequenceMaxLen50
 from ._spotify_api_types import AlbumTypes
-from ._spotify_api_types import PlaybackSupportedItemType
 from ._spotify_api_types import RepeatMode
 from ._spotify_api_types import SpotifyAlbumURI
 from ._spotify_api_types import SpotifyArtistURI
@@ -29,14 +23,8 @@ APIResponse = Optional[Json[Any]]
 __all__ = [
     "APIResponse",
     "AlbumTypes",
-    "BoundedInt0to100",
-    "BoundedInt1to50",
     "ParamsBool",
-    "PlaybackSupportedItemType",
     "RepeatMode",
-    "SequenceMaxLen1",
-    "SequenceMaxLen20",
-    "SequenceMaxLen50",
     "SpotifyAlbumURI",
     "SpotifyArtistURI",
     "SpotifyEpisodeURI",

@@ -2,9 +2,7 @@ from __future__ import annotations
 
 from enum import Enum
 from typing import Annotated
-from typing import Tuple
 
-from pydantic import AfterValidator
 from pydantic import StringConstraints
 
 
@@ -15,17 +13,6 @@ class SpotifyItemType(str, Enum):
     PLAYLIST = "playlist"
     SHOW = "show"
     TRACK = "track"
-
-    @classmethod
-    def playback_supported_item_types(cls) -> Tuple[SpotifyItemType, ...]:
-        return (cls.EPISODE, cls.TRACK)
-
-    @classmethod
-    def check_value_is_playback_supported(cls, value: SpotifyItemType) -> SpotifyItemType:
-        if value not in cls.playback_supported_item_types():
-            raise ValueError(f"{value} is not valid item type supported by playback!")
-
-        return value
 
 
 class AlbumTypes(str, Enum):
@@ -40,11 +27,6 @@ class RepeatMode(str, Enum):
     CONTEXT = "context"
     OFF = "off"
 
-
-PlaybackSupportedItemType = Annotated[
-    SpotifyItemType,
-    AfterValidator(SpotifyItemType.check_value_is_playback_supported),
-]
 
 SpotifyMarketID = Annotated[
     str,
