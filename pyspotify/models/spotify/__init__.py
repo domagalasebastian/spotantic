@@ -11,6 +11,7 @@ from ._playback_state_model import PlaybackStateModel
 from ._saved_album_model import SavedAlbumModel
 from ._saved_episode_model import SavedEpisodeModel
 from ._saved_show_model import SavedShowModel
+from ._saved_track_model import SavedTrackModel
 from ._show_model import ShowModel
 from ._simplified_album_model import SimplifiedAlbumModel
 from ._simplified_episode_model import SimplifiedEpisodeModel
@@ -33,6 +34,7 @@ __all__ = [
     "SavedAlbumModel",
     "SavedEpisodeModel",
     "SavedShowModel",
+    "SavedTrackModel",
     "ShowModel",
     "SimplifiedAlbumModel",
     "SimplifiedEpisodeModel",
