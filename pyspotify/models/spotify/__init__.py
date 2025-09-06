@@ -4,10 +4,14 @@ from ._category_model import CategoryModel
 from ._currently_playing_item_model import CurrentlyPlayingItemModel
 from ._device_model import DeviceModel
 from ._episode_model import EpisodeModel
+from ._image_model import ImageModel
 from ._paged_result_model import PagedResultModel
 from ._paged_result_with_cursors_model import PagedResultWithCursorsModel
 from ._play_history_model import PlayHistoryModel
 from ._playback_state_model import PlaybackStateModel
+from ._playlist_model import PlaylistModel
+from ._playlist_model import SimplifiedPlaylistModel
+from ._playlist_track_model import PlaylistTrackModel
 from ._saved_album_model import SavedAlbumModel
 from ._saved_episode_model import SavedEpisodeModel
 from ._saved_show_model import SavedShowModel
@@ -27,10 +31,13 @@ __all__ = [
     "CurrentlyPlayingItemModel",
     "DeviceModel",
     "EpisodeModel",
+    "ImageModel",
     "PagedResultModel",
     "PagedResultWithCursorsModel",
     "PlayHistoryModel",
     "PlaybackStateModel",
+    "PlaylistModel",
+    "PlaylistTrackModel",
     "SavedAlbumModel",
     "SavedEpisodeModel",
     "SavedShowModel",
@@ -38,6 +45,7 @@ __all__ = [
     "ShowModel",
     "SimplifiedAlbumModel",
     "SimplifiedEpisodeModel",
+    "SimplifiedPlaylistModel",
     "SimplifiedShowModel",
     "SimplifiedTrackModel",
     "TrackModel",
