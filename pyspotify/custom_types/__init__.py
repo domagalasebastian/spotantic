@@ -17,6 +17,7 @@ from ._spotify_api_types import SpotifyMarketID
 from ._spotify_api_types import SpotifyPlaylistURI
 from ._spotify_api_types import SpotifyShowURI
 from ._spotify_api_types import SpotifyTrackURI
+from ._spotify_api_types import SpotifyUserURI
 
 APIResponse = Optional[Json[Any]]
 
@@ -36,4 +37,5 @@ __all__ = [
     "SpotifyPlaylistURI",
     "SpotifyShowURI",
     "SpotifyTrackURI",
+    "SpotifyUserURI",
 ]

@@ -13,6 +13,7 @@ class SpotifyItemType(str, Enum):
     PLAYLIST = "playlist"
     SHOW = "show"
     TRACK = "track"
+    USER = "user"
 
 
 class AlbumTypes(str, Enum):
@@ -28,7 +29,7 @@ class RepeatMode(str, Enum):
     OFF = "off"
 
 
-SpotifyMarketID = Annotated[
+type SpotifyMarketID = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
@@ -37,12 +38,12 @@ SpotifyMarketID = Annotated[
     ),
 ]
 
-SpotifyLocaleID = Annotated[
+type SpotifyLocaleID = Annotated[
     str,
     StringConstraints(strip_whitespace=True, pattern=r"^[A-Za-z]{2}_[A-Za-z]{2}$"),
 ]
 
-SpotifyItemID = Annotated[
+type SpotifyItemID = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
@@ -50,7 +51,7 @@ SpotifyItemID = Annotated[
     ),
 ]
 
-SpotifyItemURI = Annotated[
+type SpotifyItemURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
@@ -58,7 +59,7 @@ SpotifyItemURI = Annotated[
     ),
 ]
 
-SpotifyAlbumURI = Annotated[
+type SpotifyAlbumURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
@@ -66,7 +67,7 @@ SpotifyAlbumURI = Annotated[
     ),
 ]
 
-SpotifyArtistURI = Annotated[
+type SpotifyArtistURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
@@ -74,7 +75,7 @@ SpotifyArtistURI = Annotated[
     ),
 ]
 
-SpotifyEpisodeURI = Annotated[
+type SpotifyEpisodeURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
@@ -82,7 +83,7 @@ SpotifyEpisodeURI = Annotated[
     ),
 ]
 
-SpotifyPlaylistURI = Annotated[
+type SpotifyPlaylistURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
@@ -90,7 +91,7 @@ SpotifyPlaylistURI = Annotated[
     ),
 ]
 
-SpotifyShowURI = Annotated[
+type SpotifyShowURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
@@ -98,10 +99,18 @@ SpotifyShowURI = Annotated[
     ),
 ]
 
-SpotifyTrackURI = Annotated[
+type SpotifyTrackURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
         pattern=rf"^spotify:{SpotifyItemType.TRACK.value}:[A-Za-z0-9]{{22}}$",
+    ),
+]
+
+type SpotifyUserURI = Annotated[
+    str,
+    StringConstraints(
+        strip_whitespace=True,
+        pattern=rf"^spotify:{SpotifyItemType.USER.value}:[A-Za-z0-9]*$",
     ),
 ]
