@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 from http import HTTPMethod
 from typing import Optional
+from typing import Set
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -11,7 +12,9 @@ from pydantic import FilePath
 from pydantic import model_serializer
 from pydantic import model_validator
 
+from pyspotify.custom_types import Scope
 from pyspotify.custom_types import SpotifyItemID
+from pyspotify.models import RequestHeadersModel
 from pyspotify.models import RequestModel
 
 
@@ -49,4 +52,20 @@ class AddCustomPlaylistCoverImageRequestBody(BaseModel):
 class AddCustomPlaylistCoverImageRequest(
     RequestModel[AddCustomPlaylistCoverImageRequestParams, AddCustomPlaylistCoverImageRequestBody]
 ):
+    required_scopes: Set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC, Scope.UGC_IMAGE_UPLOAD}
     method_type: HTTPMethod = HTTPMethod.PUT
+    headers: RequestHeadersModel = RequestHeadersModel(content_type="image/jpeg")
+
+    @classmethod
+    def build(
+        cls,
+        *,
+        playlist_id: SpotifyItemID,
+        image_data: Optional[bytes] = None,
+        file_path: Optional[FilePath] = None,
+    ) -> AddCustomPlaylistCoverImageRequest:
+        params = AddCustomPlaylistCoverImageRequestParams(playlist_id=playlist_id)
+        body = AddCustomPlaylistCoverImageRequestBody(image_data=image_data, file_path=file_path)
+        endpoint = f"playlists/{playlist_id}/images"
+
+        return cls(endpoint=endpoint, params=params, body=body)

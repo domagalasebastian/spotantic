@@ -1,14 +1,7 @@
-from typing import Generic
-from typing import TypeVar
-
 from pydantic import BaseModel
 
-RequestModelT = TypeVar("RequestModelT")
-ResponseModelT = TypeVar("ResponseModelT")
-DataModelT = TypeVar("DataModelT")
 
-
-class APICallModel(BaseModel, Generic[RequestModelT, ResponseModelT, DataModelT]):
+class APICallModel[RequestModelT, ResponseModelT, DataModelT](BaseModel):
     request: RequestModelT
     response: ResponseModelT
     data: DataModelT
