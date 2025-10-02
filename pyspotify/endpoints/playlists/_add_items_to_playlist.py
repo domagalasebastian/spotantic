@@ -9,8 +9,7 @@ from pyspotify.custom_types import SpotifyItemID
 from pyspotify.custom_types import SpotifyTrackURI
 from pyspotify.models import APICallModel
 from pyspotify.models.playlists.requests import AddItemsToPlaylistRequest
-from pyspotify.models.playlists.requests import AddItemsToPlaylistRequestBody
-from pyspotify.models.playlists.requests import AddItemsToPlaylistRequestParams
+from pyspotify.models.playlists.responses import PlaylistSnapshotResponseModel
 
 
 async def add_items_to_playlist(
@@ -19,21 +18,14 @@ async def add_items_to_playlist(
     playlist_id: SpotifyItemID,
     uris: Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]],
     position: Optional[int] = None,
-) -> APICallModel[AddItemsToPlaylistRequest, APIResponse, None]:
-    request = AddItemsToPlaylistRequest(
-        endpoint=f"playlists/{playlist_id}/tracks",
-        params=AddItemsToPlaylistRequestParams(
-            playlist_id=playlist_id,
-            uris=uris,
-            position=position,
-        ),
-        body=AddItemsToPlaylistRequestBody(
-            uris=uris,
-            position=position,
-        ),
+) -> APICallModel[AddItemsToPlaylistRequest, APIResponse, PlaylistSnapshotResponseModel]:
+    request = AddItemsToPlaylistRequest.build(
+        playlist_id=playlist_id,
+        uris=uris,
+        position=position,
     )
     response = await client.request(request)
     assert response is not None
-    # TODO: Add response model
+    data = PlaylistSnapshotResponseModel(**response)
 
-    return APICallModel(request=request, response=response, data=None)
+    return APICallModel(request=request, response=response, data=data)

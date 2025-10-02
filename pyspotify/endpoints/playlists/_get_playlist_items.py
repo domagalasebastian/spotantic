@@ -8,7 +8,6 @@ from pyspotify.custom_types import SpotifyItemType
 from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import APICallModel
 from pyspotify.models.playlists.requests import GetPlaylistItemsRequest
-from pyspotify.models.playlists.requests import GetPlaylistItemsRequestParams
 from pyspotify.models.spotify import PagedResultModel
 from pyspotify.models.spotify import PlaylistTrackModel
 
@@ -23,16 +22,13 @@ async def get_playlist_items(
     additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
     market: Optional[SpotifyMarketID] = None,
 ) -> APICallModel[GetPlaylistItemsRequest, APIResponse, PagedResultModel[PlaylistTrackModel]]:
-    request = GetPlaylistItemsRequest(
-        endpoint=f"playlists/{playlist_id}/tracks",
-        params=GetPlaylistItemsRequestParams(
-            playlist_id=playlist_id,
-            fields=fields,
-            limit=limit,
-            offset=offset,
-            additional_types=additional_types,
-            market=market,
-        ),
+    request = GetPlaylistItemsRequest.build(
+        playlist_id=playlist_id,
+        fields=fields,
+        limit=limit,
+        offset=offset,
+        additional_types=additional_types,
+        market=market,
     )
     response = await client.request(request)
     assert response is not None

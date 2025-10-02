@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
@@ -32,3 +34,22 @@ class GetPlaylistRequestParams(BaseModel):
 
 class GetPlaylistRequest(RequestModel[GetPlaylistRequestParams, None]):
     method_type: HTTPMethod = HTTPMethod.GET
+
+    @classmethod
+    def build(
+        cls,
+        *,
+        playlist_id: SpotifyItemID,
+        fields: Optional[str] = None,
+        additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
+        market: Optional[SpotifyMarketID] = None,
+    ) -> GetPlaylistRequest:
+        params = GetPlaylistRequestParams(
+            playlist_id=playlist_id,
+            fields=fields,
+            additional_types=additional_types,
+            market=market,
+        )
+        endpoint = f"playlists/{playlist_id}"
+
+        return cls(endpoint=endpoint, params=params)

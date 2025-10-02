@@ -5,7 +5,6 @@ from pyspotify.custom_types import APIResponse
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import APICallModel
 from pyspotify.models.playlists.requests import GetPlaylistCoverImageRequest
-from pyspotify.models.playlists.requests import GetPlaylistCoverImageRequestParams
 from pyspotify.models.spotify import ImageModel
 
 
@@ -14,11 +13,8 @@ async def get_playlist_cover_image(
     *,
     playlist_id: SpotifyItemID,
 ) -> APICallModel[GetPlaylistCoverImageRequest, APIResponse, List[ImageModel]]:
-    request = GetPlaylistCoverImageRequest(
-        endpoint=f"playlists/{playlist_id}/images",
-        params=GetPlaylistCoverImageRequestParams(
-            playlist_id=playlist_id,
-        ),
+    request = GetPlaylistCoverImageRequest.build(
+        playlist_id=playlist_id,
     )
     response = await client.request(request)
     assert response is not None

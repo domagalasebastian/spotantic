@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
 from typing import Sequence
+from typing import Set
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -9,6 +12,7 @@ from pydantic import Field
 from pydantic import PlainSerializer
 from pydantic import field_validator
 
+from pyspotify.custom_types import Scope
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.custom_types import SpotifyItemType
 from pyspotify.custom_types import SpotifyMarketID
@@ -33,4 +37,28 @@ class GetPlaylistItemsRequestParams(BaseModel):
 
 
 class GetPlaylistItemsRequest(RequestModel[GetPlaylistItemsRequestParams, None]):
+    required_scopes: Set[Scope] = {Scope.PLAYLIST_READ_PRIVATE}
     method_type: HTTPMethod = HTTPMethod.GET
+
+    @classmethod
+    def build(
+        cls,
+        *,
+        playlist_id: SpotifyItemID,
+        fields: Optional[str] = None,
+        limit: int = 20,
+        offset: int = 0,
+        additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
+        market: Optional[SpotifyMarketID] = None,
+    ) -> GetPlaylistItemsRequest:
+        params = GetPlaylistItemsRequestParams(
+            playlist_id=playlist_id,
+            fields=fields,
+            limit=limit,
+            offset=offset,
+            additional_types=additional_types,
+            market=market,
+        )
+        endpoint = f"playlists/{playlist_id}/tracks"
+
+        return cls(endpoint=endpoint, params=params)

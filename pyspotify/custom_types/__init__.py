@@ -3,6 +3,7 @@ from typing import Optional
 
 from pydantic.types import Json
 
+from ._auth_scope import Scope
 from ._generic_custom_types import ParamsBool
 from ._spotify_api_types import AlbumTypes
 from ._spotify_api_types import RepeatMode
@@ -26,6 +27,7 @@ __all__ = [
     "AlbumTypes",
     "ParamsBool",
     "RepeatMode",
+    "Scope",
     "SpotifyAlbumURI",
     "SpotifyArtistURI",
     "SpotifyEpisodeURI",
