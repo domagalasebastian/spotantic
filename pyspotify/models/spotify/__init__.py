@@ -22,6 +22,8 @@ from ._simplified_episode_model import SimplifiedEpisodeModel
 from ._simplified_show_model import SimplifiedShowModel
 from ._simplified_track_model import SimplifiedTrackModel
 from ._track_model import TrackModel
+from ._user_model import CurrentUserModel
+from ._user_model import UserModel
 from ._user_queue_model import UserQueueModel
 
 __all__ = [
@@ -29,6 +31,7 @@ __all__ = [
     "ArtistModel",
     "CategoryModel",
     "CurrentlyPlayingItemModel",
+    "CurrentUserModel",
     "DeviceModel",
     "EpisodeModel",
     "ImageModel",
@@ -49,5 +52,6 @@ __all__ = [
     "SimplifiedShowModel",
     "SimplifiedTrackModel",
     "TrackModel",
+    "UserModel",
     "UserQueueModel",
 ]

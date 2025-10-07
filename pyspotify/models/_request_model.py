@@ -1,6 +1,6 @@
+from __future__ import annotations
+
 from http import HTTPMethod
-from typing import Any
-from typing import Dict
 from typing import Optional
 from typing import Set
 
@@ -41,15 +41,14 @@ class RequestModel[ParamsModelT, BodyModelT](BaseModel):
     params: Optional[ParamsModelT] = None
     body: Optional[BodyModelT] = None
 
-    @model_validator(mode="before")
-    def get_url_from_endpoint(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        url = values.get("url")
-        endpoint = values.get("endpoint")
+    @model_validator(mode="after")
+    def get_url_from_endpoint(self) -> RequestModel:
+        if self.url is not None:
+            return self
 
-        if url is None and endpoint is None:
+        if self.endpoint is None:
             raise ValueError("Either 'url' or 'endpoint' must be provided!")
 
-        if url is None and isinstance(endpoint, str):
-            values["url"] = str(API_BASE_URL / endpoint)
+        self.url = HttpUrl(str(API_BASE_URL / self.endpoint))
 
-        return values
+        return self
