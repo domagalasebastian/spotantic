@@ -55,7 +55,7 @@ type SpotifyItemURI = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,
-        pattern=rf"^spotify:{"|".join(item.value for item in SpotifyItemType)}:[A-Za-z0-9]{{22}}$",
+        pattern=rf"^spotify:{'|'.join(item.value for item in SpotifyItemType)}:[A-Za-z0-9]{{22}}$",
     ),
 ]
 
