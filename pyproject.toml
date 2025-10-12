@@ -5,21 +5,45 @@ description = "Async Spotify API client"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "aiohttp>=3.11",
-    "pydantic>=2.0",
-    "pydantic-settings>=2.9.0",
+    "aiohttp>=3.13.0",
+    "pydantic>=2.12.0",
+    "pydantic-settings>=2.11.0",
 ]
 
-[tool.black]
+[tool.ruff]
 line-length = 120
-target-version = ['py312']
+indent-width = 4
+target-version = "py312"
 
-[tool.isort]
-profile = "black"
-line_length = 120
-force_single_line = true
-include_trailing_comma = false
-use_parentheses = true
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "Q", "I"]
+ignore = []
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["pyspotify"]
+force-single-line = true
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
 
 [tool.pyright]
 exclude = ["**/__pycache__"]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.0",
+]

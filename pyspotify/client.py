@@ -43,9 +43,9 @@ class PySpotifyClient:
 
     async def refresh_access_token(self) -> None:
         refresh_token = self.access_token_info.refresh_token
-        assert isinstance(
-            self.__auth_manager, RefreshableAuthManager
-        ), f"Cannot refresh access token with {type(self.__auth_manager)}"
+        assert isinstance(self.__auth_manager, RefreshableAuthManager), (
+            f"Cannot refresh access token with {type(self.__auth_manager)}"
+        )
         assert refresh_token is not None, "Refresh token was not provided!"
 
         await self.close_session()
