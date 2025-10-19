@@ -1,3 +1,5 @@
+"""Package contains response models for Search endpoints."""
+
 from ._search_for_item import SearchForItemResponse
 
 __all__ = [

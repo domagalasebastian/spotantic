@@ -11,4 +11,5 @@ venv/
 .vscode/
 .idea/
 
+docs/build/
 logs/
