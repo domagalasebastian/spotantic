@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pyright>=1.1.406",
     "ruff>=0.14.0",
     "sphinx>=8.2.3",
     "sphinx-autobuild>=2025.8.25",
@@ -52,4 +53,6 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 
 [tool.pyright]
-exclude = ["**/__pycache__"]
+exclude = ["**/__pycache__", ".venv"]
+venvPath = "."
+venv = ".venv"

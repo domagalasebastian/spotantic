@@ -19,3 +19,12 @@ repos:
     - id: ruff-check
     # Run the formatter.
     - id: ruff-format
+- repo: local
+  hooks:
+    - id: pyright
+      name: pyright
+      entry: pyright
+      language: node
+      pass_filenames: false
+      types: [python]
+      additional_dependencies: ['pyright@1.1.406']
