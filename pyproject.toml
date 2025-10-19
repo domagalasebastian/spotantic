@@ -10,6 +10,14 @@ dependencies = [
     "pydantic-settings>=2.11.0",
 ]
 
+[dependency-groups]
+dev = [
+    "ruff>=0.14.0",
+    "sphinx>=8.2.3",
+    "sphinx-autobuild>=2025.8.25",
+    "sphinx-rtd-theme>=3.0.2",
+]
+
 [tool.ruff]
 line-length = 120
 indent-width = 4
@@ -27,6 +35,9 @@ unfixable = []
 known-first-party = ["pyspotify"]
 force-single-line = true
 
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
 [tool.ruff.format]
 # Like Black, use double quotes for strings.
 quote-style = "double"
@@ -42,8 +53,3 @@ line-ending = "auto"
 
 [tool.pyright]
 exclude = ["**/__pycache__"]
-
-[dependency-groups]
-dev = [
-    "ruff>=0.14.0",
-]

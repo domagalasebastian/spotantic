@@ -20,7 +20,7 @@ from ._spotify_api_types import SpotifyShowURI
 from ._spotify_api_types import SpotifyTrackURI
 from ._spotify_api_types import SpotifyUserURI
 
-APIResponse = Optional[Json[Any]]
+type APIResponse = Optional[Json[Any]]
 
 __all__ = [
     "APIResponse",
