@@ -14,6 +14,7 @@ from pyspotify.models import RequestModel
 
 
 class GetSeveralShowsRequestParams(BaseModel):
+    """Params model for Get Several Shows request."""
     model_config = ConfigDict(serialize_by_alias=True)
 
     show_ids: Annotated[
@@ -21,8 +22,31 @@ class GetSeveralShowsRequestParams(BaseModel):
         Field(max_length=50, serialization_alias="ids"),
         PlainSerializer(lambda seq: ",".join(seq), return_type=str),
     ]
+    """A list of the Spotify IDs for the shows."""
+
     market: Optional[SpotifyMarketID] = None
+    """An ISO 3166-1 alpha-2 country code."""
 
 
 class GetSeveralShowsRequest(RequestModel[GetSeveralShowsRequestParams, None]):
+    """Request model for Get Several Shows endpoint."""
+
     method_type: HTTPMethod = HTTPMethod.GET
+    """HTTP method for the request."""
+
+    endpoint: Optional[str] = "shows"
+    """Endpoint associated with the request."""
+
+    @classmethod
+    def build(
+        cls,
+        *,
+        show_ids: Sequence[SpotifyItemID],
+        market: Optional[SpotifyMarketID] = None,
+    ) -> GetSeveralShowsRequest:
+        params = GetSeveralShowsRequestParams(
+            show_ids=show_ids,
+            market=market,
+        )
+
+        return cls(params=params)
