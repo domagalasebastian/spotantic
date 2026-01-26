@@ -6,3 +6,4 @@ API Reference
    :caption: Contents
 
    search_endpoint
+   shows_endpoint

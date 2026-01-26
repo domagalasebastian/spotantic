@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
@@ -15,6 +17,7 @@ from pyspotify.models import RequestModel
 
 class GetSeveralShowsRequestParams(BaseModel):
     """Params model for Get Several Shows request."""
+
     model_config = ConfigDict(serialize_by_alias=True)
 
     show_ids: Annotated[
@@ -44,6 +47,18 @@ class GetSeveralShowsRequest(RequestModel[GetSeveralShowsRequestParams, None]):
         show_ids: Sequence[SpotifyItemID],
         market: Optional[SpotifyMarketID] = None,
     ) -> GetSeveralShowsRequest:
+        """Builds a request model based on given parameters.
+
+        The function automatically determines the endpoint if it is not static.
+        Also, it automatically assigns parameters to request query or body.
+
+        Args:
+            show_ids: A list of the Spotify IDs for the shows.
+            market: An ISO 3166-1 alpha-2 country code.
+
+        Returns:
+            Validated Request object.
+        """
         params = GetSeveralShowsRequestParams(
             show_ids=show_ids,
             market=market,
