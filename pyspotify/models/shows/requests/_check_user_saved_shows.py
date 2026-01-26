@@ -10,6 +10,7 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import PlainSerializer
 
+from pyspotify.custom_types import Scope
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestModel
 
@@ -29,6 +30,9 @@ class CheckUserSavedShowsRequestParams(BaseModel):
 
 class CheckUserSavedShowsRequest(RequestModel[CheckUserSavedShowsRequestParams, None]):
     """Request model for Check User Saved Shows endpoint."""
+
+    required_scopes: set[Scope] = {Scope.USER_LIBRARY_READ}
+    """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.GET
     """HTTP method for the request."""

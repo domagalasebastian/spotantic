@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
@@ -8,12 +10,15 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import PlainSerializer
 
+from pyspotify.custom_types import Scope
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import RequestModel
 
 
 class RemoveUserSavedShowsRequestParams(BaseModel):
+    """Params model for Remove User Saved Shows request."""
+
     model_config = ConfigDict(serialize_by_alias=True)
 
     show_ids: Annotated[
@@ -21,8 +26,46 @@ class RemoveUserSavedShowsRequestParams(BaseModel):
         Field(max_length=50, serialization_alias="ids"),
         PlainSerializer(lambda seq: ",".join(seq), return_type=str),
     ]
+    """A list of the Spotify IDs for the shows."""
+
     market: Optional[SpotifyMarketID] = None
+    """An ISO 3166-1 alpha-2 country code."""
 
 
 class RemoveUserSavedShowsRequest(RequestModel[RemoveUserSavedShowsRequestParams, None]):
+    """Request model for Remove User Saved Shows endpoint."""
+
+    required_scopes: set[Scope] = {Scope.USER_LIBRARY_MODIFY}
+    """Required authorization scopes for the request."""
+
     method_type: HTTPMethod = HTTPMethod.DELETE
+    """HTTP method for the request."""
+
+    endpoint: Optional[str] = "me/shows"
+    """Endpoint associated with the request."""
+
+    @classmethod
+    def build(
+        cls,
+        *,
+        show_ids: Sequence[SpotifyItemID],
+        market: Optional[SpotifyMarketID] = None,
+    ) -> RemoveUserSavedShowsRequest:
+        """Builds a request model based on given parameters.
+
+        The function automatically determines the endpoint if it is not static.
+        Also, it automatically assigns parameters to request query or body.
+
+        Args:
+            show_ids: A list of the Spotify IDs for the shows.
+            market: An ISO 3166-1 alpha-2 country code.
+
+        Returns:
+            Validated Request object.
+        """
+        params = RemoveUserSavedShowsRequestParams(
+            show_ids=show_ids,
+            market=market,
+        )
+
+        return cls(params=params)
