@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pre-commit>=4.5.1",
     "pyright>=1.1.406",
     "ruff>=0.14.0",
     "sphinx>=8.2.3",
