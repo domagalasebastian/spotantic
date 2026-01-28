@@ -8,3 +8,4 @@ API Reference
    search_endpoint
    shows_endpoint
    tracks_endpoint
+   users_endpoint

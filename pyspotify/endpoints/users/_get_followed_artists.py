@@ -17,6 +17,21 @@ async def get_followed_artists(
     after: Optional[SpotifyItemID] = None,
     limit: Optional[int] = 20,
 ) -> APICallModel[GetFollowedArtistsRequest, APIResponse, PagedResultWithCursorsModel[ArtistModel]]:
+    """Get the artists followed by the current Spotify user.
+
+    Get the current user's followed artists.
+
+    Args:
+        client: PySpotifyClient instance.
+        item_type: The ID type: currently only 'artist' is supported.
+        after: The last artist ID retrieved from the previous request.
+          Used to get the next set of results.
+        limit: The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+
+    Returns:
+        An object containing the request used to obtain the response, the retrieved data and
+        parsed data as model.
+    """
     request = GetFollowedArtistsRequest.build(
         item_type=item_type,
         after=after,

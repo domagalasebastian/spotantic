@@ -4,7 +4,6 @@ from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
 from typing import Sequence
-from typing import Set
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -19,18 +18,31 @@ from pyspotify.models import RequestModel
 
 
 class UnfollowArtistsOrUsersRequestParams(BaseModel):
+    """Parameters for the Unfollow Artists or Users request model."""
+
     model_config = ConfigDict(serialize_by_alias=True, use_enum_values=True)
 
     item_type: SpotifyItemType = Field(serialization_alias="type")
+    """The type of the items to unfollow."""
+
     item_ids: Annotated[
         Optional[Sequence[str]],
         Field(max_length=50, serialization_alias="ids"),
         PlainSerializer(lambda seq: ",".join(seq), return_type=str),
     ] = None
+    """A sequence of Spotify IDs for the artists or users to unfollow."""
 
     @field_validator("item_type", mode="after")
     @classmethod
     def validate_type_param(cls, value: SpotifyItemType) -> SpotifyItemType:
+        """Validate that the `type` parameter is either 'artist' or 'user'.
+
+        Args:
+            value: The SpotifyItemType value to validate.
+
+        Returns:
+            The validated SpotifyItemType value.
+        """
         if value not in (SpotifyItemType.ARTIST, SpotifyItemType.USER):
             raise ValueError("`type` parameter value is invalid!")
 
@@ -38,21 +50,33 @@ class UnfollowArtistsOrUsersRequestParams(BaseModel):
 
 
 class UnfollowArtistsOrUsersRequestBody(BaseModel):
+    """Body for the Unfollow Artists or Users request model."""
+
     model_config = ConfigDict(serialize_by_alias=True)
 
     item_ids: Annotated[
         Optional[Sequence[str]],
         Field(max_length=50, serialization_alias="ids"),
     ] = None
+    """A sequence of Spotify IDs for the artists or users to unfollow."""
 
 
 class UnfollowArtistsOrUsersRequest(
     RequestModel[UnfollowArtistsOrUsersRequestParams, UnfollowArtistsOrUsersRequestBody]
 ):
-    required_scopes: Set[Scope] = {Scope.USER_FOLLOW_MODIFY}
+    """Request model for Unfollow Artists or Users endpoint."""
+
+    required_scopes: set[Scope] = {Scope.USER_FOLLOW_MODIFY}
+    """Required authorization scopes for the request."""
+
     method_type: HTTPMethod = HTTPMethod.DELETE
+    """HTTP method for the request."""
+
     endpoint: Optional[str] = "me/following"
+    """Endpoint associated with the request."""
+
     headers: RequestHeadersModel = RequestHeadersModel(content_type="application/json")
+    """Headers for the request."""
 
     @classmethod
     def build(
@@ -61,6 +85,18 @@ class UnfollowArtistsOrUsersRequest(
         item_type: SpotifyItemType,
         item_ids: Sequence[str],
     ) -> UnfollowArtistsOrUsersRequest:
+        """Builds a request model based on given parameters.
+
+        The function automatically determines the endpoint if it is not static.
+        Also, it automatically assigns parameters to request query or body.
+
+        Args:
+            item_type: The type of the items to unfollow.
+            item_ids: A sequence of Spotify IDs for the artists or users to unfollow.
+
+        Returns:
+            Validated Request object.
+        """
         params = UnfollowArtistsOrUsersRequestParams(
             item_type=item_type,
         )

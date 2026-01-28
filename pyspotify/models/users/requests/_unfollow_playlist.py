@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from http import HTTPMethod
-from typing import Set
 
 from pydantic import BaseModel
 
@@ -11,12 +10,20 @@ from pyspotify.models import RequestModel
 
 
 class UnfollowPlaylistRequestParams(BaseModel):
+    """Parameters for the Unfollow Playlist request model."""
+
     playlist_id: SpotifyItemID
+    """The Spotify ID of the playlist to unfollow."""
 
 
 class UnfollowPlaylistRequest(RequestModel[UnfollowPlaylistRequestParams, None]):
-    required_scopes: Set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    """Request model for Unfollow Playlist endpoint."""
+
+    required_scopes: set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    """Required authorization scopes for the request."""
+
     method_type: HTTPMethod = HTTPMethod.DELETE
+    """HTTP method for the request."""
 
     @classmethod
     def build(
@@ -24,6 +31,17 @@ class UnfollowPlaylistRequest(RequestModel[UnfollowPlaylistRequestParams, None])
         *,
         playlist_id: SpotifyItemID,
     ) -> UnfollowPlaylistRequest:
+        """Builds a request model based on given parameters.
+
+        The function automatically determines the endpoint if it is not static.
+        Also, it automatically assigns parameters to request query or body.
+
+        Args:
+            playlist_id: The Spotify ID of the playlist to unfollow.
+
+        Returns:
+            Validated Request object.
+        """
         params = UnfollowPlaylistRequestParams(
             playlist_id=playlist_id,
         )

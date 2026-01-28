@@ -3,7 +3,6 @@ from __future__ import annotations
 from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
-from typing import Set
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -17,15 +16,30 @@ from pyspotify.models import RequestModel
 
 
 class GetFollowedArtistsRequestParams(BaseModel):
+    """Params model for Get Followed Artists request."""
+
     model_config = ConfigDict(serialize_by_alias=True, use_enum_values=True)
 
     item_type: SpotifyItemType = Field(serialization_alias="type")
+    """The item type."""
+
     after: Optional[SpotifyItemID] = None
+    """The last artist ID retrieved from the previous request."""
+
     limit: Annotated[Optional[int], Field(ge=1, le=50)] = None
+    """The maximum number of artists to return."""
 
     @field_validator("item_type", mode="after")
     @classmethod
     def validate_type_param(cls, value: SpotifyItemType) -> SpotifyItemType:
+        """Validates that the type parameter is `artist`.
+
+        Args:
+            value: The value to validate.
+
+        Returns:
+            The validated value.
+        """
         if value != SpotifyItemType.ARTIST:
             raise ValueError("`type` parameter value is invalid!")
 
@@ -33,9 +47,16 @@ class GetFollowedArtistsRequestParams(BaseModel):
 
 
 class GetFollowedArtistsRequest(RequestModel[GetFollowedArtistsRequestParams, None]):
-    required_scopes: Set[Scope] = {Scope.USER_FOLLOW_READ}
+    """Request model for Get Followed Artists endpoint."""
+
+    required_scopes: set[Scope] = {Scope.USER_FOLLOW_READ}
+    """Required authorization scopes for the request."""
+
     endpoint: Optional[str] = "me/following"
+    """Endpoint associated with the request."""
+
     method_type: HTTPMethod = HTTPMethod.GET
+    """HTTP method for the request."""
 
     @classmethod
     def build(
@@ -45,6 +66,19 @@ class GetFollowedArtistsRequest(RequestModel[GetFollowedArtistsRequestParams, No
         after: Optional[SpotifyItemID] = None,
         limit: Optional[int] = None,
     ) -> GetFollowedArtistsRequest:
+        """Builds a request model based on given parameters.
+
+        The function automatically determines the endpoint if it is not static.
+        Also, it automatically assigns parameters to request query or body.
+
+        Args:
+            item_type: The item type.
+            after: The last artist ID retrieved from the previous request.
+            limit: The maximum number of artists to return.
+
+        Returns:
+            Validated Request object.
+        """
         params = GetFollowedArtistsRequestParams(
             item_type=item_type,
             after=after,

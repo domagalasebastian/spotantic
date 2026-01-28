@@ -14,6 +14,18 @@ async def follow_artists_or_users(
     item_type: SpotifyItemType,
     item_ids: Sequence[SpotifyItemID],
 ) -> APICallModel[FollowArtistsOrUsersRequest, APIResponse, None]:
+    """Follow one or more artists or Spotify users.
+
+    Add the current user as a follower of one or more artists or other Spotify users.
+
+    Args:
+        client: PySpotifyClient instance.
+        item_type: The type of item to follow.
+        item_ids: A list of Spotify IDs for the artists or users to follow.
+
+    Returns:
+        An object containing the request used to obtain the response and the response.
+    """
     request = FollowArtistsOrUsersRequest.build(
         item_type=item_type,
         item_ids=item_ids,
