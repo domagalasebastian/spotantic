@@ -21,6 +21,7 @@ release = "0.1.0"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx.ext.intersphinx",
 ]
 
 add_module_names = False
@@ -39,6 +40,11 @@ autodoc_default_options = {
 
 templates_path = ["_templates"]
 exclude_patterns = []
+
+intersphinx_mapping = {
+    "pydantic": ("https://docs.pydantic.dev/latest", None),
+    "python": ("https://docs.python.org/3", None),
+}
 
 
 # -- Options for HTML output -------------------------------------------------
