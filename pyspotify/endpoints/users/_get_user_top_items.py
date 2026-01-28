@@ -21,6 +21,22 @@ async def get_user_top_items(
 ) -> APICallModel[
     GetUserTopItemsRequest, APIResponse, Union[PagedResultModel[ArtistModel], PagedResultModel[TrackModel]]
 ]:
+    """Get the current Spotify user's top artists or tracks.
+
+    Get the current user's top artists or tracks based on calculated affinity.
+
+    Args:
+        client: PySpotifyClient instance.
+        item_type: The type of item to retrieve (artists or tracks).
+        time_range: Over what time frame the affinities are computed.
+        limit: The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+        offset: The index of the first item to return. Default: 0 (the first item).
+          Use with limit to get the next set of items.
+
+    Returns:
+        An object containing the request used to obtain the response, the retrieved data and
+        parsed data as model.
+    """
     request = GetUserTopItemsRequest.build(
         item_type=item_type,
         time_range=time_range,

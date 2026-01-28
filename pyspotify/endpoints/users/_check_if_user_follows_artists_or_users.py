@@ -1,4 +1,3 @@
-from typing import Dict
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
@@ -14,7 +13,20 @@ async def check_if_user_follows_artists_or_users(
     *,
     item_type: SpotifyItemType,
     item_ids: Sequence[str],
-) -> APICallModel[CheckIfUserFollowsArtistsOrUsersRequest, APIResponse, Dict[SpotifyItemID, bool]]:
+) -> APICallModel[CheckIfUserFollowsArtistsOrUsersRequest, APIResponse, dict[SpotifyItemID, bool]]:
+    """Check if the specified Spotify users follow certain artists or other users.
+
+    Check to see if the current user is following one or more artists or other Spotify users.
+
+    Args:
+        client: PySpotifyClient instance.
+        item_type: The type of item to check. Valid values are 'artist' or 'user'.
+        item_ids: A list of Spotify IDs for the artists or users to check.
+
+    Returns:
+        An object containing the request used to obtain the response, the retrieved data and
+        parsed data as model.
+    """
     request = CheckIfUserFollowsArtistsOrUsersRequest.build(
         item_type=item_type,
         item_ids=item_ids,
