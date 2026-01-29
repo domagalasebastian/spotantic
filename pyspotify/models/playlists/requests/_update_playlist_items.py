@@ -4,7 +4,6 @@ from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
 from typing import Sequence
-from typing import Set
 from typing import Union
 
 from pydantic import BaseModel
@@ -21,28 +20,51 @@ from pyspotify.models import RequestModel
 
 
 class UpdatePlaylistItemsRequestParams(BaseModel):
+    """Params model for Update Playlist Items request."""
+
     model_config = ConfigDict(serialize_by_alias=True)
 
     playlist_id: SpotifyItemID = Field(serialization_alias="id")
+    """The Spotify ID of the playlist."""
+
     uris: Annotated[
         Optional[Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]]],
         Field(None, max_length=100),
         PlainSerializer(lambda seq: ",".join(seq), return_type=str),
     ]
+    """A list of Spotify URIs for the items to update."""
 
 
 class UpdatePlaylistItemsRequestBody(BaseModel):
+    """Body model for Update Playlist Items request."""
+
     uris: Annotated[Optional[Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]]], Field(None, max_length=100)]
+    """A list of Spotify URIs for the items to update."""
+
     range_start: int
+    """The position of the first item to be moved."""
+
     insert_before: int
+    """The position where the items should be inserted."""
+
     range_length: Optional[int] = None
+    """The number of items to be moved."""
+
     snapshot_id: Optional[str] = None
+    """The playlist's snapshot ID."""
 
 
 class UpdatePlaylistItemsRequest(RequestModel[UpdatePlaylistItemsRequestParams, UpdatePlaylistItemsRequestBody]):
-    required_scopes: Set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    """Request model for Update Playlist Items endpoint."""
+
+    required_scopes: set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    """Required authorization scopes for the request."""
+
     method_type: HTTPMethod = HTTPMethod.PUT
+    """HTTP method for the request."""
+
     headers: RequestHeadersModel = RequestHeadersModel(content_type="application/json")
+    """Headers for the request."""
 
     @classmethod
     def build(
@@ -55,6 +77,22 @@ class UpdatePlaylistItemsRequest(RequestModel[UpdatePlaylistItemsRequestParams, 
         range_length: int = 1,
         snapshot_id: Optional[str] = None,
     ) -> UpdatePlaylistItemsRequest:
+        """Builds a request model based on given parameters.
+
+        The function automatically determines the endpoint if it is not static.
+        Also, it automatically assigns parameters to request query or body.
+
+        Args:
+            playlist_id: The Spotify ID of the playlist.
+            uris: A list of Spotify URIs for the items to update.
+            range_start: The position of the first item to be moved.
+            insert_before: The position where the items should be inserted.
+            range_length: The number of items to be moved.
+            snapshot_id: The playlist's snapshot ID.
+
+        Returns:
+            Validated Request object.
+        """
         params = UpdatePlaylistItemsRequestParams(
             playlist_id=playlist_id,
             uris=uris,

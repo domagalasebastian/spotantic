@@ -1,5 +1,3 @@
-from typing import List
-
 from pyspotify.client import PySpotifyClient
 from pyspotify.custom_types import APIResponse
 from pyspotify.custom_types import SpotifyItemID
@@ -12,7 +10,19 @@ async def get_playlist_cover_image(
     client: PySpotifyClient,
     *,
     playlist_id: SpotifyItemID,
-) -> APICallModel[GetPlaylistCoverImageRequest, APIResponse, List[ImageModel]]:
+) -> APICallModel[GetPlaylistCoverImageRequest, APIResponse, list[ImageModel]]:
+    """Get the cover image for a playlist.
+
+    Get the current image associated with a specific playlist.
+
+    Args:
+        client: PySpotifyClient instance.
+        playlist_id: The Spotify ID of the playlist.
+
+    Returns:
+        An object containing the request used to obtain the response, the retrieved data and
+        parsed data as model.
+    """
     request = GetPlaylistCoverImageRequest.build(
         playlist_id=playlist_id,
     )

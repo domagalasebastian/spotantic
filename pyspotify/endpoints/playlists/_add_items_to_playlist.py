@@ -19,6 +19,20 @@ async def add_items_to_playlist(
     uris: Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]],
     position: Optional[int] = None,
 ) -> APICallModel[AddItemsToPlaylistRequest, APIResponse, PlaylistSnapshotResponseModel]:
+    """Add items to a playlist.
+
+    Add one or more items to a user's playlist.
+
+    Args:
+        client: PySpotifyClient instance.
+        playlist_id: The Spotify ID of the playlist.
+        uris: A list of Spotify URIs for the items to add.
+        position: The position to insert the items, or None to add to the end.
+
+    Returns:
+        An object containing the request used to obtain the response, the retrieved data and
+        parsed data as model.
+    """
     request = AddItemsToPlaylistRequest.build(
         playlist_id=playlist_id,
         uris=uris,
