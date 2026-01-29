@@ -13,6 +13,20 @@ async def get_user_playlists(
     limit: int = 20,
     offset: int = 0,
 ) -> APICallModel[GetUserPlaylistsRequest, APIResponse, PagedResultModel[SimplifiedPlaylistModel]]:
+    """Get a list of a user's playlists.
+
+    Get a list of the playlists owned or followed by a Spotify user.
+
+    Args:
+        client: PySpotifyClient instance.
+        user_id: The Spotify user ID of the user.
+        limit: The maximum number of playlists to return. Default is 20. Minimum is 1, maximum is 50.
+        offset: The index of the first playlist to return. Default is 0.
+
+    Returns:
+        An object containing the request used to obtain the response, the retrieved data and
+        parsed data as model.
+    """
     request = GetUserPlaylistsRequest.build(
         user_id=user_id,
         limit=limit,
