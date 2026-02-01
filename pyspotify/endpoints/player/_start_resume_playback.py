@@ -10,10 +10,6 @@ from pyspotify.custom_types import SpotifyPlaylistURI
 from pyspotify.custom_types import SpotifyTrackURI
 from pyspotify.models import APICallModel
 from pyspotify.models.player.requests import StartResumePlaybackRequest
-from pyspotify.models.player.requests import StartResumePlaybackRequestBody
-from pyspotify.models.player.requests import StartResumePlaybackRequestParams
-from pyspotify.models.player.requests._start_resume_playback import PositionOffsetModel
-from pyspotify.models.player.requests._start_resume_playback import URIOffsetModel
 
 
 async def start_resume_playback(
@@ -25,24 +21,32 @@ async def start_resume_playback(
     offset: Optional[Union[int, SpotifyTrackURI]] = None,
     position_ms: Optional[int] = None,
 ) -> APICallModel[StartResumePlaybackRequest, APIResponse, None]:
-    if offset is None:
-        offset_model = None
-    elif isinstance(offset, int):
-        offset_model = PositionOffsetModel(position=offset)
-    else:
-        offset_model = URIOffsetModel(uri=offset)
+    """Start or resume the user's playback.
 
-    request = StartResumePlaybackRequest(
-        endpoint="me/player/play",
-        params=StartResumePlaybackRequestParams(
-            device_id=device_id,
-        ),
-        body=StartResumePlaybackRequestBody(
-            context_uri=context_uri,
-            uris=uris,
-            offset=offset_model,
-            position_ms=position_ms,
-        ),
+    Start a new context or resume current playback on the user's active device. This API only works for users
+    who have Spotify Premium. The order of execution is not guaranteed when you use this API with
+    other Player API endpoints.
+
+    Args:
+        client: PySpotifyClient instance.
+        device_id: The id of the device this command is targeting. If not supplied,
+         the user's currently active device is the target.
+        context_uri: Spotify URI of the context to play. Valid contexts are albums, artists, and playlists.
+        uris: A list of Spotify track URIs to play.
+        offset: Indicates from where in the context playback should start.
+         If an integer is provided, it is treated as a position index in the context.
+         If a Spotify track URI is provided, playback will start from that track.
+        position_ms: Indicates the position in milliseconds to start playback.
+
+    Returns:
+        An object containing the request used to obtain the response and the response.
+    """
+    request = StartResumePlaybackRequest.build(
+        device_id=device_id,
+        context_uri=context_uri,
+        uris=uris,
+        offset=offset,
+        position_ms=position_ms,
     )
 
     response = await client.request(request, empty_response=True)
