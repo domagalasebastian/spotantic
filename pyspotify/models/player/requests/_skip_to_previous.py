@@ -1,14 +1,52 @@
+from __future__ import annotations
+
 from http import HTTPMethod
 from typing import Optional
 
 from pydantic import BaseModel
 
+from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
 
 
 class SkipToPreviousRequestParams(BaseModel):
+    """Params model for Skip To Previous request."""
+
     device_id: Optional[str] = None
+    """The id of the device this command is targeting."""
 
 
 class SkipToPreviousRequest(RequestModel[SkipToPreviousRequestParams, None]):
+    """Request model for Skip To Previous endpoint."""
+
+    required_scopes: set[Scope] = {Scope.USER_MODIFY_PLAYBACK_STATE}
+    """Required authorization scopes for the request."""
+
     method_type: HTTPMethod = HTTPMethod.POST
+    """HTTP method for the request."""
+
+    endpoint: Optional[str] = "me/player/previous"
+    """Endpoint associated with the request."""
+
+    @classmethod
+    def build(
+        cls,
+        *,
+        device_id: Optional[str] = None,
+    ) -> SkipToPreviousRequest:
+        """Builds a request model based on given parameters.
+
+        The function automatically determines the endpoint if it is not static.
+        Also, it automatically assigns parameters to request query or body.
+
+        Args:
+            device_id: The id of the device this command is targeting.
+
+        Returns:
+            Validated Request object.
+        """
+        params = SkipToPreviousRequestParams(
+            device_id=device_id,
+        )
+
+        return cls(params=params)

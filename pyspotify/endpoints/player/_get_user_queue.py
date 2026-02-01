@@ -6,10 +6,18 @@ from pyspotify.models.spotify import UserQueueModel
 
 
 async def get_user_queue(client: PySpotifyClient) -> APICallModel[GetUserQueueRequest, APIResponse, UserQueueModel]:
-    request = GetUserQueueRequest(
-        endpoint="me/player/queue",
-    )
+    """Get the user's queue.
 
+    Get the list of objects that make up the user's queue.
+
+    Args:
+        client: PySpotifyClient instance.
+
+    Returns:
+        An object containing the request used to obtain the response, the retrieved data and
+        parsed data as model.
+    """
+    request = GetUserQueueRequest.build()
     response = await client.request(request)
     assert response is not None
     data = UserQueueModel(**response)
