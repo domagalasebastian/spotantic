@@ -5,6 +5,7 @@ API Reference
    :maxdepth: 2
    :caption: Contents
 
+   categories_endpoint
    episodes_endpoint
    markets_endpoint
    player_endpoint
