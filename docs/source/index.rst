@@ -21,3 +21,4 @@ Features
    :caption: Contents
 
    api_reference
+   pyspotify_models
