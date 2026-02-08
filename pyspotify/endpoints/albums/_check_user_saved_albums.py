@@ -1,4 +1,3 @@
-from typing import Dict
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
@@ -6,17 +5,23 @@ from pyspotify.custom_types import APIResponse
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models._api_call_model import APICallModel
 from pyspotify.models.albums.requests import CheckUserSavedAlbumsRequest
-from pyspotify.models.albums.requests import CheckUserSavedAlbumsRequestParams
 
 
 async def check_user_saved_albums(
     client: PySpotifyClient, *, album_ids: Sequence[SpotifyItemID]
-) -> APICallModel[CheckUserSavedAlbumsRequest, APIResponse, Dict[SpotifyItemID, bool]]:
-    request = CheckUserSavedAlbumsRequest(
-        endpoint="me/albums/contains",
-        params=CheckUserSavedAlbumsRequestParams(
-            album_ids=album_ids,
-        ),
+) -> APICallModel[CheckUserSavedAlbumsRequest, APIResponse, dict[SpotifyItemID, bool]]:
+    """Check if one or more albums is already saved in the current Spotify user's 'Your Music' library.
+
+    Args:
+        client: PySpotifyClient instance.
+        album_ids: A list of Spotify IDs for the albums to check.
+
+    Returns:
+        An object containing the request used to obtain the response, the retrieved data and
+        parsed data as model.
+    """
+    request = CheckUserSavedAlbumsRequest.build(
+        album_ids=album_ids,
     )
     response = await client.request(request)
     assert response is not None
