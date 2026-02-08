@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from http import HTTPMethod
 from typing import Annotated
+from typing import Optional
 from typing import Sequence
 
 from pydantic import BaseModel
@@ -7,11 +10,14 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import PlainSerializer
 
+from pyspotify.custom_types import Scope
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestModel
 
 
 class RemoveUserSavedAlbumsRequestParams(BaseModel):
+    """Params model for Remove User Saved Albums request."""
+
     model_config = ConfigDict(serialize_by_alias=True)
 
     album_ids: Annotated[
@@ -19,7 +25,40 @@ class RemoveUserSavedAlbumsRequestParams(BaseModel):
         Field(max_length=20, serialization_alias="ids"),
         PlainSerializer(lambda seq: ",".join(seq), return_type=str),
     ]
+    """A list of Spotify IDs for the albums to be removed from the user's library."""
 
 
 class RemoveUserSavedAlbumsRequest(RequestModel[RemoveUserSavedAlbumsRequestParams, None]):
+    """Request model for Remove User Saved Albums endpoint."""
+
+    required_scopes: set[Scope] = {Scope.USER_LIBRARY_MODIFY}
+    """Required authorization scopes for the request."""
+
     method_type: HTTPMethod = HTTPMethod.DELETE
+    """HTTP method for the request."""
+
+    endpoint: Optional[str] = "me/albums"
+    """Endpoint associated with the request."""
+
+    @classmethod
+    def build(
+        cls,
+        *,
+        album_ids: Sequence[SpotifyItemID],
+    ) -> RemoveUserSavedAlbumsRequest:
+        """Builds a request model based on given parameters.
+
+        The function automatically determines the endpoint if it is not static.
+        Also, it automatically assigns parameters to request query or body.
+
+        Args:
+            album_ids: A list of Spotify IDs for the albums to be removed from the user's library.
+
+        Returns:
+            Validated Request object.
+        """
+        params = RemoveUserSavedAlbumsRequestParams(
+            album_ids=album_ids,
+        )
+
+        return cls(params=params)

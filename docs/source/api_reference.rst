@@ -5,6 +5,7 @@ API Reference
    :maxdepth: 2
    :caption: Contents
 
+   albums_endpoint
    artists_endpoint
    categories_endpoint
    episodes_endpoint
