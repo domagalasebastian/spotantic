@@ -1,33 +1,26 @@
 from datetime import datetime
-from typing import Literal
 from typing import Optional
 from typing import Union
 
 from pydantic import BaseModel
-from pydantic import ConfigDict
 from pydantic import Field
-from pydantic import HttpUrl
 
-from pyspotify.custom_types import SpotifyUserURI
-from pyspotify.models.spotify._episode_model import EpisodeModel
-from pyspotify.models.spotify._track_model import TrackModel
-
-
-class ExternalUrlsModel(BaseModel):
-    spotify: Optional[HttpUrl] = None
-
-
-class AddedByModel(BaseModel):
-    model_config = ConfigDict(serialize_by_alias=True)
-    external_urls: ExternalUrlsModel = Field(repr=False)
-    user_href: HttpUrl = Field(alias="href")
-    user_id: str = Field(alias="id")
-    item_type: Literal["user"] = Field(alias="type", repr=False)
-    user_uri: SpotifyUserURI = Field(alias="uri", repr=False)
+from ._episode_model import EpisodeModel
+from ._track_model import TrackModel
+from .submodels import PlaylistOwnerModel
 
 
 class PlaylistTrackModel(BaseModel):
+    """Model representing full details of the items of a playlist owned by a Spotify user."""
+
     added_at: Optional[datetime] = None
-    added_by: Optional[AddedByModel] = Field(None, repr=False)
+    """The date and time the track or episode was added."""
+
+    added_by: Optional[PlaylistOwnerModel] = Field(None, repr=False)
+    """The Spotify user who added the track or episode."""
+
     is_local: bool = Field(repr=False)
+    """Whether this track or episode is a local file or not."""
+
     track: Union[TrackModel, EpisodeModel] = Field(discriminator="item_type")
+    """Information about the track or episode."""

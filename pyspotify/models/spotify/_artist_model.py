@@ -1,21 +1,24 @@
-from typing import Optional
 from typing import Sequence
 
-from pydantic import BaseModel
 from pydantic import Field
-from pydantic import HttpUrl
 
-from pyspotify.models.spotify._image_model import ImageModel
-from pyspotify.models.spotify._simplified_artist_model import SimplifiedArtistModel
-
-
-class FollowersModel(BaseModel):
-    href: Optional[HttpUrl] = None
-    total: int
+from ._image_model import ImageModel
+from ._simplified_artist_model import SimplifiedArtistModel
+from .submodels import ArtistFollowersModel
 
 
 class ArtistModel(SimplifiedArtistModel):
-    followers: FollowersModel
+    """Model representing Spotify catalog information for a single artist identified by their unique Spotify ID."""
+
+    followers: ArtistFollowersModel
+    """Information about the followers of the artist."""
+
     genres: Sequence[str]
+    """A list of the genres the artist is associated with. If not yet classified, the array is empty."""
+
     images: Sequence[ImageModel] = Field(repr=False)
+    """Images of the artist in various sizes, widest first."""
+
     popularity: int
+    """The popularity of the artist. The value will be between 0 and 100, with 100 being the most popular.
+    The artist's popularity is calculated from the popularity of all the artist's tracks."""

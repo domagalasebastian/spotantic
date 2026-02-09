@@ -6,6 +6,11 @@ Functions
 
 .. automodule:: pyspotify.endpoints.player
 
+Response models
+---------------
+
+.. automodule:: pyspotify.models.player.responses
+
 Request models
 --------------
 
