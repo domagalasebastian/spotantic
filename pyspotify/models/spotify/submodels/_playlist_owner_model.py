@@ -1,6 +1,5 @@
 from typing import Literal
 from typing import Optional
-from typing import Sequence
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -9,32 +8,28 @@ from pydantic import HttpUrl
 
 from pyspotify.custom_types import SpotifyUserURI
 
-from ._image_model import ImageModel
-from .submodels import ExternalUrlsModel
+from ._external_urls_model import ExternalUrlsModel
 
 
-class UserModel(BaseModel):
-    """Model representing public profile information about a Spotify user."""
+class PlaylistOwnerModel(BaseModel):
+    """Model representing information about the user who owns the playlist."""
 
     model_config = ConfigDict(serialize_by_alias=True)
 
-    display_name: Optional[str] = None
-    """The name displayed on the user's profile."""
-
     external_urls: ExternalUrlsModel = Field(repr=False)
-    """Known external URLs for this user."""
+    """Known public external URLs for this user."""
 
     user_href: HttpUrl = Field(alias="href")
     """A link to the Web API endpoint for this user."""
 
     user_id: str = Field(alias="id")
-    """The Spotify user ID for the user."""
-
-    images: Sequence[ImageModel] = Field(repr=False)
-    """The user's profile image."""
+    """The Spotify user ID for this user."""
 
     item_type: Literal["user"] = Field(alias="type", repr=False)
     """The item type."""
 
     user_uri: SpotifyUserURI = Field(alias="uri", repr=False)
-    """The Spotify URI for the user."""
+    """The Spotify URI for this user."""
+
+    display_name: Optional[str] = None
+    """The name displayed on the user's profile."""
