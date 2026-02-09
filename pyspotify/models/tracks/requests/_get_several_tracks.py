@@ -10,6 +10,7 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import PlainSerializer
 
+from pyspotify._utils.models import sequence_to_comma_separated_str
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import RequestModel
@@ -23,7 +24,7 @@ class GetSeveralTracksRequestParams(BaseModel):
     track_ids: Annotated[
         Sequence[SpotifyItemID],
         Field(max_length=50, serialization_alias="ids"),
-        PlainSerializer(lambda seq: ",".join(seq), return_type=str),
+        PlainSerializer(sequence_to_comma_separated_str, return_type=str),
     ]
     """A list of the Spotify IDs for the tracks."""
 

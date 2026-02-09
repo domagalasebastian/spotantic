@@ -11,6 +11,7 @@ from pydantic import Field
 from pydantic import PlainSerializer
 from pydantic import field_validator
 
+from pyspotify._utils.models import sequence_to_comma_separated_str
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.custom_types import SpotifyItemType
 from pyspotify.custom_types import SpotifyMarketID
@@ -28,7 +29,9 @@ class GetPlaylistRequestParams(BaseModel):
     fields: Optional[str] = None
     """Filters for the response data."""
 
-    additional_types: Annotated[Sequence[SpotifyItemType], PlainSerializer(lambda seq: ",".join(seq), return_type=str)]
+    additional_types: Annotated[
+        Sequence[SpotifyItemType], PlainSerializer(sequence_to_comma_separated_str, return_type=str)
+    ]
     """A list of item types to return."""
 
     market: Optional[SpotifyMarketID] = None

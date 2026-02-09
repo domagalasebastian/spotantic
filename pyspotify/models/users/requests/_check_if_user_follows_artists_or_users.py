@@ -11,6 +11,7 @@ from pydantic import Field
 from pydantic import PlainSerializer
 from pydantic import field_validator
 
+from pyspotify._utils.models import sequence_to_comma_separated_str
 from pyspotify.custom_types import Scope
 from pyspotify.custom_types import SpotifyItemType
 from pyspotify.models import RequestModel
@@ -27,7 +28,7 @@ class CheckIfUserFollowsArtistsOrUsersRequestParams(BaseModel):
     item_ids: Annotated[
         Optional[Sequence[str]],
         Field(max_length=50, serialization_alias="ids"),
-        PlainSerializer(lambda seq: ",".join(seq), return_type=str),
+        PlainSerializer(sequence_to_comma_separated_str, return_type=str),
     ] = None
     """A list of the Spotify IDs for the artists or users."""
 

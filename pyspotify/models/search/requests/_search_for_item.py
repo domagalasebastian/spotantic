@@ -12,6 +12,7 @@ from pydantic import Field
 from pydantic import PlainSerializer
 from pydantic import field_validator
 
+from pyspotify._utils.models import sequence_to_comma_separated_str
 from pyspotify.custom_types import SpotifyItemType
 from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import RequestModel
@@ -45,7 +46,7 @@ class SearchForItemRequestParams(BaseModel):
     item_type: Annotated[
         Sequence[SpotifyItemType],
         Field(serialization_alias="type"),
-        PlainSerializer(lambda seq: ",".join(seq), return_type=str),
+        PlainSerializer(sequence_to_comma_separated_str, return_type=str),
     ]
     """A list of item types to search across. Search results include hits
     from all the specified item types."""

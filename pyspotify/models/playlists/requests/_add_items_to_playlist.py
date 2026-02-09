@@ -11,6 +11,7 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import PlainSerializer
 
+from pyspotify._utils.models import sequence_to_comma_separated_str
 from pyspotify.custom_types import Scope
 from pyspotify.custom_types import SpotifyEpisodeURI
 from pyspotify.custom_types import SpotifyItemID
@@ -33,7 +34,7 @@ class AddItemsToPlaylistRequestParams(BaseModel):
     uris: Annotated[
         Optional[Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]]],
         Field(max_length=100),
-        PlainSerializer(lambda seq: ",".join(seq), return_type=str),
+        PlainSerializer(sequence_to_comma_separated_str, return_type=str),
     ] = None
     """A list of Spotify URIs for the items to add."""
 

@@ -4,7 +4,6 @@ from typing import Optional
 from pydantic.types import Json
 
 from ._auth_scope import Scope
-from ._generic_custom_types import ParamsBool
 from ._spotify_api_types import AlbumTypes
 from ._spotify_api_types import RepeatMode
 from ._spotify_api_types import SpotifyAlbumURI
@@ -25,7 +24,6 @@ type APIResponse = Optional[Json[Any]]
 __all__ = [
     "APIResponse",
     "AlbumTypes",
-    "ParamsBool",
     "RepeatMode",
     "Scope",
     "SpotifyAlbumURI",

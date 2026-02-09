@@ -9,6 +9,7 @@ from pydantic import BaseModel
 from pydantic import PlainSerializer
 from pydantic import field_validator
 
+from pyspotify._utils.models import sequence_to_comma_separated_str
 from pyspotify.custom_types import Scope
 from pyspotify.custom_types import SpotifyItemType
 from pyspotify.custom_types import SpotifyMarketID
@@ -18,7 +19,9 @@ from pyspotify.models import RequestModel
 class GetPlaybackStateRequestParams(BaseModel):
     """Params model for Get Playback State request."""
 
-    additional_types: Annotated[Sequence[SpotifyItemType], PlainSerializer(lambda seq: ",".join(seq), return_type=str)]
+    additional_types: Annotated[
+        Sequence[SpotifyItemType], PlainSerializer(sequence_to_comma_separated_str, return_type=str)
+    ]
     """A list of item types that your client supports besides the default track type."""
 
     market: Optional[SpotifyMarketID] = None
