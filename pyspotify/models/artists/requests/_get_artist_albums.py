@@ -10,6 +10,7 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import PlainSerializer
 
+from pyspotify._utils.models import sequence_to_comma_separated_str
 from pyspotify.custom_types import AlbumTypes
 from pyspotify.custom_types import SpotifyItemID
 from pyspotify.custom_types import SpotifyMarketID
@@ -31,7 +32,7 @@ class GetArtistAlbumsRequestParams(BaseModel):
     """The index of the first item to return."""
 
     include_groups: Annotated[
-        Optional[Sequence[AlbumTypes]], PlainSerializer(lambda seq: ",".join(seq), return_type=str)
+        Optional[Sequence[AlbumTypes]], PlainSerializer(sequence_to_comma_separated_str, return_type=str)
     ] = None
     """A list of keywords that will be used to filter the response."""
 

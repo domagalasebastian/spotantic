@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 from http import HTTPMethod
+from typing import Annotated
 from typing import Optional
 
 from pydantic import BaseModel
+from pydantic import PlainSerializer
 
-from pyspotify.custom_types import ParamsBool
 from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
 
@@ -13,7 +14,7 @@ from pyspotify.models import RequestModel
 class TogglePlaybackShuffleRequestParams(BaseModel):
     """Params model for Toggle Playback Shuffle request."""
 
-    state: ParamsBool
+    state: Annotated[bool, PlainSerializer(lambda flag: str(flag).lower(), return_type=str)]
     """Whether to shuffle the playback or not."""
 
     device_id: Optional[str] = None
@@ -36,7 +37,7 @@ class TogglePlaybackShuffleRequest(RequestModel[TogglePlaybackShuffleRequestPara
     def build(
         cls,
         *,
-        state: ParamsBool,
+        state: bool,
         device_id: Optional[str] = None,
     ) -> TogglePlaybackShuffleRequest:
         """Builds a request model based on given parameters.
