@@ -7,12 +7,11 @@ from http import HTTPStatus
 from aiohttp.client import ClientSession
 
 from pyspotify._utils.logger import logger
+from pyspotify.auth._auth_manager_base import AuthManagerBase
+from pyspotify.auth._auth_manager_base import RefreshableAuthManager
 from pyspotify.models import RequestModel
+from pyspotify.models.auth import AccessTokenInfo
 from pyspotify.types import APIResponse
-
-from .auth import AccessTokenInfo
-from .auth._auth_manager_base import AuthManagerBase
-from .auth._auth_manager_base import RefreshableAuthManager
 
 
 class PySpotifyClient:

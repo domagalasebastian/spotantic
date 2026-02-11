@@ -21,6 +21,7 @@ Features
    :caption: Contents
 
    api_reference
+   auth_reference
    pyspotify_models
    spotify_models
    types_reference
