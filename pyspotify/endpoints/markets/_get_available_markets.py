@@ -1,8 +1,8 @@
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import APICallModel
 from pyspotify.models.markets.requests import GetAvailableMarketsRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyMarketID
 
 
 async def get_available_markets(

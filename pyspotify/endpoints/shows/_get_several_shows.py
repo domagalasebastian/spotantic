@@ -3,12 +3,12 @@ from typing import Optional
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import APICallModel
 from pyspotify.models.shows.requests import GetSeveralShowsRequest
 from pyspotify.models.spotify import SimplifiedShowModel
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
 
 
 async def get_several_shows(

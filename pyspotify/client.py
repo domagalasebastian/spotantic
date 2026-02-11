@@ -7,8 +7,8 @@ from http import HTTPStatus
 from aiohttp.client import ClientSession
 
 from pyspotify._utils.logger import logger
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import RequestModel
+from pyspotify.types import APIResponse
 
 from .auth import AccessTokenInfo
 from .auth._auth_manager_base import AuthManagerBase

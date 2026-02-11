@@ -12,10 +12,10 @@ from pydantic import PlainSerializer
 from pydantic import field_validator
 
 from pyspotify._utils.models import sequence_to_comma_separated_str
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemType
 from pyspotify.models import RequestHeadersModel
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemType
 
 
 class UnfollowArtistsOrUsersRequestParams(BaseModel):
@@ -67,7 +67,7 @@ class UnfollowArtistsOrUsersRequest(
 ):
     """Request model for Unfollow Artists or Users endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_FOLLOW_MODIFY}
+    required_scopes: set[AuthScope] = {AuthScope.USER_FOLLOW_MODIFY}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.DELETE

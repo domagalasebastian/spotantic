@@ -7,8 +7,8 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import HttpUrl
 
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyPlaylistURI
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyPlaylistURI
 
 from ._image_model import ImageModel
 from .submodels import ExternalUrlsModel

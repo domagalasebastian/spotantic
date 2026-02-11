@@ -4,9 +4,9 @@ from http import HTTPMethod
 
 from pydantic import BaseModel
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemID
 
 
 class UnfollowPlaylistRequestParams(BaseModel):
@@ -19,7 +19,7 @@ class UnfollowPlaylistRequestParams(BaseModel):
 class UnfollowPlaylistRequest(RequestModel[UnfollowPlaylistRequestParams, None]):
     """Request model for Unfollow Playlist endpoint."""
 
-    required_scopes: set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    required_scopes: set[AuthScope] = {AuthScope.PLAYLIST_MODIFY_PRIVATE, AuthScope.PLAYLIST_MODIFY_PUBLIC}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.DELETE

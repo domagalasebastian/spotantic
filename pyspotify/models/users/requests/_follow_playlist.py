@@ -6,10 +6,10 @@ from typing import Set
 
 from pydantic import BaseModel
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestHeadersModel
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemID
 
 
 class FollowPlaylistRequestParams(BaseModel):
@@ -31,7 +31,7 @@ class FollowPlaylistRequestBody(BaseModel):
 class FollowPlaylistRequest(RequestModel[FollowPlaylistRequestParams, FollowPlaylistRequestBody]):
     """Request model for Follow Playlist endpoint."""
 
-    required_scopes: Set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    required_scopes: Set[AuthScope] = {AuthScope.PLAYLIST_MODIFY_PRIVATE, AuthScope.PLAYLIST_MODIFY_PUBLIC}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

@@ -3,10 +3,10 @@ from typing import Optional
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import APICallModel
 from pyspotify.models.tracks.requests import SaveTracksForCurrentUserRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
 
 
 async def save_tracks_for_current_user(

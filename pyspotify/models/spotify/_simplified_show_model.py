@@ -6,9 +6,9 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import HttpUrl
 
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
-from pyspotify.custom_types import SpotifyShowURI
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
+from pyspotify.types import SpotifyShowURI
 
 from ._image_model import ImageModel
 from .submodels import CopyrightModel

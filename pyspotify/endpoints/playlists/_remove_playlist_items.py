@@ -3,13 +3,13 @@ from typing import Sequence
 from typing import Union
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyEpisodeURI
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyTrackURI
 from pyspotify.models import APICallModel
 from pyspotify.models.playlists.requests import RemovePlaylistItemsRequest
 from pyspotify.models.playlists.responses import PlaylistSnapshotResponseModel
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyEpisodeURI
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyTrackURI
 
 
 async def remove_playlist_items(

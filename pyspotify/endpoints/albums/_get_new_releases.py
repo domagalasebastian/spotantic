@@ -1,9 +1,9 @@
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.albums.requests import GetNewReleasesRequest
 from pyspotify.models.spotify import PagedResultModel
 from pyspotify.models.spotify import SimplifiedAlbumModel
+from pyspotify.types import APIResponse
 
 
 async def get_new_releases(

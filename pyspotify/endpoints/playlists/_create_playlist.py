@@ -1,10 +1,10 @@
 from typing import Optional
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.playlists.requests import CreatePlaylistRequest
 from pyspotify.models.spotify import PlaylistModel
+from pyspotify.types import APIResponse
 
 
 async def create_playlist(

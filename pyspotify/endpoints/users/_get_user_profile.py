@@ -1,8 +1,8 @@
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.spotify import UserModel
 from pyspotify.models.users.requests import GetUserProfileRequest
+from pyspotify.types import APIResponse
 
 
 async def get_user_profile(

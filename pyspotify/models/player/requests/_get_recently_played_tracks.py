@@ -8,8 +8,8 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import model_validator
 
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
 
 
 class GetRecentlyPlayedTracksRequestParams(BaseModel):
@@ -43,7 +43,7 @@ class GetRecentlyPlayedTracksRequestParams(BaseModel):
 class GetRecentlyPlayedTracksRequest(RequestModel[GetRecentlyPlayedTracksRequestParams, None]):
     """Request model for Get Recently Played Tracks endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_READ_RECENTLY_PLAYED}
+    required_scopes: set[AuthScope] = {AuthScope.USER_READ_RECENTLY_PLAYED}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.GET

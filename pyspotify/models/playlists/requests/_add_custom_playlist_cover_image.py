@@ -11,10 +11,10 @@ from pydantic import FilePath
 from pydantic import model_serializer
 from pydantic import model_validator
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestHeadersModel
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemID
 
 
 class AddCustomPlaylistCoverImageRequestParams(BaseModel):
@@ -78,7 +78,11 @@ class AddCustomPlaylistCoverImageRequest(
 ):
     """Request model for Add Custom Playlist Cover Image endpoint."""
 
-    required_scopes: set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC, Scope.UGC_IMAGE_UPLOAD}
+    required_scopes: set[AuthScope] = {
+        AuthScope.PLAYLIST_MODIFY_PRIVATE,
+        AuthScope.PLAYLIST_MODIFY_PUBLIC,
+        AuthScope.UGC_IMAGE_UPLOAD,
+    }
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

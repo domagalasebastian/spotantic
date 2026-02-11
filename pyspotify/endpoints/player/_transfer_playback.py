@@ -2,9 +2,9 @@ from typing import Optional
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.player.requests import TransferPlaybackRequest
+from pyspotify.types import APIResponse
 
 
 async def transfer_playback(

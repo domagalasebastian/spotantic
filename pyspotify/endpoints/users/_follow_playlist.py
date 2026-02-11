@@ -1,8 +1,8 @@
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import APICallModel
 from pyspotify.models.users.requests import FollowPlaylistRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
 
 
 async def follow_playlist(

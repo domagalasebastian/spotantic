@@ -2,11 +2,11 @@ from typing import Optional
 from typing import Union
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyEpisodeURI
-from pyspotify.custom_types import SpotifyTrackURI
 from pyspotify.models import APICallModel
 from pyspotify.models.player.requests import AddItemToPlaybackQueueRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyEpisodeURI
+from pyspotify.types import SpotifyTrackURI
 
 
 async def add_item_to_playback_queue(

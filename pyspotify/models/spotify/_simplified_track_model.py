@@ -9,9 +9,9 @@ from pydantic import Field
 from pydantic import HttpUrl
 from pydantic import field_validator
 
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
-from pyspotify.custom_types import SpotifyTrackURI
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
+from pyspotify.types import SpotifyTrackURI
 
 from ._simplified_artist_model import SimplifiedArtistModel
 from .submodels import ExternalUrlsModel

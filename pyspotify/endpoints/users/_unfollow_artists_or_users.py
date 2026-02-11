@@ -1,10 +1,10 @@
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemType
 from pyspotify.models import APICallModel
 from pyspotify.models.users.requests import UnfollowArtistsOrUsersRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemType
 
 
 async def unfollow_artists_or_users(

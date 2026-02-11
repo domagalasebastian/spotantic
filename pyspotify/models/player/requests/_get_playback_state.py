@@ -10,10 +10,10 @@ from pydantic import PlainSerializer
 from pydantic import field_validator
 
 from pyspotify._utils.models import sequence_to_comma_separated_str
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemType
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemType
+from pyspotify.types import SpotifyMarketID
 
 
 class GetPlaybackStateRequestParams(BaseModel):
@@ -49,7 +49,7 @@ class GetPlaybackStateRequestParams(BaseModel):
 class GetPlaybackStateRequest(RequestModel[GetPlaybackStateRequestParams, None]):
     """Request model for Get Playback State endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_READ_PLAYBACK_STATE}
+    required_scopes: set[AuthScope] = {AuthScope.USER_READ_PLAYBACK_STATE}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.GET

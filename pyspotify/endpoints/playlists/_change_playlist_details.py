@@ -1,10 +1,10 @@
 from typing import Optional
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import APICallModel
 from pyspotify.models.playlists.requests import ChangePlaylistDetailsRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
 
 
 async def change_playlist_details(

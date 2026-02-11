@@ -11,12 +11,12 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic.functional_serializers import PlainSerializer
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyEpisodeURI
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyTrackURI
 from pyspotify.models import RequestHeadersModel
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyEpisodeURI
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyTrackURI
 
 
 class RemovePlaylistItemsRequestParams(BaseModel):
@@ -45,7 +45,7 @@ class RemovePlaylistItemsRequestBody(BaseModel):
 class RemovePlaylistItemsRequest(RequestModel[RemovePlaylistItemsRequestParams, RemovePlaylistItemsRequestBody]):
     """Request model for Remove Playlist Items endpoint."""
 
-    required_scopes: set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    required_scopes: set[AuthScope] = {AuthScope.PLAYLIST_MODIFY_PRIVATE, AuthScope.PLAYLIST_MODIFY_PUBLIC}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.DELETE

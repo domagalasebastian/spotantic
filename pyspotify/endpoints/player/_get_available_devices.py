@@ -1,8 +1,8 @@
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.player.requests import GetAvailableDevicesRequest
 from pyspotify.models.spotify import DeviceModel
+from pyspotify.types import APIResponse
 
 
 async def get_available_devices(

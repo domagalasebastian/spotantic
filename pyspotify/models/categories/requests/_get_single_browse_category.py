@@ -5,8 +5,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from pyspotify.custom_types import SpotifyLocaleID
 from pyspotify.models import RequestModel
+from pyspotify.types import SpotifyLocaleID
 
 
 class GetSingleBrowseCategoryRequestParams(BaseModel):

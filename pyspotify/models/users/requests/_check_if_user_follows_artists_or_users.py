@@ -12,9 +12,9 @@ from pydantic import PlainSerializer
 from pydantic import field_validator
 
 from pyspotify._utils.models import sequence_to_comma_separated_str
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemType
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemType
 
 
 class CheckIfUserFollowsArtistsOrUsersRequestParams(BaseModel):
@@ -52,7 +52,7 @@ class CheckIfUserFollowsArtistsOrUsersRequestParams(BaseModel):
 class CheckIfUserFollowsArtistsOrUsersRequest(RequestModel[CheckIfUserFollowsArtistsOrUsersRequestParams, None]):
     """Request model for Check If User Follows Artists Or Users endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_FOLLOW_READ}
+    required_scopes: set[AuthScope] = {AuthScope.USER_FOLLOW_READ}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.GET

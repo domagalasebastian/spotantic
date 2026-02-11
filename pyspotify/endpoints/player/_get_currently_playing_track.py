@@ -2,12 +2,12 @@ from typing import Optional
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemType
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import APICallModel
 from pyspotify.models.player.requests import GetCurrentlyPlayingTrackRequest
 from pyspotify.models.spotify import CurrentlyPlayingItemModel
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemType
+from pyspotify.types import SpotifyMarketID
 
 
 async def get_currently_playing_track(

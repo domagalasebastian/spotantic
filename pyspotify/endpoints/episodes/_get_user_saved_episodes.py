@@ -1,12 +1,12 @@
 from typing import Optional
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import APICallModel
 from pyspotify.models.episodes.requests import GetUserSavedEpisodesRequest
 from pyspotify.models.spotify import PagedResultModel
 from pyspotify.models.spotify import SavedEpisodeModel
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyMarketID
 
 
 async def get_user_saved_episodes(

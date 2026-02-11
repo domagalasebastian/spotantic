@@ -1,11 +1,11 @@
 from typing import Optional
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.player.requests import GetRecentlyPlayedTracksRequest
 from pyspotify.models.spotify import PagedResultWithCursorsModel
 from pyspotify.models.spotify import PlayHistoryModel
+from pyspotify.types import APIResponse
 
 
 async def get_recently_played_tracks(

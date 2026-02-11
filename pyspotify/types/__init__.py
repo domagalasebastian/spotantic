@@ -1,33 +1,17 @@
-from __future__ import annotations
-
-from enum import Enum
 from typing import Annotated
+from typing import Any
+from typing import Optional
 
 from pydantic import StringConstraints
+from pydantic.types import Json
 
+from ._spotify_types import AlbumTypes
+from ._spotify_types import AuthScope
+from ._spotify_types import RepeatMode
+from ._spotify_types import SpotifyItemType
 
-class SpotifyItemType(str, Enum):
-    ALBUM = "album"
-    ARTIST = "artist"
-    EPISODE = "episode"
-    PLAYLIST = "playlist"
-    SHOW = "show"
-    TRACK = "track"
-    USER = "user"
-
-
-class AlbumTypes(str, Enum):
-    ALBUM = "album"
-    SINGLE = "single"
-    APPEARS_ON = "appears_on"
-    COMPILATION = "compilation"
-
-
-class RepeatMode(str, Enum):
-    TRACK = "track"
-    CONTEXT = "context"
-    OFF = "off"
-
+type APIResponse = Optional[Json[Any]]
+"""API response type. JSON or `None`."""
 
 type SpotifyMarketID = Annotated[
     str,
@@ -37,11 +21,13 @@ type SpotifyMarketID = Annotated[
         pattern=r"^[A-Za-z]{2}$",
     ),
 ]
+"""An ISO 3166-1 alpha-2 country code."""
 
 type SpotifyLocaleID = Annotated[
     str,
     StringConstraints(strip_whitespace=True, pattern=r"^[A-Za-z]{2}_[A-Za-z]{2}$"),
 ]
+"""An ISO 639-1 language code and an ISO 3166-1 alpha-2 country code, joined by an underscore."""
 
 type SpotifyItemID = Annotated[
     str,
@@ -50,6 +36,7 @@ type SpotifyItemID = Annotated[
         pattern=r"^[A-Za-z0-9]{22}$",
     ),
 ]
+"""The base-62 identifier found at the end of the `SpotifyItemURI`."""
 
 type SpotifyItemURI = Annotated[
     str,
@@ -58,6 +45,7 @@ type SpotifyItemURI = Annotated[
         pattern=rf"^spotify:{'|'.join(item.value for item in SpotifyItemType)}:[A-Za-z0-9]{{22}}$",
     ),
 ]
+"""The resource identifier of an item."""
 
 type SpotifyAlbumURI = Annotated[
     str,
@@ -66,6 +54,7 @@ type SpotifyAlbumURI = Annotated[
         pattern=rf"^spotify:{SpotifyItemType.ALBUM.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
+"""The resource identifier of an album."""
 
 type SpotifyArtistURI = Annotated[
     str,
@@ -74,6 +63,7 @@ type SpotifyArtistURI = Annotated[
         pattern=rf"^spotify:{SpotifyItemType.ARTIST.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
+"""The resource identifier of an artist."""
 
 type SpotifyEpisodeURI = Annotated[
     str,
@@ -82,6 +72,7 @@ type SpotifyEpisodeURI = Annotated[
         pattern=rf"^spotify:{SpotifyItemType.EPISODE.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
+"""The resource identifier of an episode."""
 
 type SpotifyPlaylistURI = Annotated[
     str,
@@ -90,6 +81,7 @@ type SpotifyPlaylistURI = Annotated[
         pattern=rf"^spotify:{SpotifyItemType.PLAYLIST.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
+"""The resource identifier of a playlist."""
 
 type SpotifyShowURI = Annotated[
     str,
@@ -98,6 +90,7 @@ type SpotifyShowURI = Annotated[
         pattern=rf"^spotify:{SpotifyItemType.SHOW.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
+"""The resource identifier of a show."""
 
 type SpotifyTrackURI = Annotated[
     str,
@@ -113,4 +106,25 @@ type SpotifyUserURI = Annotated[
         strip_whitespace=True,
         pattern=rf"^spotify:{SpotifyItemType.USER.value}:[A-Za-z0-9]*$",
     ),
+]
+"""The resource identifier of an user."""
+
+
+__all__ = [
+    "APIResponse",
+    "AlbumTypes",
+    "RepeatMode",
+    "AuthScope",
+    "SpotifyAlbumURI",
+    "SpotifyArtistURI",
+    "SpotifyEpisodeURI",
+    "SpotifyItemID",
+    "SpotifyItemType",
+    "SpotifyItemURI",
+    "SpotifyLocaleID",
+    "SpotifyMarketID",
+    "SpotifyPlaylistURI",
+    "SpotifyShowURI",
+    "SpotifyTrackURI",
+    "SpotifyUserURI",
 ]

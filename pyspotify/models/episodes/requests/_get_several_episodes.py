@@ -11,10 +11,10 @@ from pydantic import Field
 from pydantic import PlainSerializer
 
 from pyspotify._utils.models import sequence_to_comma_separated_str
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
 
 
 class GetSeveralEpisodesRequestParams(BaseModel):
@@ -36,7 +36,7 @@ class GetSeveralEpisodesRequestParams(BaseModel):
 class GetSeveralEpisodesRequest(RequestModel[GetSeveralEpisodesRequestParams, None]):
     """Request model for Get Several Episodes endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_READ_PLAYBACK_POSITION}
+    required_scopes: set[AuthScope] = {AuthScope.USER_READ_PLAYBACK_POSITION}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.GET

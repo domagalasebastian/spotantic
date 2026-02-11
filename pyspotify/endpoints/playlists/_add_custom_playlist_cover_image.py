@@ -3,10 +3,10 @@ from typing import Optional
 from pydantic import FilePath
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import APICallModel
 from pyspotify.models.playlists.requests import AddCustomPlaylistCoverImageRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
 
 
 async def add_custom_playlist_cover_image(

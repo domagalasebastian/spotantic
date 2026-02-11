@@ -14,7 +14,7 @@ from pydantic import HttpUrl
 from pydantic import model_validator
 from yarl import URL
 
-from pyspotify.custom_types import Scope
+from pyspotify.types import AuthScope
 
 API_BASE_URL = URL("https://api.spotify.com/v1/")
 
@@ -46,7 +46,7 @@ class RequestHeadersModel(EntityHeadersModel):
 class RequestModel[ParamsModelT, BodyModelT](BaseModel):
     """Model representing the API request."""
 
-    required_scopes: set[Scope] = Field(default_factory=set)
+    required_scopes: set[AuthScope] = Field(default_factory=set)
     """Required authorization scopes for the request."""
 
     url: Optional[HttpUrl] = None

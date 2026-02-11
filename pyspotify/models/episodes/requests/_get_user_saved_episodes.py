@@ -7,9 +7,9 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import Field
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyMarketID
 
 
 class GetUserSavedEpisodesRequestParams(BaseModel):
@@ -28,7 +28,7 @@ class GetUserSavedEpisodesRequestParams(BaseModel):
 class GetUserSavedEpisodesRequest(RequestModel[GetUserSavedEpisodesRequestParams, None]):
     """Request model for Get User Saved Episodes endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_LIBRARY_READ, Scope.USER_READ_PLAYBACK_POSITION}
+    required_scopes: set[AuthScope] = {AuthScope.USER_LIBRARY_READ, AuthScope.USER_READ_PLAYBACK_POSITION}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.GET

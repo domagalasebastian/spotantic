@@ -9,10 +9,10 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import field_validator
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyItemType
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyItemType
 
 
 class GetFollowedArtistsRequestParams(BaseModel):
@@ -49,7 +49,7 @@ class GetFollowedArtistsRequestParams(BaseModel):
 class GetFollowedArtistsRequest(RequestModel[GetFollowedArtistsRequestParams, None]):
     """Request model for Get Followed Artists endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_FOLLOW_READ}
+    required_scopes: set[AuthScope] = {AuthScope.USER_FOLLOW_READ}
     """Required authorization scopes for the request."""
 
     endpoint: Optional[str] = "me/following"

@@ -6,8 +6,8 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestModel
+from pyspotify.types import SpotifyItemID
 
 
 class GetArtistRequestParams(BaseModel):
