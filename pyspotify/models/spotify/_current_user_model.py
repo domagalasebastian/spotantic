@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import Field
 
-from pyspotify.custom_types import SpotifyMarketID
+from pyspotify.types import SpotifyMarketID
 
 from ._user_model import UserModel
 from .submodels import ExplicitContentModel

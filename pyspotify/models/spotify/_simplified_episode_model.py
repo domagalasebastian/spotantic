@@ -10,8 +10,8 @@ from pydantic import Field
 from pydantic import HttpUrl
 from pydantic import field_validator
 
-from pyspotify.custom_types import SpotifyEpisodeURI
-from pyspotify.custom_types import SpotifyItemID
+from pyspotify.types import SpotifyEpisodeURI
+from pyspotify.types import SpotifyItemID
 
 from ._image_model import ImageModel
 from .submodels import ExternalUrlsModel

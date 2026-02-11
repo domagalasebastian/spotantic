@@ -6,7 +6,7 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import HttpUrl
 
-from pyspotify.custom_types import SpotifyUserURI
+from pyspotify.types import SpotifyUserURI
 
 from ._external_urls_model import ExternalUrlsModel
 

@@ -11,10 +11,10 @@ from pydantic import Field
 from pydantic import PlainSerializer
 
 from pyspotify._utils.models import sequence_to_comma_separated_str
-from pyspotify.custom_types import AlbumTypes
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import RequestModel
+from pyspotify.types import AlbumTypes
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
 
 
 class GetArtistAlbumsRequestParams(BaseModel):

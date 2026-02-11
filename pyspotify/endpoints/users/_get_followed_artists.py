@@ -1,13 +1,13 @@
 from typing import Optional
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyItemType
 from pyspotify.models import APICallModel
 from pyspotify.models.spotify import ArtistModel
 from pyspotify.models.spotify import PagedResultWithCursorsModel
 from pyspotify.models.users.requests import GetFollowedArtistsRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyItemType
 
 
 async def get_followed_artists(

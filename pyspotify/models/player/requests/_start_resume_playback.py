@@ -10,13 +10,13 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import model_validator
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyAlbumURI
-from pyspotify.custom_types import SpotifyArtistURI
-from pyspotify.custom_types import SpotifyPlaylistURI
-from pyspotify.custom_types import SpotifyTrackURI
 from pyspotify.models import RequestHeadersModel
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyAlbumURI
+from pyspotify.types import SpotifyArtistURI
+from pyspotify.types import SpotifyPlaylistURI
+from pyspotify.types import SpotifyTrackURI
 
 
 class PositionOffsetModel(BaseModel):
@@ -88,7 +88,7 @@ class StartResumePlaybackRequestBody(BaseModel):
 class StartResumePlaybackRequest(RequestModel[StartResumePlaybackRequestParams, StartResumePlaybackRequestBody]):
     """Request model for Start/Resume Playback endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_MODIFY_PLAYBACK_STATE}
+    required_scopes: set[AuthScope] = {AuthScope.USER_MODIFY_PLAYBACK_STATE}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

@@ -1,7 +1,6 @@
 from typing import Union
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.spotify import ArtistModel
 from pyspotify.models.spotify import PagedResultModel
@@ -9,6 +8,7 @@ from pyspotify.models.spotify import TrackModel
 from pyspotify.models.users.requests import GetUserTopItemsRequest
 from pyspotify.models.users.requests import GetUserTopItemsTimeRange
 from pyspotify.models.users.requests import GetUserTopItemsType
+from pyspotify.types import APIResponse
 
 
 async def get_user_top_items(

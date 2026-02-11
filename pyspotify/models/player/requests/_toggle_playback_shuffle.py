@@ -7,8 +7,8 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import PlainSerializer
 
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
 
 
 class TogglePlaybackShuffleRequestParams(BaseModel):
@@ -24,7 +24,7 @@ class TogglePlaybackShuffleRequestParams(BaseModel):
 class TogglePlaybackShuffleRequest(RequestModel[TogglePlaybackShuffleRequestParams, None]):
     """Request model for Toggle Playback Shuffle endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_MODIFY_PLAYBACK_STATE}
+    required_scopes: set[AuthScope] = {AuthScope.USER_MODIFY_PLAYBACK_STATE}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

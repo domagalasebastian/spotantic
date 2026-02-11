@@ -1,13 +1,13 @@
 from typing import Optional
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import APICallModel
 from pyspotify.models.albums.requests import GetAlbumTracksRequest
 from pyspotify.models.spotify import PagedResultModel
 from pyspotify.models.spotify import SimplifiedTrackModel
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
 
 
 async def get_album_tracks(

@@ -1,11 +1,11 @@
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyItemType
 from pyspotify.models import APICallModel
 from pyspotify.models.users.requests import FollowArtistsOrUsersRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyItemType
 
 
 async def follow_artists_or_users(

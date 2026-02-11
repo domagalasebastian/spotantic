@@ -5,8 +5,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
 
 
 class PausePlaybackRequestParams(BaseModel):
@@ -19,7 +19,7 @@ class PausePlaybackRequestParams(BaseModel):
 class PausePlaybackRequest(RequestModel[PausePlaybackRequestParams, None]):
     """Request model for Pause Playback endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_MODIFY_PLAYBACK_STATE}
+    required_scopes: set[AuthScope] = {AuthScope.USER_MODIFY_PLAYBACK_STATE}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

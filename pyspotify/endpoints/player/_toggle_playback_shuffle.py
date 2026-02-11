@@ -1,9 +1,9 @@
 from typing import Optional
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.player.requests import TogglePlaybackShuffleRequest
+from pyspotify.types import APIResponse
 
 
 async def toggle_playback_shuffle(

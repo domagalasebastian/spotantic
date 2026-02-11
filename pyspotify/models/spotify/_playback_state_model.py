@@ -1,4 +1,4 @@
-from pyspotify.custom_types import RepeatMode
+from pyspotify.types import RepeatMode
 
 from ._currently_playing_item_model import CurrentlyPlayingItemModel
 from ._device_model import DeviceModel

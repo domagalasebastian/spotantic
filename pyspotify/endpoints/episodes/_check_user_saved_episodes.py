@@ -1,10 +1,10 @@
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import APICallModel
 from pyspotify.models.episodes.requests import CheckUserSavedEpisodesRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
 
 
 async def check_user_saved_episodes(

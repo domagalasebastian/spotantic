@@ -6,9 +6,9 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import model_validator
 
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestHeadersModel
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
 
 
 class CreatePlaylistRequestParams(BaseModel):
@@ -52,7 +52,7 @@ class CreatePlaylistRequestBody(BaseModel):
 class CreatePlaylistRequest(RequestModel[CreatePlaylistRequestParams, CreatePlaylistRequestBody]):
     """Request model for Create Playlist endpoint."""
 
-    required_scopes: set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    required_scopes: set[AuthScope] = {AuthScope.PLAYLIST_MODIFY_PRIVATE, AuthScope.PLAYLIST_MODIFY_PUBLIC}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.POST

@@ -3,13 +3,13 @@ from typing import Sequence
 from typing import Union
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyAlbumURI
-from pyspotify.custom_types import SpotifyArtistURI
-from pyspotify.custom_types import SpotifyPlaylistURI
-from pyspotify.custom_types import SpotifyTrackURI
 from pyspotify.models import APICallModel
 from pyspotify.models.player.requests import StartResumePlaybackRequest
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyAlbumURI
+from pyspotify.types import SpotifyArtistURI
+from pyspotify.types import SpotifyPlaylistURI
+from pyspotify.types import SpotifyTrackURI
 
 
 async def start_resume_playback(

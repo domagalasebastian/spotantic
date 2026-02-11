@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import field_validator
 
-from pyspotify.custom_types import SpotifyItemType
+from pyspotify.types import SpotifyItemType
 
 from ._episode_model import EpisodeModel
 from ._track_model import TrackModel

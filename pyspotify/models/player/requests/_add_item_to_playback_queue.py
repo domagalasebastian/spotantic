@@ -6,10 +6,10 @@ from typing import Union
 
 from pydantic import BaseModel
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyEpisodeURI
-from pyspotify.custom_types import SpotifyTrackURI
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyEpisodeURI
+from pyspotify.types import SpotifyTrackURI
 
 
 class AddItemToPlaybackQueueRequestParams(BaseModel):
@@ -25,7 +25,7 @@ class AddItemToPlaybackQueueRequestParams(BaseModel):
 class AddItemToPlaybackQueueRequest(RequestModel[AddItemToPlaybackQueueRequestParams, None]):
     """Request model for Add Item To Playback Queue request."""
 
-    required_scopes: set[Scope] = {Scope.USER_MODIFY_PLAYBACK_STATE}
+    required_scopes: set[AuthScope] = {AuthScope.USER_MODIFY_PLAYBACK_STATE}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.POST

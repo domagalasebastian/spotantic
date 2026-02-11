@@ -1,9 +1,9 @@
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
 from pyspotify.models import APICallModel
 from pyspotify.models.playlists.requests import GetCurrentUserPlaylistsRequest
 from pyspotify.models.spotify import PagedResultModel
 from pyspotify.models.spotify import SimplifiedPlaylistModel
+from pyspotify.types import APIResponse
 
 
 async def get_current_user_playlist(

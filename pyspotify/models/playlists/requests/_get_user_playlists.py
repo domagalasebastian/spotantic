@@ -6,8 +6,8 @@ from typing import Annotated
 from pydantic import BaseModel
 from pydantic import Field
 
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
 
 
 class GetUserPlaylistsRequestParams(BaseModel):
@@ -26,7 +26,7 @@ class GetUserPlaylistsRequestParams(BaseModel):
 class GetUserPlaylistsRequest(RequestModel[GetUserPlaylistsRequestParams, None]):
     """Request model for Get User's Playlists endpoint."""
 
-    required_scopes: set[Scope] = {Scope.PLAYLIST_READ_PRIVATE}
+    required_scopes: set[AuthScope] = {AuthScope.PLAYLIST_READ_PRIVATE}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.GET

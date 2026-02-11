@@ -13,9 +13,9 @@ from pydantic import Field
 from pydantic import PlainSerializer
 from pydantic import model_validator
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemID
 
 
 class TimestampTrackIDModel(BaseModel):
@@ -69,7 +69,7 @@ class SaveTracksForCurrentUserRequestBody(BaseModel):
 class SaveTracksForCurrentUserRequest(RequestModel[None, SaveTracksForCurrentUserRequestBody]):
     """Request model for Save Tracks For Current User endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_LIBRARY_MODIFY}
+    required_scopes: set[AuthScope] = {AuthScope.USER_LIBRARY_MODIFY}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

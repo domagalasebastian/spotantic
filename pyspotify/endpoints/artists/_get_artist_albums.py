@@ -2,14 +2,14 @@ from typing import Optional
 from typing import Sequence
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import AlbumTypes
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import APICallModel
 from pyspotify.models.artists.requests import GetArtistAlbumsRequest
 from pyspotify.models.spotify import PagedResultModel
 from pyspotify.models.spotify import SimplifiedAlbumModel
+from pyspotify.types import AlbumTypes
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
 
 
 async def get_artist_albums(

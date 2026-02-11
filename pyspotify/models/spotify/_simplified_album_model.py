@@ -8,10 +8,10 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import HttpUrl
 
-from pyspotify.custom_types import AlbumTypes
-from pyspotify.custom_types import SpotifyAlbumURI
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
+from pyspotify.types import AlbumTypes
+from pyspotify.types import SpotifyAlbumURI
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
 
 from ._image_model import ImageModel
 from ._simplified_artist_model import SimplifiedArtistModel

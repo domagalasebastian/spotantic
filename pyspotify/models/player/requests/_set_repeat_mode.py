@@ -6,9 +6,9 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import ConfigDict
 
-from pyspotify.custom_types import RepeatMode
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import RepeatMode
 
 
 class SetRepeatModeRequestParams(BaseModel):
@@ -26,7 +26,7 @@ class SetRepeatModeRequestParams(BaseModel):
 class SetRepeatModeRequest(RequestModel[SetRepeatModeRequestParams, None]):
     """Request model for Set Repeat Mode endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_MODIFY_PLAYBACK_STATE}
+    required_scopes: set[AuthScope] = {AuthScope.USER_MODIFY_PLAYBACK_STATE}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

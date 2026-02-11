@@ -4,8 +4,8 @@ from http import HTTPMethod
 
 from pydantic import BaseModel
 
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestModel
+from pyspotify.types import SpotifyItemID
 
 
 class CheckIfCurrentUserFollowsPlaylistRequestParams(BaseModel):

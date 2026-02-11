@@ -7,8 +7,8 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import Field
 
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
 
 
 class GetUserSavedShowsRequestParams(BaseModel):
@@ -24,7 +24,7 @@ class GetUserSavedShowsRequestParams(BaseModel):
 class GetUserSavedShowsRequest(RequestModel[GetUserSavedShowsRequestParams, None]):
     """Request model for Get User Saved Shows endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_LIBRARY_READ}
+    required_scopes: set[AuthScope] = {AuthScope.USER_LIBRARY_READ}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.GET

@@ -11,9 +11,9 @@ from pydantic import Field
 from pydantic import PlainSerializer
 
 from pyspotify._utils.models import sequence_to_comma_separated_str
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemID
 
 
 class SaveAlbumsForCurrentUserRequestParams(BaseModel):
@@ -32,7 +32,7 @@ class SaveAlbumsForCurrentUserRequestParams(BaseModel):
 class SaveAlbumsForCurrentUserRequest(RequestModel[SaveAlbumsForCurrentUserRequestParams, None]):
     """Request model for Save Albums For Current User endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_LIBRARY_MODIFY}
+    required_scopes: set[AuthScope] = {AuthScope.USER_LIBRARY_MODIFY}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

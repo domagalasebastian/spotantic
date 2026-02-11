@@ -1,5 +1,5 @@
 Playlists Endpoint Reference
-==========================
+============================
 
 Functions
 ---------

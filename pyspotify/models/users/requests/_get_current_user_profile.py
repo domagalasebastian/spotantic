@@ -3,14 +3,14 @@ from __future__ import annotations
 from http import HTTPMethod
 from typing import Optional
 
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
 
 
 class GetCurrentUserProfileRequest(RequestModel[None, None]):
     """Request model for Get Current User Profile endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_READ_EMAIL, Scope.USER_READ_PRIVATE}
+    required_scopes: set[AuthScope] = {AuthScope.USER_READ_EMAIL, AuthScope.USER_READ_PRIVATE}
     """Required authorization scopes for the request."""
 
     endpoint: Optional[str] = "me"

@@ -1,12 +1,12 @@
 from typing import Optional
 
 from pyspotify.client import PySpotifyClient
-from pyspotify.custom_types import APIResponse
-from pyspotify.custom_types import SpotifyItemID
-from pyspotify.custom_types import SpotifyMarketID
 from pyspotify.models import APICallModel
 from pyspotify.models.artists.requests import GetArtistTopTracksRequest
 from pyspotify.models.spotify import TrackModel
+from pyspotify.types import APIResponse
+from pyspotify.types import SpotifyItemID
+from pyspotify.types import SpotifyMarketID
 
 
 async def get_artist_top_tracks(

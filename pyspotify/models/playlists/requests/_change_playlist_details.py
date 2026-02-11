@@ -7,10 +7,10 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 
-from pyspotify.custom_types import Scope
-from pyspotify.custom_types import SpotifyItemID
 from pyspotify.models import RequestHeadersModel
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
+from pyspotify.types import SpotifyItemID
 
 
 class ChangePlaylistDetailsRequestParams(BaseModel):
@@ -41,7 +41,7 @@ class ChangePlaylistDetailsRequestBody(BaseModel):
 class ChangePlaylistDetailsRequest(RequestModel[ChangePlaylistDetailsRequestParams, ChangePlaylistDetailsRequestBody]):
     """Request model for Change Playlist Details endpoint."""
 
-    required_scopes: set[Scope] = {Scope.PLAYLIST_MODIFY_PRIVATE, Scope.PLAYLIST_MODIFY_PUBLIC}
+    required_scopes: set[AuthScope] = {AuthScope.PLAYLIST_MODIFY_PRIVATE, AuthScope.PLAYLIST_MODIFY_PUBLIC}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

@@ -5,8 +5,8 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from pyspotify.custom_types import Scope
 from pyspotify.models import RequestModel
+from pyspotify.types import AuthScope
 
 
 class SkipToPreviousRequestParams(BaseModel):
@@ -19,7 +19,7 @@ class SkipToPreviousRequestParams(BaseModel):
 class SkipToPreviousRequest(RequestModel[SkipToPreviousRequestParams, None]):
     """Request model for Skip To Previous endpoint."""
 
-    required_scopes: set[Scope] = {Scope.USER_MODIFY_PLAYBACK_STATE}
+    required_scopes: set[AuthScope] = {AuthScope.USER_MODIFY_PLAYBACK_STATE}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.POST

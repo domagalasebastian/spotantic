@@ -3,8 +3,8 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import HttpUrl
 
-from pyspotify.custom_types import SpotifyItemType
-from pyspotify.custom_types import SpotifyItemURI
+from pyspotify.types import SpotifyItemType
+from pyspotify.types import SpotifyItemURI
 
 from ._external_urls_model import ExternalUrlsModel
 
