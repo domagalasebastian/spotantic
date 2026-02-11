@@ -1,10 +1,10 @@
-from pyspotify._utils.auth.generate_state import generate_hashed_state
-from pyspotify._utils.auth.generate_state import generate_random_string
+from pyspotify._utils.auth import generate_pkce_code_verifier
+from pyspotify._utils.auth import get_pkce_code_challenge
+from pyspotify.models.auth import AccessTokenInfo
+from pyspotify.models.auth import AccessTokenRequestBody
+from pyspotify.models.auth import AuthCodeRequestParams
 
-from ._access_token_info import AccessTokenInfo
 from ._auth_manager_base import RefreshableAuthManager
-from ._auth_requests import get_access_token
-from ._auth_requests import get_code
 
 AUTH_CODE_PKCE_FLOW_GRANT_TYPE = "authorization_code"
 AUTH_CODE_PKCE_FLOW_RESPONSE_TYPE = "code"
@@ -13,64 +13,92 @@ REFRESH_AUTH_CODE_PKCE_FLOW_GRANT_TYPE = "refresh_token"
 
 
 class AuthCodePKCEFlowManager(RefreshableAuthManager):
+    """Manager for Spotify OAuth2 Authorization Code Flow with PKCE.
+
+    The Authorization Code Flow with PKCE (Proof Key for Code Exchange) is designed for
+    public clients such as mobile and single-page applications where the client secret
+    cannot be securely stored.
+
+    PKCE adds an extra layer of security by using dynamically generated code verifiers
+    and challenges instead of relying on a static client secret. For more information refer to:
+    `Authorization Code with PKCE Flow
+    <https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow>`_.
+    """
+
     async def authorize(self) -> AccessTokenInfo:
+        """Authorize using the Authorization Code Flow with PKCE.
+
+        Initiates the authorization process by:
+        1. Generating a code verifier and challenge
+        2. Redirecting the user to Spotify's authorization endpoint
+        3. Exchanging the authorization code for an access token
+
+        Returns:
+            Object containing the access token and its metadata.
+
+        Raises:
+            ValueError: If any required settings (`client_id`, `redirect_uri`, `scope`) are not set.
+        """
         self._logger.info("Starting Authorization Code PKCE Flow")
         self._logger.debug(f"Current auth settings: {self.auth_settings}")
-        assert self.auth_settings.client_id is not None, "Client ID must be set"
-        assert self.auth_settings.redirect_uri is not None, "Redirect URI must be set"
-        assert self.auth_settings.scope is not None, "Scope must be set"
+        if self.auth_settings.client_id is None:
+            raise ValueError("Client ID must be set for Authorization Code PKCE Flow")
 
-        state = generate_hashed_state(generate_random_string(64))
-        redirect_uri = str(self.auth_settings.redirect_uri)
+        if self.auth_settings.redirect_uri is None:
+            raise ValueError("Redirect URI must be set for Authorization Code PKCE Flow")
 
-        code_verifier = generate_random_string(64)
-        code_challenge = generate_hashed_state(code_verifier)
-        params = {
-            "client_id": self.auth_settings.client_id,
-            "response_type": AUTH_CODE_PKCE_FLOW_RESPONSE_TYPE,
-            "redirect_uri": redirect_uri,
-            "scope": self.auth_settings.scope,
-            "state": state,
-            "code_challenge_method": AUTH_CODE_PKCE_FLOW_CODE_CHALLENGE_METHOD,
-            "code_challenge": code_challenge,
-        }
-        self._logger.info(f"Receiving auth code. Website will be hosted at {redirect_uri}")
-        self._logger.debug(f"Hosting Web Server with URL params: {params}")
-        code = await get_code(redirect_uri=redirect_uri, params=params)
+        if self.auth_settings.scope is None:
+            raise ValueError("Scope must be set for Authorization Code PKCE Flow")
 
-        data = {
-            "grant_type": AUTH_CODE_PKCE_FLOW_GRANT_TYPE,
-            "code": code,
-            "redirect_uri": redirect_uri,
-            "client_id": self.auth_settings.client_id,
-            "code_verifier": code_verifier,
-        }
-        self._logger.info("Receiving access token from the server.")
-        self._logger.debug(f"Requesting access token with data: {data}")
-        token_info = await get_access_token(data=data)
+        code_verifier = generate_pkce_code_verifier(64)
+        code_challenge = get_pkce_code_challenge(code_verifier)
+        params = AuthCodeRequestParams(
+            client_id=self.auth_settings.client_id,
+            response_type=AUTH_CODE_PKCE_FLOW_RESPONSE_TYPE,
+            redirect_uri=self.auth_settings.redirect_uri,
+            scope=self.auth_settings.scope,
+            code_challenge_method=AUTH_CODE_PKCE_FLOW_CODE_CHALLENGE_METHOD,
+            code_challenge=code_challenge,
+        )
+        code = await self.get_auth_code(params)
 
-        if self.auth_settings.store_access_token:
-            self._logger.info(f"Saving access token to file: {self.auth_settings.access_token_file_path}")
-            token_info.store_token(file_path=self.auth_settings.access_token_file_path)
+        request_body = AccessTokenRequestBody(
+            grant_type=AUTH_CODE_PKCE_FLOW_GRANT_TYPE,
+            code=code,
+            redirect_uri=self.auth_settings.redirect_uri,
+            client_id=self.auth_settings.client_id,
+            code_verifier=code_verifier,
+        )
+        token_info = await self.get_access_token(request_body=request_body)
 
         return token_info
 
     async def refresh(self, refresh_token: str) -> AccessTokenInfo:
-        assert self.auth_settings.client_id is not None, "Client ID must be set"
+        """Refresh an expired access token.
+
+        Uses the stored refresh token to obtain a new access token without requiring
+        the user to re-authenticate.
+
+        Args:
+            refresh_token: The refresh token obtained during authorization.
+
+        Returns:
+            Object containing the new access token and its metadata.
+
+        Raises:
+            ValueError: If `client_id` is not set.
+        """
         self._logger.info("Refreshing access token with Authorization Code PKCE Flow")
         self._logger.debug(f"Current auth settings: {self.auth_settings}")
 
-        data = {
-            "grant_type": REFRESH_AUTH_CODE_PKCE_FLOW_GRANT_TYPE,
-            "refresh_token": refresh_token,
-            "client_id": self.auth_settings.client_id,
-        }
-        self._logger.info("Receiving access token from the server.")
-        self._logger.debug(f"Requesting access token with data: {data}")
-        token_info = await get_access_token(data=data)
+        if self.auth_settings.client_id is None:
+            raise ValueError("Client ID must be set for Authorization Code PKCE Flow")
 
-        if self.auth_settings.store_access_token:
-            self._logger.info(f"Saving access token to file: {self.auth_settings.access_token_file_path}")
-            token_info.store_token(file_path=self.auth_settings.access_token_file_path)
+        request_body = AccessTokenRequestBody(
+            grant_type=REFRESH_AUTH_CODE_PKCE_FLOW_GRANT_TYPE,
+            refresh_token=refresh_token,
+            client_id=self.auth_settings.client_id,
+        )
+        token_info = await self.get_access_token(request_body=request_body)
 
         return token_info

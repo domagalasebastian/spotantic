@@ -1,8 +1,8 @@
 import asyncio
 
 from pyspotify.auth import AuthCodeFlowManager
-from pyspotify.auth import AuthSettings
 from pyspotify.client import PySpotifyClient
+from pyspotify.models.auth import AuthSettings
 
 
 async def create_pyspotify_client() -> PySpotifyClient:
