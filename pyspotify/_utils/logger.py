@@ -15,6 +15,11 @@ logging.basicConfig(
 
 
 class ColorFormatter(logging.Formatter):
+    """Console formatter that wraps log messages with ANSI color codes.
+
+    Colors are chosen per log level to improve readability in terminals.
+    """
+
     __RESET = "\033[0m"
     __LEVEL_COLORS = {
         logging.DEBUG: "\033[94m",
@@ -25,6 +30,14 @@ class ColorFormatter(logging.Formatter):
     }
 
     def format(self, record: logging.LogRecord) -> str:
+        """Format a LogRecord and wrap it in ANSI color sequences.
+
+        Args:
+            record: the LogRecord to format.
+
+        Returns:
+            The formatted log message string with ANSI color codes.
+        """
         msg = super().format(record)
         color = self.__LEVEL_COLORS.get(record.levelno)
 
@@ -32,6 +45,19 @@ class ColorFormatter(logging.Formatter):
 
 
 def setup_root_logger() -> logging.Logger:
+    """Configure and return the package root logger.
+
+    The function creates a timestamped directory under the current working
+    directory's ``logs`` folder and adds three handlers to the root logger:
+    a colored console handler (INFO), a session file handler (INFO), and a
+    debug file handler (DEBUG).
+
+    Args:
+        None.
+
+    Returns:
+        The configured ``logging.Logger`` instance for the package.
+    """
     root_logger = logging.getLogger(ROOT_LOGGER_NAME)
     root_logger.setLevel(logging.DEBUG)
     root_logger.propagate = False
