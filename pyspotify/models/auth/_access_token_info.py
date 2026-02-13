@@ -33,9 +33,9 @@ class AccessTokenInfo(BaseModel):
     """Datetime object informing when the token expires."""
 
     def model_post_init(self, context: Any, /) -> None:
-        """Sets `expires_at` attribute with an assumption it is a new access token.
+        """Set `expires_at` when not provided, assuming this is a new access token.
 
-        Args
+        Args:
             context: Model context.
 
         Returns:
@@ -72,3 +72,17 @@ class AccessTokenInfo(BaseModel):
             json_data = fd.read()
 
         return cls.model_validate_json(json_data=json_data)
+
+    def is_expired(self) -> bool:
+        """Checks if the token is expired.
+
+        Returns:
+            ``True`` if the token is expired, ``False`` otherwise.
+
+        Raises:
+            ValueError: If ``expires_at`` is not set.
+        """
+        if self.expires_at is None:
+            raise ValueError("Token 'expires_at' is not set; cannot determine expiration.")
+
+        return datetime.now() >= self.expires_at

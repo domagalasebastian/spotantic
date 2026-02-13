@@ -1,6 +1,5 @@
 from aiohttp import BasicAuth
 
-from pyspotify.models.auth import AccessTokenInfo
 from pyspotify.models.auth import AccessTokenRequestBody
 from pyspotify.models.auth import AuthCodeRequestParams
 
@@ -22,7 +21,7 @@ class AuthCodeFlowManager(RefreshableAuthManager):
     `Authorization Code Flow <https://developer.spotify.com/documentation/web-api/tutorials/code-flow>`_.
     """
 
-    async def authorize(self) -> AccessTokenInfo:
+    async def authorize(self) -> None:
         """Authorize using the Authorization Code Flow.
 
         Initiates the authorization process by redirecting the user to Spotify's authorization
@@ -30,71 +29,70 @@ class AuthCodeFlowManager(RefreshableAuthManager):
         access token and refresh token.
 
         Returns:
-            Object containing the access token, refresh token, and metadata.
+            None
 
         Raises:
             ValueError: If any required settings (`client_id`, `client_secret`, `redirect_uri`, `scope`) are not set.
         """
         self._logger.info("Starting Authorization Code Flow")
-        self._logger.debug(f"Current auth settings: {self.auth_settings}")
+        self._logger.debug(f"Current auth settings: {self._auth_settings}")
 
-        if self.auth_settings.client_id is None:
+        if self._auth_settings.client_id is None:
             raise ValueError("Client ID must be set for Authorization Code Flow")
 
-        if self.auth_settings.client_secret is None:
+        if self._auth_settings.client_secret is None:
             raise ValueError("Client Secret must be set for Authorization Code Flow")
 
-        if self.auth_settings.redirect_uri is None:
+        if self._auth_settings.redirect_uri is None:
             raise ValueError("Redirect URI must be set for Authorization Code Flow")
 
-        if self.auth_settings.scope is None:
+        if self._auth_settings.scope is None:
             raise ValueError("Scope must be set for Authorization Code Flow")
 
         params = AuthCodeRequestParams(
-            client_id=self.auth_settings.client_id,
+            client_id=self._auth_settings.client_id,
             response_type=AUTH_CODE_FLOW_RESPONSE_TYPE,
-            redirect_uri=self.auth_settings.redirect_uri,
-            scope=self.auth_settings.scope,
+            redirect_uri=self._auth_settings.redirect_uri,
+            scope=self._auth_settings.scope,
         )
-        code = await self.get_auth_code(params)
+        code = await self._get_auth_code(params)
 
         request_body = AccessTokenRequestBody(
             grant_type=AUTH_CODE_FLOW_GRANT_TYPE,
             code=code,
-            redirect_uri=self.auth_settings.redirect_uri,
+            redirect_uri=self._auth_settings.redirect_uri,
         )
-        auth_header = BasicAuth(self.auth_settings.client_id, self.auth_settings.client_secret.get_secret_value())
-        token_info = await self.get_access_token(request_body=request_body, auth=auth_header)
+        auth_header = BasicAuth(self._auth_settings.client_id, self._auth_settings.client_secret.get_secret_value())
+        self._access_token_info = await self._get_access_token(request_body=request_body, auth=auth_header)
 
-        return token_info
-
-    async def refresh(self, refresh_token: str) -> AccessTokenInfo:
+    async def refresh(self) -> None:
         """Refresh an expired access token.
 
         Uses the stored refresh token to obtain a new access token without requiring the user to re-authenticate.
 
-        Args:
-            refresh_token: The refresh token obtained during authorization.
-
         Returns:
-            Object containing the new access token and its metadata.
+            None
 
         Raises:
-            ValueError: If `client_id` or `client_secret` is not set.
+            ValueError: If `client_id` or `client_secret` is not set or an access token data is not set.
         """
         self._logger.info("Refreshing access token with Authorization Code Flow")
-        self._logger.debug(f"Current auth settings: {self.auth_settings}")
-        if self.auth_settings.client_id is None:
+        self._logger.debug(f"Current auth settings: {self._auth_settings}")
+        if self._auth_settings.client_id is None:
             raise ValueError("Client ID must be set for Authorization Code Flow")
 
-        if self.auth_settings.client_secret is None:
+        if self._auth_settings.client_secret is None:
             raise ValueError("Client Secret must be set for Authorization Code Flow")
+
+        if self._access_token_info is None:
+            raise ValueError("Access Token data is unknown!")
+
+        if self._access_token_info.refresh_token is None:
+            raise ValueError("Refresh token is unknown!")
 
         request_body = AccessTokenRequestBody(
             grant_type=REFRESH_AUTH_CODE_FLOW_GRANT_TYPE,
-            refresh_token=refresh_token,
+            refresh_token=self._access_token_info.refresh_token,
         )
-        auth_header = BasicAuth(self.auth_settings.client_id, self.auth_settings.client_secret.get_secret_value())
-        token_info = await self.get_access_token(request_body=request_body, auth=auth_header)
-
-        return token_info
+        auth_header = BasicAuth(self._auth_settings.client_id, self._auth_settings.client_secret.get_secret_value())
+        self._access_token_info = await self._get_access_token(request_body=request_body, auth=auth_header)
