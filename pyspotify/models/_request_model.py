@@ -38,19 +38,26 @@ class EntityHeadersModel(BaseModel):
 
 
 class RequestHeadersModel(EntityHeadersModel):
-    """Model representing HTTP headers."""
+    """Model representing HTTP request headers.
+
+    Inherits common entity headers and can be extended with additional request-specific headers.
+    """
 
     pass
 
 
 class RequestModel[ParamsModelT, BodyModelT](BaseModel):
-    """Model representing the API request."""
+    """Model representing a complete Spotify API request.
+
+    Encapsulates all information needed to make an HTTP request to the Spotify API:
+    the endpoint URL, HTTP method, headers, query parameters, and request body.
+    """
 
     required_scopes: set[AuthScope] = Field(default_factory=set)
     """Required authorization scopes for the request."""
 
     url: Optional[HttpUrl] = None
-    """Request URL. If specfied, the `endpoint` value is ignored."""
+    """Request URL. If specified, the `endpoint` value is ignored."""
 
     endpoint: Optional[str] = None
     """Endpoint associated with the request."""
@@ -84,12 +91,15 @@ class RequestModel[ParamsModelT, BodyModelT](BaseModel):
         """
         if self.url is not None:
             if not str(self.url).startswith(str(API_BASE_URL)):
-                raise ValueError(f"`url` must start with API base URL: {API_BASE_URL}")
+                raise ValueError(f"URL must start with Spotify API base URL ({API_BASE_URL}); got {self.url}")
 
             return self
 
         if self.endpoint is None:
-            raise ValueError("Either 'url' or 'endpoint' must be provided!")
+            raise ValueError(
+                "Either 'url' or 'endpoint' must be provided. Use 'endpoint' for standard Spotify API calls "
+                "or 'url' for custom URLs (must start with API base URL)."
+            )
 
         self.url = HttpUrl(str(API_BASE_URL / self.endpoint))
 

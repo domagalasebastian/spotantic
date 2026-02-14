@@ -75,10 +75,12 @@ class AuthManagerBase(ABC):
             A valid access token object.
 
         Raises:
-            ValueError: If the access token has never been obtained.
+            ValueError: If the access token has never been obtained. Call authorize() first.
         """
         if self._access_token_info is None:
-            raise ValueError("Access token data is unknown!")
+            raise ValueError(
+                "No access token available. Call authorize() first to obtain a token through the OAuth2 flow."
+            )
 
         return self._access_token_info
 
@@ -104,14 +106,27 @@ class AuthManagerBase(ABC):
         params_dict["state"] = state
         redirect_uri = str(params.redirect_uri)
 
-        self._logger.info(f"Waiting for authorization code at: {redirect_uri}")
-        self._logger.debug(f"Authorization redirect URI: {redirect_uri}")
+        self._logger.info(f"Opening browser for authorization. Listening for callback at {redirect_uri}")
 
         async def callback(request) -> web.Response:
+            """Handle the OAuth2 authorization callback from Spotify.
+
+            This callback is called when the user grants permission and Spotify redirects
+            back to the local server with the authorization code and state parameter.
+
+            Args:
+                request: The incoming request containing code and state query parameters.
+
+            Returns:
+                A simple OK response to display in the user's browser.
+
+            Raises:
+                Exception: If the state parameter doesn't match (security validation).
+            """
             nonlocal code
             r_state = request.query.get("state")
             if r_state != state:
-                raise Exception("State mismatch in OAuth callback response.")
+                raise Exception(f"State mismatch in OAuth callback: expected {state}, got {r_state}")
 
             code = request.query.get("code")
             return web.Response(text="OK")
@@ -159,8 +174,8 @@ class AuthManagerBase(ABC):
         Raises:
             Exception: If the token request returns a non-200 status code.
         """
-        self._logger.info("Receiving access token from the server.")
-        self._logger.debug(f"Requesting access token with data: {request_body}")
+        self._logger.info(f"Requesting access token from Spotify token endpoint using {request_body.grant_type} flow")
+        self._logger.debug(f"Token request parameters: {request_body}")
 
         headers = {
             "Content-Type": ACCESS_TOKEN_REQUEST_CONTENT_TYPE,
@@ -229,21 +244,30 @@ class RefreshableAuthManager(AuthManagerBase, ABC):
             ValueError: If the access token has never been obtained.
         """
         if self._access_token_info is None:
-            raise ValueError("Access token data is unknown!")
+            raise ValueError(
+                "No access token available. Call authorize() first to obtain a token through the OAuth2 flow."
+            )
 
         if self._access_token_info.is_expired():
             if self._allow_lazy_refresh:
                 await self._atomic_refresh()
             else:
-                self._logger.warning("The token has expired! It is no longer valid!")
+                self._logger.warning(
+                    "Access token has expired. Call authorize() to refresh the token or enable "
+                    "allow_lazy_refresh=True for automatic refresh."
+                )
 
         return self._access_token_info
 
     async def _atomic_refresh(self) -> None:
-        """Ensure that the refresh task is run only once at a time.
+        """Atomically refresh the access token, preventing concurrent refresh attempts.
 
-        Returns:
-            None
+        Uses a lock and event to ensure that only one refresh happens at a time across
+        concurrent callers. If a refresh is already in progress, other tasks wait for it
+        to complete rather than initiating a new refresh.
+
+        This prevents redundant token refresh requests to the Spotify server when multiple
+        concurrent API calls detect an expired token.
         """
         if self._lock.locked() and self._refresh_event is not None:
             self._logger.debug("Token refresh is already in progress!")

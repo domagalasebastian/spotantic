@@ -29,6 +29,6 @@ async def unfollow_artists_or_users(
         item_type=item_type,
         item_ids=item_ids,
     )
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

@@ -24,6 +24,6 @@ async def unfollow_playlist(
     request = UnfollowPlaylistRequest.build(
         playlist_id=playlist_id,
     )
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

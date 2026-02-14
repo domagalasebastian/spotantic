@@ -28,6 +28,6 @@ async def follow_playlist(
         playlist_id=playlist_id,
         public=public,
     )
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

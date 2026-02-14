@@ -34,6 +34,6 @@ async def add_custom_playlist_cover_image(
         image_data=image_data,
         file_path=file_path,
     )
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

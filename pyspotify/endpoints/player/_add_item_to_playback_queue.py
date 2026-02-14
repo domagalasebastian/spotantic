@@ -28,6 +28,6 @@ async def add_item_to_playback_queue(
         An object containing the request used to obtain the response and the response.
     """
     request = AddItemToPlaybackQueueRequest.build(uri=uri, device_id=device_id)
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)
