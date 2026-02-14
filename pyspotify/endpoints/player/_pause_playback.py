@@ -23,6 +23,6 @@ async def pause_playback(
         An object containing the request used to obtain the response and the response.
     """
     request = PausePlaybackRequest.build(device_id=device_id)
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

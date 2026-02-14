@@ -23,6 +23,6 @@ async def save_albums_for_current_user(
     request = SaveAlbumsForCurrentUserRequest.build(
         album_ids=album_ids,
     )
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

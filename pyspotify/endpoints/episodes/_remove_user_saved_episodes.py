@@ -24,6 +24,6 @@ async def remove_user_saved_episodes(
     request = RemoveUserSavedEpisodesRequest.build(
         episode_ids=episode_ids,
     )
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

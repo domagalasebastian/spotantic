@@ -25,6 +25,6 @@ async def skip_to_previous(
     request = SkipToPreviousRequest.build(
         device_id=device_id,
     )
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

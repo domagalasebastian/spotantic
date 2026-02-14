@@ -25,6 +25,6 @@ async def remove_user_saved_shows(
         An object containing the request used to obtain the response and the response.
     """
     request = RemoveUserSavedShowsRequest.build(show_ids=show_ids, market=market)
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

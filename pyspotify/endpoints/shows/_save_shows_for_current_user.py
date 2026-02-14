@@ -22,6 +22,6 @@ async def save_shows_for_current_user(
         An object containing the request used to obtain the response and the response.
     """
     request = SaveShowsForCurrentUserRequest.build(show_ids=show_ids)
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)

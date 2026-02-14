@@ -49,6 +49,6 @@ async def start_resume_playback(
         position_ms=position_ms,
     )
 
-    response = await client.request(request, empty_response=True)
+    response = await client.request(request)
 
     return APICallModel(request=request, response=response, data=None)
