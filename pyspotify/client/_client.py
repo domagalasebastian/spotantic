@@ -6,7 +6,6 @@ from collections.abc import Callable
 from functools import wraps
 from http import HTTPStatus
 from typing import Concatenate
-from typing import Literal
 from typing import ParamSpec
 
 from aiohttp.client import ClientResponse
@@ -24,8 +23,6 @@ from pyspotify.types.exceptions import PySpotifyInsufficientScopeError
 from pyspotify.types.exceptions import PySpotifyResponseError
 from pyspotify.types.exceptions import PySpotifyTooManyRequests
 from pyspotify.types.exceptions import PySpotifyUnauthorizedError
-
-__all__ = ["PySpotifyClient"]
 
 P = ParamSpec("P")
 
@@ -49,7 +46,7 @@ def retry_on_failure_decorator(
 
     @wraps(func)
     async def wrapper(client: PySpotifyClient, *args: P.args, **kwargs: P.kwargs) -> APIResponse:
-        for attempt in range(1, client.max_attempts + 1):
+        for attempt in range(2, client.max_attempts + 1):
             try:
                 return await func(client, *args, **kwargs)
             except (PySpotifyUnauthorizedError, PySpotifyTooManyRequests) as e:
@@ -58,8 +55,8 @@ def retry_on_failure_decorator(
                     raise
 
                 wait_time = delay * (backoff ** (attempt - 1))
-                client._logger.info(
-                    f"Request failed due to {e.__class__.__name__}; retrying in {wait_time:.1f}s (attempt {attempt}/{client.max_attempts})"
+                client._logger.warning(
+                    f"Request failed due to {e.__class__.__name__}; retrying in {wait_time:.1f}s (attempt {attempt + 1}/{client.max_attempts})"
                 )
                 await sleep(wait_time)
 
@@ -116,23 +113,6 @@ class PySpotifyClient:
         self.__max_attempts = value
 
     @staticmethod
-    def __get_authorization_header(access_token_info: AccessTokenInfo) -> dict[Literal["Authorization"], str]:
-        """Return the `Authorization` header using the current valid access token.
-
-        The header value is constructed as "{token_type} {access_token}".
-
-        Args:
-            access_token_info: Current valid access token.
-
-        Returns:
-            Authorization header for API calls.
-
-        Raises:
-            ValueError: If no access token is available.
-        """
-        return {"Authorization": f"{access_token_info.token_type} {access_token_info.access_token}"}
-
-    @staticmethod
     def __get_missing_scopes(request: RequestModel, access_token_info: AccessTokenInfo) -> set[AuthScope]:
         """Determine which required scopes are missing from the access token.
 
@@ -168,7 +148,7 @@ class PySpotifyClient:
             if missing_scopes := self.__get_missing_scopes(request, access_token_info):
                 raise PySpotifyInsufficientScopeError(missing_scopes=missing_scopes)
 
-        auth_header = self.__get_authorization_header(access_token_info=access_token_info)
+        auth_header = access_token_info.get_authorization_header()
 
         method = request.method_type
         url = str(request.url)
@@ -217,7 +197,7 @@ class PySpotifyClient:
 
         status = HTTPStatus(response.status)
         payload = await response.json()
-        err_info = ErrorResponseModel(**payload)
+        err_info = ErrorResponseModel(**payload.get("error"))
         if status == HTTPStatus.UNAUTHORIZED:
             raise PySpotifyUnauthorizedError(error_response=err_info)
         elif status == HTTPStatus.TOO_MANY_REQUESTS:

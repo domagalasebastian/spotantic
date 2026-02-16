@@ -22,6 +22,7 @@ Features
 
    api_reference
    auth_reference
+   client_reference
    pyspotify_models
    spotify_models
    types_reference
