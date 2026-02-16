@@ -1,12 +1,45 @@
 from aiohttp.http import HttpProcessingError
 
 from pyspotify.models import ErrorResponseModel
+from pyspotify.types._spotify_types import AuthScope
 
 
 class PySpotifyException(Exception):
     """Base exception for all custom exceptions raised in the PySpotify package."""
 
     pass
+
+
+class PySpotifyInsufficientScopeError(PySpotifyException):
+    """Exception raised when the access token lacks required scopes for a request.
+
+    This exception is raised when scope validation is enabled on the client and
+    a request requires scopes that are not granted in the current access token.
+    """
+
+    def __init__(self, missing_scopes: set[AuthScope]) -> None:
+        """Initialize the insufficient scope error.
+
+        Args:
+            missing_scopes: Set of scopes that are required but not available.
+        """
+        self.missing_scopes = missing_scopes
+
+    def __str__(self) -> str:
+        """Return a human-readable string representation of the missing scopes.
+
+        Returns:
+            String in format "Missing scopes: scope1,scope2,..."
+        """
+        return f"Missing scopes: {','.join(self.missing_scopes)}"
+
+    def __repr__(self) -> str:
+        """Return a developer-friendly representation of the exception.
+
+        Returns:
+            String representation with class name and missing scopes.
+        """
+        return f"<{self.__class__.__name__}: Missing scopes={self.missing_scopes!r}>"
 
 
 class PySpotifyResponseError(HttpProcessingError, PySpotifyException):

@@ -17,10 +17,15 @@ from pyspotify._utils.logger import logger
 from pyspotify.auth._auth_manager_base import AuthManagerBase
 from pyspotify.models import ErrorResponseModel
 from pyspotify.models import RequestModel
+from pyspotify.models.auth import AccessTokenInfo
 from pyspotify.types import APIResponse
+from pyspotify.types import AuthScope
+from pyspotify.types.exceptions import PySpotifyInsufficientScopeError
 from pyspotify.types.exceptions import PySpotifyResponseError
 from pyspotify.types.exceptions import PySpotifyTooManyRequests
 from pyspotify.types.exceptions import PySpotifyUnauthorizedError
+
+__all__ = ["PySpotifyClient"]
 
 P = ParamSpec("P")
 
@@ -62,12 +67,23 @@ def retry_on_failure_decorator(
 
 
 class PySpotifyClient:
-    def __init__(self, auth_manager: AuthManagerBase, *, max_attempts: int = 1) -> None:
+    """Client for interacting with the Spotify Web API.
+
+    This client handles HTTP requests to the Spotify API, including authentication,
+    scope validation, and automatic retry logic with exponential backoff for
+    transient failures (authorization and rate limit errors).
+    """
+
+    def __init__(
+        self, auth_manager: AuthManagerBase, *, max_attempts: int = 1, check_insufficient_scope: bool = True
+    ) -> None:
         """Initialize the PySpotify client.
 
         Args:
             auth_manager: Authentication manager responsible for OAuth2 flow and token lifecycle management.
             max_attempts: Maximum number of retry attempts for failed requests (default: 1, no retries).
+            check_insufficient_scope: Whether to check and raise an error if the access token lacks required scopes
+                (default: True).
 
         Raises:
             ValueError: If max_attempts is less than 1.
@@ -78,6 +94,7 @@ class PySpotifyClient:
         self._logger = logger.getChild("client")
         self.__auth_manager = auth_manager
         self.__max_attempts = max_attempts
+        self.__check_insufficient_scope = check_insufficient_scope
 
     @property
     def max_attempts(self) -> int:
@@ -98,16 +115,41 @@ class PySpotifyClient:
 
         self.__max_attempts = value
 
-    async def _get_authorization_header(self) -> dict[Literal["Authorization"], str]:
+    @staticmethod
+    def __get_authorization_header(access_token_info: AccessTokenInfo) -> dict[Literal["Authorization"], str]:
         """Return the `Authorization` header using the current valid access token.
 
         The header value is constructed as "{token_type} {access_token}".
 
+        Args:
+            access_token_info: Current valid access token.
+
+        Returns:
+            Authorization header for API calls.
+
         Raises:
             ValueError: If no access token is available.
         """
-        access_token_info = await self.__auth_manager.get_valid_access_token()
         return {"Authorization": f"{access_token_info.token_type} {access_token_info.access_token}"}
+
+    @staticmethod
+    def __get_missing_scopes(request: RequestModel, access_token_info: AccessTokenInfo) -> set[AuthScope]:
+        """Determine which required scopes are missing from the access token.
+
+        Args:
+            request: The request model containing required scopes.
+            access_token_info: The current access token info with granted scopes.
+
+        Returns:
+            Set of scopes required by the request but not present in the access token.
+        """
+        required_scopes = request.required_scopes
+        if access_token_info.scope is None:
+            return required_scopes
+
+        client_scopes = {AuthScope(scope) for scope in access_token_info.scope.split(" ")}
+
+        return required_scopes - client_scopes
 
     @retry_on_failure_decorator
     async def request(self, request: RequestModel) -> APIResponse:
@@ -119,10 +161,14 @@ class PySpotifyClient:
         Returns:
             Parsed API response or `None` for empty or unparsable responses.
         """
-
         self._logger.debug(f"Request: {request}")
+        access_token_info = await self.__auth_manager.get_valid_access_token()
 
-        auth_header = await self._get_authorization_header()
+        if self.__check_insufficient_scope:
+            if missing_scopes := self.__get_missing_scopes(request, access_token_info):
+                raise PySpotifyInsufficientScopeError(missing_scopes=missing_scopes)
+
+        auth_header = self.__get_authorization_header(access_token_info=access_token_info)
 
         method = request.method_type
         url = str(request.url)
@@ -160,9 +206,6 @@ class PySpotifyClient:
 
         Args:
             response: A response from the server.
-
-        Returns:
-            None
 
         Raises:
             PySpotifyUnauthorizedError: In case of bad or expired token.
