@@ -217,7 +217,6 @@ class RefreshableAuthManager(AuthManagerBase, ABC):
             allow_lazy_refresh: If set, the expired token will be refreshed automatically before returning it.
         """
         self._lock = asyncio.Lock()
-        self._refresh_event = None
         self._allow_lazy_refresh = allow_lazy_refresh
         super(RefreshableAuthManager, self).__init__(auth_settings=auth_settings, access_token_info=access_token_info)
 
@@ -250,7 +249,12 @@ class RefreshableAuthManager(AuthManagerBase, ABC):
 
         if self._access_token_info.is_expired():
             if self._allow_lazy_refresh:
-                await self._atomic_refresh()
+                # Atomically refresh the access token, preventing concurrent refresh attempts.
+                async with self._lock:
+                    if not self._access_token_info.is_expired():
+                        return self._access_token_info
+
+                    await self.refresh()
             else:
                 self._logger.warning(
                     "Access token has expired. Call authorize() to refresh the token or enable "
@@ -258,24 +262,3 @@ class RefreshableAuthManager(AuthManagerBase, ABC):
                 )
 
         return self._access_token_info
-
-    async def _atomic_refresh(self) -> None:
-        """Atomically refresh the access token, preventing concurrent refresh attempts.
-
-        Uses a lock and event to ensure that only one refresh happens at a time across
-        concurrent callers. If a refresh is already in progress, other tasks wait for it
-        to complete rather than initiating a new refresh.
-
-        This prevents redundant token refresh requests to the Spotify server when multiple
-        concurrent API calls detect an expired token.
-        """
-        if self._lock.locked() and self._refresh_event is not None:
-            self._logger.debug("Token refresh is already in progress!")
-            await self._refresh_event.wait()
-            return
-
-        async with self._lock:
-            self._refresh_event = asyncio.Event()
-            await self.refresh()
-            self._refresh_event.set()
-            self._refresh_event = None
