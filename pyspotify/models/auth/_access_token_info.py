@@ -86,3 +86,13 @@ class AccessTokenInfo(BaseModel):
             raise ValueError("Token 'expires_at' is not set; cannot determine expiration.")
 
         return datetime.now() >= self.expires_at
+
+    def get_authorization_header(self) -> dict[Literal["Authorization"], str]:
+        """Return the `Authorization` header.
+
+        The header value is constructed as "{token_type} {access_token}".
+
+        Returns:
+            Authorization header for API calls.
+        """
+        return {"Authorization": f"{self.token_type} {self.access_token}"}
