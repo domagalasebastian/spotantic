@@ -1,4 +1,3 @@
-from . import submodels
 from ._album_model import AlbumModel
 from ._artist_model import ArtistModel
 from ._category_model import CategoryModel
@@ -57,5 +56,4 @@ __all__ = [
     "SimplifiedTrackModel",
     "TrackModel",
     "UserModel",
-    "submodels",
 ]
