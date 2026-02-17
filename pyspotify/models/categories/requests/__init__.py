@@ -4,8 +4,8 @@ from ._get_single_browse_category import GetSingleBrowseCategoryRequest
 from ._get_single_browse_category import GetSingleBrowseCategoryRequestParams
 
 __all__ = [
-    "GetSeveralBrowseCategoriesRequestParams",
     "GetSeveralBrowseCategoriesRequest",
-    "GetSingleBrowseCategoryRequestParams",
+    "GetSeveralBrowseCategoriesRequestParams",
     "GetSingleBrowseCategoryRequest",
+    "GetSingleBrowseCategoryRequestParams",
 ]

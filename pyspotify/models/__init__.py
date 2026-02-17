@@ -6,8 +6,8 @@ from pyspotify.models._request_model import RequestModel
 
 __all__ = [
     "APICallModel",
-    "ErrorResponseModel",
     "EntityHeadersModel",
+    "ErrorResponseModel",
     "RequestHeadersModel",
     "RequestModel",
 ]

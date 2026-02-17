@@ -113,8 +113,8 @@ type SpotifyUserURI = Annotated[
 __all__ = [
     "APIResponse",
     "AlbumTypes",
-    "RepeatMode",
     "AuthScope",
+    "RepeatMode",
     "SpotifyAlbumURI",
     "SpotifyArtistURI",
     "SpotifyEpisodeURI",
