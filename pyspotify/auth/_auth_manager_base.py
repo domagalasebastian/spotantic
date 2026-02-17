@@ -1,7 +1,9 @@
 import asyncio
+import time
 import webbrowser
 from abc import ABC
 from abc import abstractmethod
+from http import HTTPStatus
 from typing import Optional
 from urllib.parse import urlencode
 from urllib.parse import urlparse
@@ -16,10 +18,14 @@ from pyspotify.models.auth import AccessTokenInfo
 from pyspotify.models.auth import AccessTokenRequestBody
 from pyspotify.models.auth import AuthCodeRequestParams
 from pyspotify.models.auth import AuthSettings
+from pyspotify.types.exceptions import PySpotifyAuthAccessTokenRequestError
+from pyspotify.types.exceptions import PySpotifyAuthCodeRequestError
+from pyspotify.types.exceptions import PySpotifyAuthSecurityError
 
 AUTH_URL = "https://accounts.spotify.com/authorize"
 TOKEN_URL = "https://accounts.spotify.com/api/token"
 ACCESS_TOKEN_REQUEST_CONTENT_TYPE = "application/x-www-form-urlencoded"
+AUTH_CODE_REQUEST_TIMEOUT_SECS = 60
 
 
 class AuthManagerBase(ABC):
@@ -89,7 +95,8 @@ class AuthManagerBase(ABC):
 
         Starts a local HTTP server to receive the callback with the authorization code,
         opens the user's browser to the Spotify authorization endpoint, and waits for
-        the user to grant permission.
+        the user to grant permission. Includes CSRF protection via state parameter validation
+        and enforces a timeout to prevent indefinite waiting.
 
         Args:
             params: Parameters for the authorization request.
@@ -98,9 +105,13 @@ class AuthManagerBase(ABC):
             The authorization code provided by Spotify.
 
         Raises:
-            Exception: If the state validation fails or if the server setup fails.
+            PySpotifyAuthSecurityError: If the state parameter doesn't match (CSRF validation failed).
+            PySpotifyAuthCodeRequestError: If the authorization request fails (user denied or error from Spotify).
+            TimeoutError: If the authorization code is not received within the timeout period.
         """
         code = None
+        auth_code_request_exc = None
+
         state = generate_url_safe_token(32)
         params_dict = params.model_dump(mode="json", exclude_none=True)
         params_dict["state"] = state
@@ -108,28 +119,39 @@ class AuthManagerBase(ABC):
 
         self._logger.info(f"Opening browser for authorization. Listening for callback at {redirect_uri}")
 
-        async def callback(request) -> web.Response:
+        async def callback(request: web.Request) -> web.Response:
             """Handle the OAuth2 authorization callback from Spotify.
 
             This callback is called when the user grants permission and Spotify redirects
             back to the local server with the authorization code and state parameter.
+            Validates the state parameter for CSRF protection and checks for authorization errors.
 
             Args:
                 request: The incoming request containing code and state query parameters.
 
             Returns:
-                A simple OK response to display in the user's browser.
-
-            Raises:
-                Exception: If the state parameter doesn't match (security validation).
+                A Response with status and message indicating the result of the callback.
+                Status codes: 200 (OK) for success, 412 (Precondition Failed) for state mismatch,
+                401 (Unauthorized) for authorization failure.
             """
-            nonlocal code
+            nonlocal code, auth_code_request_exc
             r_state = request.query.get("state")
-            if r_state != state:
-                raise Exception(f"State mismatch in OAuth callback: expected {state}, got {r_state}")
+            code = request.query.get("code", None)
 
-            code = request.query.get("code")
-            return web.Response(text="OK")
+            if r_state != state:
+                text = f"State mismatch in OAuth callback! Expected {state}, got {r_state}"
+                status = HTTPStatus.PRECONDITION_FAILED
+                auth_code_request_exc = PySpotifyAuthSecurityError(text)
+            elif code is None:
+                err = request.query.get("error", None) or "Reason unknown"
+                text = f"Authorization Code Request failed! Server response: {err}"
+                status = HTTPStatus.UNAUTHORIZED
+                auth_code_request_exc = PySpotifyAuthCodeRequestError(text)
+            else:
+                text = "Authorization Code Request completed successfully. You can close this tab now."
+                status = HTTPStatus.OK
+
+            return web.Response(text=text, status=status)
 
         target_url = f"{AUTH_URL}?{urlencode(params_dict)}"
         server_address_parsed = urlparse(redirect_uri)
@@ -146,8 +168,20 @@ class AuthManagerBase(ABC):
         else:
             webbrowser.open(target_url)
 
-            while code is None:
+            timeout = time.time() + AUTH_CODE_REQUEST_TIMEOUT_SECS
+            while time.time() < timeout:
+                if auth_code_request_exc is not None:
+                    raise auth_code_request_exc
+
+                if code is not None:
+                    break
+
                 await asyncio.sleep(1)
+            else:
+                raise TimeoutError(
+                    f"Authorization Code Request was not completed within {AUTH_CODE_REQUEST_TIMEOUT_SECS} seconds"
+                )
+
         finally:
             await runner.cleanup()
 
@@ -162,7 +196,8 @@ class AuthManagerBase(ABC):
         """Request an access token from Spotify's token server.
 
         Sends a POST request to Spotify's token endpoint with the provided data
-        and optional authentication header.
+        and optional authentication header. If configured, stores the obtained token
+        to the file system for later retrieval.
 
         Args:
             request_body: The request body containing grant type and flow-specific parameters.
@@ -172,7 +207,7 @@ class AuthManagerBase(ABC):
             Object containing the access token and its metadata.
 
         Raises:
-            Exception: If the token request returns a non-200 status code.
+            PySpotifyAuthAccessTokenRequestError: If the token request returns a non-200 status code.
         """
         self._logger.info(f"Requesting access token from Spotify token endpoint using {request_body.grant_type} flow")
         self._logger.debug(f"Token request parameters: {request_body}")
@@ -183,11 +218,15 @@ class AuthManagerBase(ABC):
         data = request_body.model_dump(mode="json", exclude_none=True)
         async with ClientSession() as session:
             async with session.post(TOKEN_URL, headers=headers, auth=auth, data=data) as response:
-                payload = await response.json()
-                if response.status != 200:
-                    raise Exception(f"Failed to obtain access token (status={response.status}): {payload}")
+                if response.status != HTTPStatus.OK:
+                    payload = await response.text()
+                    raise PySpotifyAuthAccessTokenRequestError(
+                        f"Failed to obtain access token (status={response.status}): {payload}"
+                    )
 
-        token_info = AccessTokenInfo(**payload)
+                access_token_data = await response.json()
+
+        token_info = AccessTokenInfo(**access_token_data)
 
         if self._auth_settings.store_access_token:
             self._logger.info(f"Saving access token to file: {self._auth_settings.access_token_file_path}")
