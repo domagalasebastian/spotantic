@@ -29,12 +29,11 @@ from ._track_model import TrackModel
 from ._user_model import UserModel
 
 __all__ = [
-    "submodels",
     "AlbumModel",
     "ArtistModel",
     "CategoryModel",
-    "CurrentlyPlayingItemModel",
     "CurrentUserModel",
+    "CurrentlyPlayingItemModel",
     "DeviceModel",
     "EpisodeModel",
     "ImageModel",
@@ -58,4 +57,5 @@ __all__ = [
     "SimplifiedTrackModel",
     "TrackModel",
     "UserModel",
+    "submodels",
 ]

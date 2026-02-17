@@ -8,12 +8,12 @@ from ._get_several_artists import GetSeveralArtistsRequest
 from ._get_several_artists import GetSeveralArtistsRequestParams
 
 __all__ = [
-    "GetArtistAlbumsRequestParams",
     "GetArtistAlbumsRequest",
-    "GetArtistRequestParams",
+    "GetArtistAlbumsRequestParams",
     "GetArtistRequest",
-    "GetArtistTopTracksRequestParams",
+    "GetArtistRequestParams",
     "GetArtistTopTracksRequest",
-    "GetSeveralArtistsRequestParams",
+    "GetArtistTopTracksRequestParams",
     "GetSeveralArtistsRequest",
+    "GetSeveralArtistsRequestParams",
 ]

@@ -9,13 +9,13 @@ from ._custom_exceptions import PySpotifyTooManyRequests
 from ._custom_exceptions import PySpotifyUnauthorizedError
 
 __all__ = [
+    "PySpotifyAuthAccessTokenRequestError",
+    "PySpotifyAuthCodeRequestError",
+    "PySpotifyAuthSecurityError",
+    "PySpotifyAuthorizationError",
     "PySpotifyException",
     "PySpotifyInsufficientScopeError",
     "PySpotifyResponseError",
     "PySpotifyTooManyRequests",
     "PySpotifyUnauthorizedError",
-    "PySpotifyAuthSecurityError",
-    "PySpotifyAuthorizationError",
-    "PySpotifyAuthCodeRequestError",
-    "PySpotifyAuthAccessTokenRequestError",
 ]
