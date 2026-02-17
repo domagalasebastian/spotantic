@@ -10,6 +10,46 @@ class PySpotifyException(Exception):
     pass
 
 
+class PySpotifyAuthorizationError(PySpotifyException):
+    """Base exception for authorization-related errors in the OAuth2 flow.
+
+    This is the parent class for all authentication and authorization failures
+    including security violations, code request failures, and token request failures.
+    """
+
+    pass
+
+
+class PySpotifyAuthSecurityError(PySpotifyAuthorizationError):
+    """Exception raised when a security check fails during the OAuth2 authorization flow.
+
+    This typically occurs when the state parameter in the OAuth2 callback doesn't match
+    the expected state, indicating a potential CSRF (Cross-Site Request Forgery) attack.
+    """
+
+    pass
+
+
+class PySpotifyAuthCodeRequestError(PySpotifyAuthorizationError):
+    """Exception raised when the OAuth2 authorization code request fails.
+
+    This occurs when Spotify's authorization endpoint returns an error parameter
+    instead of an authorization code, typically due to user denial or invalid request parameters.
+    """
+
+    pass
+
+
+class PySpotifyAuthAccessTokenRequestError(PySpotifyAuthorizationError):
+    """Exception raised when the OAuth2 access token request fails.
+
+    This occurs when the token endpoint returns a non-200 status code, typically due to
+    invalid authorization code, invalid client credentials, or other token request issues.
+    """
+
+    pass
+
+
 class PySpotifyInsufficientScopeError(PySpotifyException):
     """Exception raised when the access token lacks required scopes for a request.
 
