@@ -1,17 +1,38 @@
 import logging
-import os
 from datetime import datetime
-from pathlib import Path
+from typing import Optional
+from typing import Union
 
-LOGS_DIR_NAME = "logs"
+from pydantic import DirectoryPath
+from pydantic import NewPath
+from pydantic_settings import BaseSettings
+from pydantic_settings import SettingsConfigDict
+
 ROOT_LOGGER_NAME = "pyspotify"
 FORMAT_STR = "%(asctime)s - %(name)s - %(levelname)s - %(message)s (%(filename)s:%(lineno)d)"
 
 
-logging.basicConfig(
-    format=FORMAT_STR,
-    level=logging.INFO,
-)
+class LoggingSettings(BaseSettings):
+    """Runtime logging configuration.
+
+    Reads configuration from environment variables (and an optional`.env` file)
+    using the `pyspotify_logging_` prefix.
+    """
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_prefix="pyspotify_logging_",
+        extra="ignore",
+    )
+
+    enable: bool = False
+    """Master switch for package logging; when ``False`` logging is disabled"""
+
+    debug: bool = False
+    """When ``True`` the logger level is set to DEBUG, otherwise INFO."""
+
+    logs_dir: Optional[Union[DirectoryPath, NewPath]] = None
+    """Optional directory where session log files are created."""
 
 
 class ColorFormatter(logging.Formatter):
@@ -44,46 +65,52 @@ class ColorFormatter(logging.Formatter):
         return f"{color}{msg}{self.__RESET}"
 
 
-def setup_root_logger() -> logging.Logger:
+def _setup_root_logger() -> logging.Logger:
     """Configure and return the package root logger.
 
-    The function creates a timestamped directory under the current working
-    directory's ``logs`` folder and adds three handlers to the root logger:
-    a colored console handler (INFO), a session file handler (INFO), and a
-    debug file handler (DEBUG).
+    Behavior:
+    - Loads `LoggingSettings` from environment/.env.
+    - If `enable` is False, logging is disabled at the CRITICAL level and
+        the root logger is returned unconfigured.
+    - Otherwise the root logger `pyspotify` is configured with:
+        - a console handler using `ColorFormatter` (INFO or DEBUG based on
+            settings), and
+        - when `logs_dir` is provided, a timestamped subdirectory is
+            created and a `session.log` file handler is added.
 
-    Args:
-        None.
+    The function sets appropriate handler levels and the root logger's
+    level according to `debug`.
 
     Returns:
-        The configured ``logging.Logger`` instance for the package.
+        The configured package root :class:`logging.Logger` instance.
     """
+    logging_settings = LoggingSettings()
     root_logger = logging.getLogger(ROOT_LOGGER_NAME)
-    root_logger.setLevel(logging.DEBUG)
     root_logger.propagate = False
+    if not logging_settings.enable:
+        root_logger.setLevel(logging.CRITICAL)
+        return root_logger
 
-    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-    logs_path = Path(os.getcwd()) / LOGS_DIR_NAME / timestamp
-    logs_path.mkdir(parents=True, exist_ok=True)
-    session_filename = logs_path / "session.log"
-    debug_filename = logs_path / "debug.log"
+    logging_level = logging.DEBUG if logging_settings.debug else logging.INFO
+    root_logger.setLevel(logging_level)
+
+    if logging_settings.logs_dir:
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        logs_path = logging_settings.logs_dir / timestamp
+        logs_path.mkdir(parents=True, exist_ok=True)
+
+        session_filename = logs_path / "session.log"
+        session_file_handler = logging.FileHandler(session_filename, mode="a", encoding="utf-8")
+        session_file_handler.setLevel(logging_level)
+        session_file_handler.setFormatter(logging.Formatter(FORMAT_STR))
+        root_logger.addHandler(session_file_handler)
 
     console_handler = logging.StreamHandler()
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging_level)
     console_handler.setFormatter(ColorFormatter(FORMAT_STR))
     root_logger.addHandler(console_handler)
-
-    session_file_handler = logging.FileHandler(session_filename, mode="a", encoding="utf-8")
-    session_file_handler.setLevel(logging.INFO)
-    session_file_handler.setFormatter(logging.Formatter(FORMAT_STR))
-    root_logger.addHandler(session_file_handler)
-
-    debug_file_handler = logging.FileHandler(debug_filename, mode="a", encoding="utf-8")
-    debug_file_handler.setLevel(logging.DEBUG)
-    debug_file_handler.setFormatter(logging.Formatter(FORMAT_STR))
-    root_logger.addHandler(debug_file_handler)
 
     return root_logger
 
 
-logger = setup_root_logger()
+logger = _setup_root_logger()
