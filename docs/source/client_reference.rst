@@ -1,4 +1,4 @@
 Client Reference
 ================
 
-.. automodule:: pyspotify.client
+.. automodule:: spotantic.client

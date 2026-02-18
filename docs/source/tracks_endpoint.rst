@@ -4,9 +4,9 @@ Tracks Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.tracks
+.. automodule:: spotantic.endpoints.tracks
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.tracks.requests
+.. automodule:: spotantic.models.tracks.requests

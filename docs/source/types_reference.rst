@@ -4,9 +4,9 @@ Types Reference
 Types
 -----
 
-.. automodule:: pyspotify.types
+.. automodule:: spotantic.types
 
 Exceptions
 ----------
 
-.. automodule:: pyspotify.types.exceptions
+.. automodule:: spotantic.types.exceptions

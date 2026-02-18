@@ -4,9 +4,9 @@ Markets Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.markets
+.. automodule:: spotantic.endpoints.markets
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.markets.requests
+.. automodule:: spotantic.models.markets.requests

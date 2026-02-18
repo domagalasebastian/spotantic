@@ -4,9 +4,9 @@ Artists Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.artists
+.. automodule:: spotantic.endpoints.artists
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.artists.requests
+.. automodule:: spotantic.models.artists.requests

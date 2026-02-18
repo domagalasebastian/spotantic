@@ -830,7 +830,7 @@ wheels = [
 ]
 
 [[package]]
-name = "pyspotify"
+name = "spotantic"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

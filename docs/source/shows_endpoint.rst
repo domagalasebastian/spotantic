@@ -4,9 +4,9 @@ Shows Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.shows
+.. automodule:: spotantic.endpoints.shows
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.shows.requests
+.. automodule:: spotantic.models.shows.requests

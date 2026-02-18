@@ -4,9 +4,9 @@ Episodes Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.episodes
+.. automodule:: spotantic.endpoints.episodes
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.episodes.requests
+.. automodule:: spotantic.models.episodes.requests

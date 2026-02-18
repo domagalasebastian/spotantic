@@ -4,9 +4,9 @@ Users Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.users
+.. automodule:: spotantic.endpoints.users
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.users.requests
+.. automodule:: spotantic.models.users.requests
