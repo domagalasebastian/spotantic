@@ -4,14 +4,14 @@ Playlists Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.playlists
+.. automodule:: spotantic.endpoints.playlists
 
 Response models
 ---------------
 
-.. automodule:: pyspotify.models.playlists.responses
+.. automodule:: spotantic.models.playlists.responses
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.playlists.requests
+.. automodule:: spotantic.models.playlists.requests

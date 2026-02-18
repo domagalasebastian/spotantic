@@ -1,10 +1,10 @@
-PySpotify Models Reference
+Spotantic Models Reference
 ==========================
 
-PySpotify models
+Spotantic models
 ----------------
 
-.. autoclass:: pyspotify.models.APICallModel
-.. autoclass:: pyspotify.models.EntityHeadersModel
-.. autoclass:: pyspotify.models.RequestHeadersModel
-.. autoclass:: pyspotify.models.RequestModel
+.. autoclass:: spotantic.models.APICallModel
+.. autoclass:: spotantic.models.EntityHeadersModel
+.. autoclass:: spotantic.models.RequestHeadersModel
+.. autoclass:: spotantic.models.RequestModel

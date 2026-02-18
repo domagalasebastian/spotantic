@@ -4,9 +4,9 @@ Spotify Models Reference
 Spotify models
 --------------
 
-.. automodule:: pyspotify.models.spotify
+.. automodule:: spotantic.models.spotify
 
 Spotify submodels
 -----------------
 
-.. automodule:: pyspotify.models.spotify.submodels
+.. automodule:: spotantic.models.spotify.submodels

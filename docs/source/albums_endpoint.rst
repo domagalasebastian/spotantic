@@ -4,9 +4,9 @@ Albums Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.albums
+.. automodule:: spotantic.endpoints.albums
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.albums.requests
+.. automodule:: spotantic.models.albums.requests

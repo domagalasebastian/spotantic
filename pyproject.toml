@@ -1,5 +1,5 @@
 [project]
-name = "PySpotify"
+name = "Spotantic"
 version = "0.1.0"
 description = "Async Spotify API client"
 readme = "README.md"
@@ -34,7 +34,7 @@ fixable = ["ALL"]
 unfixable = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["pyspotify"]
+known-first-party = ["spotantic"]
 force-single-line = true
 
 [tool.ruff.lint.pydocstyle]

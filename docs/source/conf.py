@@ -10,8 +10,8 @@ sys.path.insert(0, str(Path("../..").absolute()))
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "PySpotify"
-copyright = "2025, Sebastian Domagała"
+project = "Spotantic"
+copyright = "2026, Sebastian Domagała"
 author = "Sebastian Domagała"
 release = "0.1.0"
 

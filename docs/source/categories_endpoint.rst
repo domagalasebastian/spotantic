@@ -4,9 +4,9 @@ Categories Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.categories
+.. automodule:: spotantic.endpoints.categories
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.categories.requests
+.. automodule:: spotantic.models.categories.requests

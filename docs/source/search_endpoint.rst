@@ -4,14 +4,14 @@ Search Endpoint Reference
 Functions
 ---------
 
-.. automodule:: pyspotify.endpoints.search
+.. automodule:: spotantic.endpoints.search
 
 Response models
 ---------------
 
-.. automodule:: pyspotify.models.search.responses
+.. automodule:: spotantic.models.search.responses
 
 Request models
 --------------
 
-.. automodule:: pyspotify.models.search.requests
+.. automodule:: spotantic.models.search.requests
