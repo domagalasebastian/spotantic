@@ -15,7 +15,7 @@ async def toggle_playback_shuffle(
     The order of execution is not guaranteed when you use this API with other Player API endpoints.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         state: True to turn shuffle on, false to turn it off.
         device_id: The id of the device this command is targeting. If not supplied,
          the user's currently active device is the target.

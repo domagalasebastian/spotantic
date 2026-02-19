@@ -1,5 +1,6 @@
+from collections.abc import Sequence
 from typing import Literal
-from typing import Sequence
+from typing import Optional
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -20,7 +21,7 @@ class SimplifiedShowModel(BaseModel):
 
     model_config = ConfigDict(serialize_by_alias=True)
 
-    available_markets: Sequence[SpotifyMarketID] = Field(repr=False)
+    available_markets: Optional[Sequence[SpotifyMarketID]] = Field(None, repr=False, deprecated=True)
     """A list of the countries in which the show can be played, identified by their ISO 3166-1 alpha-2 code."""
 
     copyrights: Sequence[CopyrightModel] = Field(repr=False)
@@ -59,7 +60,7 @@ class SimplifiedShowModel(BaseModel):
     show_name: str = Field(alias="name")
     """The name of the episode."""
 
-    publisher: str = Field(repr=False)
+    publisher: Optional[str] = Field(None, repr=False, deprecated=True)
     """The publisher of the show."""
 
     item_type: Literal["show"] = Field(alias="type", repr=False)

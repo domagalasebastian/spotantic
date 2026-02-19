@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 from typing import Union
 
 from spotantic.client import SpotanticClient
@@ -19,12 +19,10 @@ async def remove_playlist_items(
     uris: Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]],
     snapshot_id: Optional[str] = None,
 ) -> APICallModel[RemovePlaylistItemsRequest, APIResponse, PlaylistSnapshotResponseModel]:
-    """Remove items from a playlist.
-
-    Remove one or more items from a user's playlist.
+    """Remove one or more items from a user's playlist.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist.
         uris: A list of Spotify URIs for the items to remove.
         snapshot_id: The playlist's snapshot ID.

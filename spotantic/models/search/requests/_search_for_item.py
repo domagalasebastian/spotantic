@@ -1,10 +1,10 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from enum import Enum
 from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
-from typing import Sequence
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -54,7 +54,7 @@ class SearchForItemRequestParams(BaseModel):
     market: Optional[SpotifyMarketID] = None
     """An ISO 3166-1 alpha-2 country code."""
 
-    limit: Annotated[Optional[int], Field(ge=1, le=50)] = None
+    limit: Annotated[Optional[int], Field(ge=1, le=10)] = None
     """The maximum number of results to return in each item type."""
 
     offset: Annotated[Optional[int], Field(ge=0, le=1000)] = None

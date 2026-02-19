@@ -12,12 +12,10 @@ from spotantic.types import SpotifyMarketID
 async def get_track(
     client: SpotanticClient, *, track_id: SpotifyItemID, market: Optional[SpotifyMarketID] = None
 ) -> APICallModel[GetTrackRequest, APIResponse, TrackModel]:
-    """Get Spotify catalog information for a single track based on its Spotify ID.
-
-    Get Spotify catalog information for a single track identified by its unique Spotify ID.
+    """Get Spotify catalog information for a single track identified by its unique Spotify ID.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         track_id: The Spotify ID for the track.
         market: An ISO 3166-1 alpha-2 country code.
 

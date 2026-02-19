@@ -21,12 +21,10 @@ async def get_user_top_items(
 ) -> APICallModel[
     GetUserTopItemsRequest, APIResponse, Union[PagedResultModel[ArtistModel], PagedResultModel[TrackModel]]
 ]:
-    """Get the current Spotify user's top artists or tracks.
-
-    Get the current user's top artists or tracks based on calculated affinity.
+    """Get the current user's top artists or tracks based on calculated affinity.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         item_type: The type of item to retrieve (artists or tracks).
         time_range: Over what time frame the affinities are computed.
         limit: The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.

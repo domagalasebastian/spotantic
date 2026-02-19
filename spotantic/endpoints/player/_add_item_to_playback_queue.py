@@ -19,7 +19,7 @@ async def add_item_to_playback_queue(
     other Player API endpoints.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         uri: The Spotify URI of the item to add to the queue. Must be a track or episode URI.
         device_id: The id of the device this command is targeting. If not supplied,
          the user's currently active device is the target.

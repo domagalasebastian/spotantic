@@ -1,7 +1,7 @@
+from collections.abc import Sequence
 from datetime import timedelta
 from typing import Literal
 from typing import Optional
-from typing import Sequence
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -27,7 +27,7 @@ class SimplifiedTrackModel(BaseModel):
     artists: Sequence[SimplifiedArtistModel]
     """The artists who performed the track."""
 
-    available_markets: Sequence[SpotifyMarketID] = Field(repr=False)
+    available_markets: Optional[Sequence[SpotifyMarketID]] = Field(None, repr=False, deprecated=True)
     """A list of the countries in which the track can be played, identified by their ISO 3166-1 alpha-2 code."""
 
     disc_number: int = Field(repr=False)
@@ -52,7 +52,7 @@ class SimplifiedTrackModel(BaseModel):
     """Part of the response when Track Relinking is applied.
     If `True`, the track is playable in the given market. Otherwise `False`."""
 
-    linked_from: Optional[LinkedFromModel] = Field(None, repr=False)
+    linked_from: Optional[LinkedFromModel] = Field(None, repr=False, deprecated=True)
     """Part of the response when Track Relinking is applied, and the requested track
     has been replaced with different track."""
 

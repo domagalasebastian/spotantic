@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 from typing import Union
 
 from spotantic.client import SpotanticClient
@@ -19,12 +19,10 @@ async def add_items_to_playlist(
     uris: Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]],
     position: Optional[int] = None,
 ) -> APICallModel[AddItemsToPlaylistRequest, APIResponse, PlaylistSnapshotResponseModel]:
-    """Add items to a playlist.
-
-    Add one or more items to a user's playlist.
+    """Add one or more items to a user's playlist.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist.
         uris: A list of Spotify URIs for the items to add.
         position: The position to insert the items, or None to add to the end.

@@ -15,7 +15,7 @@ async def get_user_saved_albums(
     """Get a list of the albums saved in the current Spotify user's 'Your Music' library.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         limit: The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
         offset: The index of the first item to return. Default: 0 (the first item).
           Use with limit to get the next set of items.

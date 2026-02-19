@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
-from typing import Sequence
 from typing import Union
 
 from pydantic import BaseModel
@@ -84,6 +84,6 @@ class AddItemsToPlaylistRequest(RequestModel[AddItemsToPlaylistRequestParams, Ad
         """
         params = AddItemsToPlaylistRequestParams(playlist_id=playlist_id)
         body = AddItemsToPlaylistRequestBody(uris=uris, position=position)
-        endpoint = f"playlists/{playlist_id}/tracks"
+        endpoint = f"playlists/{playlist_id}/items"
 
         return cls(endpoint=endpoint, params=params, body=body)

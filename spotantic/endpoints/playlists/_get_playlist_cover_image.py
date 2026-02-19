@@ -11,12 +11,10 @@ async def get_playlist_cover_image(
     *,
     playlist_id: SpotifyItemID,
 ) -> APICallModel[GetPlaylistCoverImageRequest, APIResponse, list[ImageModel]]:
-    """Get the cover image for a playlist.
-
-    Get the current image associated with a specific playlist.
+    """Get the current image associated with a specific playlist.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist.
 
     Returns:

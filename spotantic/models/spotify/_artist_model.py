@@ -1,4 +1,5 @@
-from typing import Sequence
+from collections.abc import Sequence
+from typing import Optional
 
 from pydantic import Field
 
@@ -10,7 +11,7 @@ from .submodels import ArtistFollowersModel
 class ArtistModel(SimplifiedArtistModel):
     """Model representing Spotify catalog information for a single artist identified by their unique Spotify ID."""
 
-    followers: ArtistFollowersModel
+    followers: Optional[ArtistFollowersModel] = Field(None, repr=False, deprecated=True)
     """Information about the followers of the artist."""
 
     genres: Sequence[str]
@@ -19,6 +20,6 @@ class ArtistModel(SimplifiedArtistModel):
     images: Sequence[ImageModel] = Field(repr=False)
     """Images of the artist in various sizes, widest first."""
 
-    popularity: int
+    popularity: Optional[int] = Field(None, repr=False, deprecated=True)
     """The popularity of the artist. The value will be between 0 and 100, with 100 being the most popular.
     The artist's popularity is calculated from the popularity of all the artist's tracks."""

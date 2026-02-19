@@ -1,19 +1,26 @@
-from typing import Sequence
+from collections.abc import Sequence
+
+from typing_extensions import deprecated
 
 from spotantic.client import SpotanticClient
-from spotantic.models._api_call_model import APICallModel
+from spotantic.models import APICallModel
 from spotantic.models.albums.requests import CheckUserSavedAlbumsRequest
 from spotantic.types import APIResponse
 from spotantic.types import SpotifyItemID
 
 
+@deprecated("This endpoint is deprecated. Use Check User's Saved Items instead.")
 async def check_user_saved_albums(
     client: SpotanticClient, *, album_ids: Sequence[SpotifyItemID]
 ) -> APICallModel[CheckUserSavedAlbumsRequest, APIResponse, dict[SpotifyItemID, bool]]:
     """Check if one or more albums is already saved in the current Spotify user's 'Your Music' library.
 
+    .. version-deprecated:: 0.1.0
+       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
+       This endpoint is deprecated. Use *Check User's Saved Items* instead.
+
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         album_ids: A list of Spotify IDs for the albums to check.
 
     Returns:

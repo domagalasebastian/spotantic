@@ -1,4 +1,4 @@
-from typing import Sequence
+from collections.abc import Sequence
 
 
 def sequence_to_str(seq: Sequence[str], separator: str) -> str:

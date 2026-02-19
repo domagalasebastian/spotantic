@@ -16,7 +16,7 @@ async def seek_to_position(
     other Player API endpoints.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         position_ms: The position in milliseconds to seek to.
         device_id: The id of the device this command is targeting. If not supplied,
          the user's currently active device is the target.

@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -24,7 +24,7 @@ async def get_artist_albums(
     """Get Spotify catalog information about an artist's albums.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`SpotanticClient` instance.
         artist_id: The Spotify ID for the artist.
         limit: The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
         offset: The index of the first item to return. Default: 0 (the first item).

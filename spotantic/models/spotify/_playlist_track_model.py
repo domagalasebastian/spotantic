@@ -22,5 +22,5 @@ class PlaylistTrackModel(BaseModel):
     is_local: bool = Field(repr=False)
     """Whether this track or episode is a local file or not."""
 
-    track: Union[TrackModel, EpisodeModel] = Field(discriminator="item_type")
+    item: Union[TrackModel, EpisodeModel] = Field(discriminator="item_type")
     """Information about the track or episode."""

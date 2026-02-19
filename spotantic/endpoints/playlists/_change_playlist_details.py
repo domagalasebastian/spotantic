@@ -16,12 +16,10 @@ async def change_playlist_details(
     collaborative: Optional[bool] = None,
     description: Optional[str] = None,
 ) -> APICallModel[ChangePlaylistDetailsRequest, APIResponse, None]:
-    """Change playlist details.
-
-    Change a playlist's name and public/private state.
+    """Change a playlist's name and public/private state.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist.
         name: The new name for the playlist.
         public: Whether the playlist should be public.

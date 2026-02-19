@@ -8,13 +8,12 @@ from spotantic.types import APIResponse
 async def get_available_devices(
     client: SpotanticClient,
 ) -> APICallModel[GetAvailableDevicesRequest, APIResponse, list[DeviceModel]]:
-    """Get a list of the user's available devices.
+    """Get information about a user’s available Spotify Connect devices.
 
-    Get information about a user’s available Spotify Connect devices.
     Some device models are not supported and will not be listed in the API response.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
 
     Returns:
         An object containing the request used to obtain the response, the retrieved data and

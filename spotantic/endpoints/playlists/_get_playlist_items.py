@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -22,12 +22,14 @@ async def get_playlist_items(
     additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
     market: Optional[SpotifyMarketID] = None,
 ) -> APICallModel[GetPlaylistItemsRequest, APIResponse, PagedResultModel[PlaylistTrackModel]]:
-    """Get items of a playlist.
+    """Get full details of the items of a playlist owned by a Spotify user.
 
-    Get full details of the items of a playlist owned by a Spotify user.
+    Note: This endpoint is only accessible for playlists owned by the current user or
+    playlists the user is a collaborator of. A 403 Forbidden status code will be returned if
+    the user is neither the owner nor a collaborator of the playlist.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist.
         fields: Filters for the query: a comma-separated list of the fields to return.
         limit: The maximum number of items to return. Default is 20. Minimum is 1, maximum is 50.

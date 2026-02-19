@@ -1,3 +1,5 @@
+from typing_extensions import deprecated
+
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.users.requests import UnfollowPlaylistRequest
@@ -5,17 +7,20 @@ from spotantic.types import APIResponse
 from spotantic.types import SpotifyItemID
 
 
+@deprecated("This endpoint is deprecated. Use Remove Items from Library instead.")
 async def unfollow_playlist(
     client: SpotanticClient,
     *,
     playlist_id: SpotifyItemID,
 ) -> APICallModel[UnfollowPlaylistRequest, APIResponse, None]:
-    """Unfollow a playlist on behalf of the current user.
+    """Remove the current user as a follower of a playlist.
 
-    Remove the current user as a follower of a playlist.
+    .. version-deprecated:: 0.1.0
+       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
+       Use *Remove Items from Library* instead.
 
     Args:
-        client: An instance of `SpotanticClient`.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist to unfollow.
 
     Returns:

@@ -24,7 +24,7 @@ async def get_show_episodes(
     Optional parameters can be used to limit the number of episodes returned.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         show_id: The Spotify ID for the show.
         limit: The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
         offset: The index of the first item to return. Default: 0 (the first item).

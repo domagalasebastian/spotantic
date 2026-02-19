@@ -15,7 +15,7 @@ async def get_album(
     """Get Spotify catalog information for a single album.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         album_id: The Spotify ID for the album.
         market: An ISO 3166-1 alpha-2 country code.
 

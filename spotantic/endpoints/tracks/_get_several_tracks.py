@@ -1,5 +1,7 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
+
+from typing_extensions import deprecated
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -10,15 +12,17 @@ from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
 
+@deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_several_tracks(
     client: SpotanticClient, *, track_ids: Sequence[SpotifyItemID], market: Optional[SpotifyMarketID] = None
 ) -> APICallModel[GetSeveralTracksRequest, APIResponse, list[TrackModel]]:
-    """Get Spotify catalog information for several tracks based on their Spotify IDs.
+    """Get Spotify catalog information for multiple tracks based on their Spotify IDs.
 
-    Get Spotify catalog information for multiple tracks based on their Spotify IDs.
+    .. version-deprecated:: 0.1.0
+       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         track_ids: A list of the Spotify IDs for the tracks.
         market: An ISO 3166-1 alpha-2 country code.
 
