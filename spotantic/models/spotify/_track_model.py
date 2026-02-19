@@ -1,3 +1,5 @@
+from typing import Optional
+
 from pydantic import Field
 
 from ._simplified_album_model import SimplifiedAlbumModel
@@ -11,8 +13,8 @@ class TrackModel(SimplifiedTrackModel):
     album: SimplifiedAlbumModel
     """The album on which the track appears."""
 
-    external_ids: ExternalIdsModel = Field(repr=False)
+    external_ids: Optional[ExternalIdsModel] = Field(None, repr=False, deprecated=True)
     """Known external IDs for the track."""
 
-    popularity: int
+    popularity: Optional[int] = Field(None, repr=False, deprecated=True)
     """The popularity of the track."""

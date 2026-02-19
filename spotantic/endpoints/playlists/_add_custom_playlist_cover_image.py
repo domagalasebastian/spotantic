@@ -16,12 +16,10 @@ async def add_custom_playlist_cover_image(
     image_data: Optional[bytes] = None,
     file_path: Optional[FilePath] = None,
 ) -> APICallModel[AddCustomPlaylistCoverImageRequest, APIResponse, None]:
-    """Add a custom cover image to a playlist.
-
-    Replace the image used to represent a specific playlist.
+    """Replace the image used to represent a specific playlist.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist.
         image_data: The image data as bytes. Must be a JPEG image, maximum size 256 KB.
         file_path: The file path to a JPEG image. Must be maximum size 256 KB.

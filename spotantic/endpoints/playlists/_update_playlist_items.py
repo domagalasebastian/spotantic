@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 from typing import Union
 
 from spotantic.client import SpotanticClient
@@ -31,7 +31,7 @@ async def update_playlist_items(
     a playlist. These operations can't be applied together in a single request.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist.
         uris: A list of Spotify URIs for the items to update.
         range_start: The position of the first item to be reordered.

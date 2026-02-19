@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -17,7 +17,7 @@ async def transfer_playback(
     other Player API endpoints.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         device_ids: A list of the device IDs on which playback should be started/transferred to.
         play: True to enable playback on the new device. If false or not provided,
          the user's current playback will continue on the previous device.

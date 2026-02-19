@@ -1,9 +1,9 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
-from typing import Sequence
 
 from pydantic import BaseModel
 from pydantic import ConfigDict

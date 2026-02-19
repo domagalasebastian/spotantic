@@ -16,7 +16,7 @@ async def set_playback_volume(
     other Player API endpoints.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         volume_percent: The volume to set. Must be a value from 0 to 100 inclusive.
         device_id: The id of the device this command is targeting. If not supplied,
          the user's currently active device is the target.

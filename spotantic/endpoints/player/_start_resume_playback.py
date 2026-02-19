@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 from typing import Union
 
 from spotantic.client import SpotanticClient
@@ -28,7 +28,7 @@ async def start_resume_playback(
     other Player API endpoints.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         device_id: The id of the device this command is targeting. If not supplied,
          the user's currently active device is the target.
         context_uri: Spotify URI of the context to play. Valid contexts are albums, artists, and playlists.

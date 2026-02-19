@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -19,12 +19,10 @@ async def get_playlist(
     additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
     market: Optional[SpotifyMarketID] = None,
 ) -> APICallModel[GetPlaylistRequest, APIResponse, PlaylistModel]:
-    """Get a playlist.
-
-    Get a playlist owned by a Spotify user.
+    """Get a playlist owned by a Spotify user.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         playlist_id: The Spotify ID of the playlist.
         fields: Filters for the query: a comma-separated list of the fields to return.
         additional_types: A list of item types to include in the response.

@@ -17,7 +17,7 @@ async def get_episode(
     Get Spotify catalog information for a single episode identified by its unique Spotify ID.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         episode_id: The Spotify ID for the episode.
         market: An ISO 3166-1 alpha-2 country code.
 

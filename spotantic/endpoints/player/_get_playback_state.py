@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -16,12 +16,11 @@ async def get_playback_state(
     additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
     market: Optional[SpotifyMarketID] = None,
 ) -> APICallModel[GetPlaybackStateRequest, APIResponse, PlaybackStateModel]:
-    """Get the user's playback state.
-
-    Get information about the user’s current playback state, including track or episode, progress, and active device.
+    """Get information about the user’s current playback state, including track or episode, progress,
+    and active device.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         additional_types: A list of item types that your client supports besides the default track type.
         market: An ISO 3166-1 alpha-2 country code.
 

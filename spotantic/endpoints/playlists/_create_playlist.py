@@ -16,12 +16,12 @@ async def create_playlist(
     public: Optional[bool] = None,
     collaborative: Optional[bool] = None,
 ) -> APICallModel[CreatePlaylistRequest, APIResponse, PlaylistModel]:
-    """Create a playlist for a user.
+    """Create a playlist for the current Spotify user.
 
-    Create a playlist for a Spotify user. Each user is generally limited to a maximum of 11000 playlists.
+    Each user is generally limited to a maximum of 11000 playlists.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         user_id: The Spotify user ID of the user.
         name: The name for the new playlist.
         description: The description for the new playlist.

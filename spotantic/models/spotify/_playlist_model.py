@@ -6,5 +6,5 @@ from ._playlist_track_model import PlaylistTrackModel
 class PlaylistModel(PlaylistBaseModel):
     """Model representing a playlist owned by a Spotify user."""
 
-    tracks: PagedResultModel[PlaylistTrackModel]
+    items: PagedResultModel[PlaylistTrackModel]
     """The tracks of the playlist."""

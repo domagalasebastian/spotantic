@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from http import HTTPMethod
 from typing import Optional
-from typing import Set
 
 from pydantic import BaseModel
 
@@ -31,7 +30,7 @@ class FollowPlaylistRequestBody(BaseModel):
 class FollowPlaylistRequest(RequestModel[FollowPlaylistRequestParams, FollowPlaylistRequestBody]):
     """Request model for Follow Playlist endpoint."""
 
-    required_scopes: Set[AuthScope] = {AuthScope.PLAYLIST_MODIFY_PRIVATE, AuthScope.PLAYLIST_MODIFY_PUBLIC}
+    required_scopes: set[AuthScope] = {AuthScope.PLAYLIST_MODIFY_PRIVATE, AuthScope.PLAYLIST_MODIFY_PUBLIC}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.PUT

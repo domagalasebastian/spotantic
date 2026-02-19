@@ -12,7 +12,7 @@ async def get_artist(
     """Get Spotify catalog information for a single artist identified by their unique Spotify ID.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`SpotanticClient` instance.
         artist_id: The Spotify ID for the artist.
 
     Returns:

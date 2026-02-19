@@ -1,5 +1,7 @@
 from typing import Optional
 
+from typing_extensions import deprecated
+
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.artists.requests import GetArtistTopTracksRequest
@@ -9,13 +11,17 @@ from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
 
+@deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_artist_top_tracks(
     client: SpotanticClient, *, artist_id: SpotifyItemID, market: Optional[SpotifyMarketID] = None
 ) -> APICallModel[GetArtistTopTracksRequest, APIResponse, list[TrackModel]]:
     """Get Spotify catalog information about an artist's top tracks by country.
 
+    .. version-deprecated:: 0.1.0
+       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
+
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         artist_id: The Spotify ID for the artist.
         market: An ISO 3166-1 alpha-2 country code.
 

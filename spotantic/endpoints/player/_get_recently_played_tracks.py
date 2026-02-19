@@ -11,12 +11,10 @@ from spotantic.types import APIResponse
 async def get_recently_played_tracks(
     client: SpotanticClient, *, limit: int = 20, after: Optional[int] = None, before: Optional[int] = None
 ) -> APICallModel[GetRecentlyPlayedTracksRequest, APIResponse, PagedResultWithCursorsModel[PlayHistoryModel]]:
-    """Get the user's recently played tracks.
-
-    Get tracks from the current user's recently played tracks.
+    """Get tracks from the current user's recently played tracks.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         limit: The maximum number of items to return. Default is 20. Minimum is 1, maximum is 50.
         after: A Unix timestamp in milliseconds. Returns all items after (but not including) this cursor position.
         before: A Unix timestamp in milliseconds. Returns all items before (but not including) this cursor position.

@@ -8,12 +8,10 @@ from spotantic.types import APIResponse
 async def get_current_user_profile(
     client: SpotanticClient,
 ) -> APICallModel[GetCurrentUserProfileRequest, APIResponse, CurrentUserModel]:
-    """Get the current Spotify user's profile information.
-
-    Get detailed profile information about the current user (including the current user's username).
+    """Get detailed profile information about the current user (including the current user's username).
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
 
     Returns:
         An object containing the request used to obtain the response, the retrieved data and

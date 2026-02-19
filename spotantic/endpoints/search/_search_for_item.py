@@ -1,5 +1,5 @@
+from collections.abc import Sequence
 from typing import Optional
-from typing import Sequence
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -28,7 +28,7 @@ async def search_for_item(
     within the US, UK, Canada, Ireland, New Zealand and Australia markets.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         query: Your search query.
         item_type: A list of item types to search across. Search results include hits
           from all the specified item types.

@@ -1,6 +1,6 @@
+from collections.abc import Sequence
 from typing import Literal
 from typing import Optional
-from typing import Sequence
 
 from pydantic import BaseModel
 from pydantic import ConfigDict

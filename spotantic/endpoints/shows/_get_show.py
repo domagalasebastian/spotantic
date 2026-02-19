@@ -17,7 +17,7 @@ async def get_show(
     Get Spotify catalog information for a single show identified by its unique Spotify ID.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         show_id: The Spotify ID for the show.
         market: An ISO 3166-1 alpha-2 country code.
 

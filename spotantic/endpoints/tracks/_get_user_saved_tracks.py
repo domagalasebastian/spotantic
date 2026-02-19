@@ -12,12 +12,10 @@ from spotantic.types import SpotifyMarketID
 async def get_user_saved_tracks(
     client: SpotanticClient, *, limit: int = 20, offset: int = 0, market: Optional[SpotifyMarketID] = None
 ) -> APICallModel[GetUserSavedTracksRequest, APIResponse, PagedResultModel[SavedTrackModel]]:
-    """Get a list of the tracks saved in the current Spotify user's 'Your Music' library.
-
-    Get a list of the songs saved in the current Spotify user's 'Your Music' library.
+    """Get a list of the songs saved in the current Spotify user's 'Your Music' library.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         limit: The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
         offset: The index of the first item to return. Default: 0 (the first item).
           Use with limit to get the next set of items.

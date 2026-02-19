@@ -1,5 +1,6 @@
-from typing import Dict
-from typing import Sequence
+from collections.abc import Sequence
+
+from typing_extensions import deprecated
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -8,15 +9,18 @@ from spotantic.types import APIResponse
 from spotantic.types import SpotifyItemID
 
 
+@deprecated("This endpoint is deprecated. Use Check User's Saved Items instead.")
 async def check_user_saved_shows(
     client: SpotanticClient, *, show_ids: Sequence[SpotifyItemID]
-) -> APICallModel[CheckUserSavedShowsRequest, APIResponse, Dict[SpotifyItemID, bool]]:
-    """Check if given shows are saved in the user's library.
+) -> APICallModel[CheckUserSavedShowsRequest, APIResponse, dict[SpotifyItemID, bool]]:
+    """Check if one or more shows is already saved in the current Spotify user's library.
 
-    Check if one or more shows is already saved in the current Spotify user's library.
+    .. version-deprecated:: 0.1.0
+       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
+       This endpoint is deprecated. Use *Check User's Saved Items* instead.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         show_ids: A list of the Spotify IDs for the shows.
 
     Returns:

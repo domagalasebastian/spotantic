@@ -1,7 +1,7 @@
+from collections.abc import Sequence
 from datetime import datetime
 from typing import Literal
 from typing import Optional
-from typing import Sequence
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
@@ -30,7 +30,7 @@ class SimplifiedAlbumModel(BaseModel):
     total_tracks: int
     """The number of tracks in the album."""
 
-    available_markets: Sequence[SpotifyMarketID] = Field(repr=False)
+    available_markets: Optional[Sequence[SpotifyMarketID]] = Field(None, repr=False, deprecated=True)
     """The markets in which the album is available."""
 
     external_urls: ExternalUrlsModel = Field(repr=False)

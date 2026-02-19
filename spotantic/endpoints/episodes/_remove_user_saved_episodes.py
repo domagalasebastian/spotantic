@@ -1,4 +1,6 @@
-from typing import Sequence
+from collections.abc import Sequence
+
+from typing_extensions import deprecated
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -7,15 +9,18 @@ from spotantic.types import APIResponse
 from spotantic.types import SpotifyItemID
 
 
+@deprecated("This endpoint is deprecated. Use Remove Items from Library instead.")
 async def remove_user_saved_episodes(
     client: SpotanticClient, *, episode_ids: Sequence[SpotifyItemID]
 ) -> APICallModel[RemoveUserSavedEpisodesRequest, APIResponse, None]:
-    """Remove episodes from the current Spotify user's library.
+    """Remove one or more episodes from the current user's library.
 
-    Remove one or more episodes from the current user's library.
+    .. version-deprecated:: 0.1.0
+       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
+       Use *Remove Items from Library* instead.
 
     Args:
-        client: SpotanticClient instance.
+        client: :class:`~spotantic.client.SpotanticClient` instance.
         episode_ids: A list of Spotify IDs for the episodes to be removed from the user's library.
 
     Returns:
