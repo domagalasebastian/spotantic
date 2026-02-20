@@ -9,6 +9,7 @@ API Reference
    artists_endpoint
    categories_endpoint
    episodes_endpoint
+   library_endpoint
    markets_endpoint
    player_endpoint
    playlists_endpoint
