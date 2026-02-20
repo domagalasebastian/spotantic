@@ -1,6 +1,7 @@
 from typing import Annotated
 from typing import Any
 from typing import Optional
+from typing import Union
 
 from pydantic import StringConstraints
 from pydantic.types import Json
@@ -37,15 +38,6 @@ type SpotifyItemID = Annotated[
     ),
 ]
 """The base-62 identifier found at the end of the `SpotifyItemURI`."""
-
-type SpotifyItemURI = Annotated[
-    str,
-    StringConstraints(
-        strip_whitespace=True,
-        pattern=rf"^spotify:{'|'.join(item.value for item in SpotifyItemType)}:[A-Za-z0-9]{{22}}$",
-    ),
-]
-"""The resource identifier of an item."""
 
 type SpotifyAlbumURI = Annotated[
     str,
@@ -99,6 +91,7 @@ type SpotifyTrackURI = Annotated[
         pattern=rf"^spotify:{SpotifyItemType.TRACK.value}:[A-Za-z0-9]{{22}}$",
     ),
 ]
+"""The resource identifier of a track."""
 
 type SpotifyUserURI = Annotated[
     str,
@@ -108,6 +101,17 @@ type SpotifyUserURI = Annotated[
     ),
 ]
 """The resource identifier of an user."""
+
+type SpotifyItemURI = Union[
+    SpotifyAlbumURI,
+    SpotifyArtistURI,
+    SpotifyEpisodeURI,
+    SpotifyPlaylistURI,
+    SpotifyShowURI,
+    SpotifyTrackURI,
+    SpotifyUserURI,
+]
+"""The resource identifier of an item."""
 
 
 __all__ = [
