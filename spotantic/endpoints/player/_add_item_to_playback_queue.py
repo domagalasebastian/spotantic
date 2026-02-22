@@ -4,14 +4,14 @@ from typing import Union
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import AddItemToPlaybackQueueRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 from spotantic.types import SpotifyEpisodeURI
 from spotantic.types import SpotifyTrackURI
 
 
 async def add_item_to_playback_queue(
     client: SpotanticClient, *, uri: Union[SpotifyEpisodeURI, SpotifyTrackURI], device_id: Optional[str] = None
-) -> APICallModel[AddItemToPlaybackQueueRequest, APIResponse, None]:
+) -> APICallModel[AddItemToPlaybackQueueRequest, RawAPIResponse, None]:
     """Add an item to the end of the user's playback queue.
 
     Add an item to be played next in the user's current playback queue. This API only works for users

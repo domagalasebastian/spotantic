@@ -5,8 +5,9 @@ from typing_extensions import deprecated
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.artists.requests import GetArtistTopTracksRequest
+from spotantic.models.artists.responses import GetArtistTopTracksResponse
 from spotantic.models.spotify import TrackModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
@@ -14,7 +15,7 @@ from spotantic.types import SpotifyMarketID
 @deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_artist_top_tracks(
     client: SpotanticClient, *, artist_id: SpotifyItemID, market: Optional[SpotifyMarketID] = None
-) -> APICallModel[GetArtistTopTracksRequest, APIResponse, list[TrackModel]]:
+) -> APICallModel[GetArtistTopTracksRequest, JsonAPIResponse, list[TrackModel]]:
     """Get Spotify catalog information about an artist's top tracks by country.
 
     .. version-deprecated:: 0.1.0
@@ -30,8 +31,7 @@ async def get_artist_top_tracks(
         parsed data as model.
     """
     request = GetArtistTopTracksRequest.build(artist_id=artist_id, market=market)
-    response = await client.request(request)
-    assert response is not None
-    data = [TrackModel(**track_data) for track_data in response["tracks"]]
+    response = await client.request_json(request)
+    data = GetArtistTopTracksResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.tracks)

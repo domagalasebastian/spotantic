@@ -3,13 +3,13 @@ from typing import Optional
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import SetRepeatModeRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 from spotantic.types import RepeatMode
 
 
 async def set_repeat_mode(
     client: SpotanticClient, *, state: RepeatMode, device_id: Optional[str] = None
-) -> APICallModel[SetRepeatModeRequest, APIResponse, None]:
+) -> APICallModel[SetRepeatModeRequest, RawAPIResponse, None]:
     """Set the repeat mode for the user's current playback device.
 
     Set the repeat mode for the user's playback. This API only works for users who have Spotify Premium.

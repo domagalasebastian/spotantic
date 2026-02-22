@@ -1,9 +1,10 @@
 from typing_extensions import deprecated
 
+from spotantic._utils.models._type_validation import validate_is_instance_of
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.users.requests import CheckIfCurrentUserFollowsPlaylistRequest
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 
 
@@ -12,7 +13,7 @@ async def check_if_current_user_follows_playlist(
     client: SpotanticClient,
     *,
     playlist_id: SpotifyItemID,
-) -> APICallModel[CheckIfCurrentUserFollowsPlaylistRequest, APIResponse, bool]:
+) -> APICallModel[CheckIfCurrentUserFollowsPlaylistRequest, JsonAPIResponse, bool]:
     """Check to see if the current user is following a specified playlist.
 
     .. version-deprecated:: 0.1.0
@@ -30,8 +31,8 @@ async def check_if_current_user_follows_playlist(
     request = CheckIfCurrentUserFollowsPlaylistRequest.build(
         playlist_id=playlist_id,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = response[0]
+    response = await client.request_json(request)
+    validated_response = validate_is_instance_of(response, list[bool])
+    data = validated_response[0]
 
     return APICallModel(request=request, response=response, data=data)

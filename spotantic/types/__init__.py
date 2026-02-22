@@ -1,18 +1,24 @@
+from __future__ import annotations
+
 from typing import Annotated
-from typing import Any
 from typing import Optional
 from typing import Union
 
 from pydantic import StringConstraints
-from pydantic.types import Json
 
 from ._spotify_types import AlbumTypes
 from ._spotify_types import AuthScope
 from ._spotify_types import RepeatMode
 from ._spotify_types import SpotifyItemType
 
-type APIResponse = Optional[Json[Any]]
-"""API response type. JSON or `None`."""
+type RawAPIResponse = Optional[bytes]
+"""Raw API response type. bytes or ``None``."""
+
+type JsonAPIResponse = Union[None, int, str, bool, list[JsonAPIResponse], dict[str, JsonAPIResponse]]
+"""JSON API response type."""
+
+type APIResponse = Union[RawAPIResponse, JsonAPIResponse]
+"""API response type."""
 
 type SpotifyMarketID = Annotated[
     str,
@@ -118,6 +124,8 @@ __all__ = [
     "APIResponse",
     "AlbumTypes",
     "AuthScope",
+    "JsonAPIResponse",
+    "RawAPIResponse",
     "RepeatMode",
     "SpotifyAlbumURI",
     "SpotifyArtistURI",

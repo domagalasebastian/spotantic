@@ -3,12 +3,12 @@ from typing import Optional
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import PausePlaybackRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 
 
 async def pause_playback(
     client: SpotanticClient, *, device_id: Optional[str] = None
-) -> APICallModel[PausePlaybackRequest, APIResponse, None]:
+) -> APICallModel[PausePlaybackRequest, RawAPIResponse, None]:
     """Pause playback on the user's account.
 
     Pause playback on the user's account. This API only works for users who have Spotify Premium.

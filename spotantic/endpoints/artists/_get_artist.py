@@ -2,13 +2,13 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.artists.requests import GetArtistRequest
 from spotantic.models.spotify import ArtistModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 
 
 async def get_artist(
     client: SpotanticClient, *, artist_id: SpotifyItemID
-) -> APICallModel[GetArtistRequest, APIResponse, ArtistModel]:
+) -> APICallModel[GetArtistRequest, JsonAPIResponse, ArtistModel]:
     """Get Spotify catalog information for a single artist identified by their unique Spotify ID.
 
     Args:
@@ -20,8 +20,7 @@ async def get_artist(
         parsed data as model.
     """
     request = GetArtistRequest.build(artist_id=artist_id)
-    response = await client.request(request)
-    assert response is not None
-    data = ArtistModel(**response)
+    response = await client.request_json(request)
+    data = ArtistModel.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

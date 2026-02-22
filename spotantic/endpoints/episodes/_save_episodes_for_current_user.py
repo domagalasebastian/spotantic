@@ -5,14 +5,14 @@ from typing_extensions import deprecated
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.episodes.requests import SaveEpisodesForCurrentUserRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 from spotantic.types import SpotifyItemID
 
 
 @deprecated("This endpoint is deprecated. Use Save Items to Library instead.")
 async def save_episodes_for_current_user(
     client: SpotanticClient, *, episode_ids: Sequence[SpotifyItemID]
-) -> APICallModel[SaveEpisodesForCurrentUserRequest, APIResponse, None]:
+) -> APICallModel[SaveEpisodesForCurrentUserRequest, RawAPIResponse, None]:
     """Save one or more episodes to the current user's library.
 
     .. version-deprecated:: 0.1.0

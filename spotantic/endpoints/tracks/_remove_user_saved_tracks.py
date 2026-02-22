@@ -5,14 +5,14 @@ from typing_extensions import deprecated
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.tracks.requests import RemoveUserSavedTracksRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 from spotantic.types import SpotifyItemID
 
 
 @deprecated("This endpoint is deprecated. Use Remove Items from Library instead.")
 async def remove_user_saved_tracks(
     client: SpotanticClient, *, track_ids: Sequence[SpotifyItemID]
-) -> APICallModel[RemoveUserSavedTracksRequest, APIResponse, None]:
+) -> APICallModel[RemoveUserSavedTracksRequest, RawAPIResponse, None]:
     """Remove one or more tracks from the current user's 'Your Music' library.
 
     .. version-deprecated:: 0.1.0

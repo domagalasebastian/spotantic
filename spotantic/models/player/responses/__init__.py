@@ -1,5 +1,7 @@
-from ._get_user_queue import UserQueueModel
+from ._get_available_devices import GetAvailableDevicesResponse
+from ._get_user_queue import GetUserQueueResponse
 
 __all__ = [
-    "UserQueueModel",
+    "GetAvailableDevicesResponse",
+    "GetUserQueueResponse",
 ]

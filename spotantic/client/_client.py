@@ -17,9 +17,11 @@ from spotantic.auth._auth_manager_base import AuthManagerBase
 from spotantic.models import ErrorResponseModel
 from spotantic.models import RequestModel
 from spotantic.models.auth import AccessTokenInfo
-from spotantic.types import APIResponse
 from spotantic.types import AuthScope
+from spotantic.types import JsonAPIResponse
+from spotantic.types import RawAPIResponse
 from spotantic.types.exceptions import SpotanticInsufficientScopeError
+from spotantic.types.exceptions import SpotanticInvalidResponseError
 from spotantic.types.exceptions import SpotanticResponseError
 from spotantic.types.exceptions import SpotanticTooManyRequests
 from spotantic.types.exceptions import SpotanticUnauthorizedError
@@ -28,8 +30,8 @@ P = ParamSpec("P")
 
 
 def retry_on_failure_decorator(
-    func: Callable[Concatenate[SpotanticClient, P], Awaitable[APIResponse]],
-) -> Callable[Concatenate[SpotanticClient, P], Awaitable[APIResponse]]:
+    func: Callable[Concatenate[SpotanticClient, P], Awaitable[RawAPIResponse]],
+) -> Callable[Concatenate[SpotanticClient, P], Awaitable[RawAPIResponse]]:
     """Decorator to retry API requests on authentication or rate-limit failures.
 
     Implements exponential backoff retry strategy for transient failures (401 Unauthorized
@@ -45,7 +47,7 @@ def retry_on_failure_decorator(
     backoff = 2.0
 
     @wraps(func)
-    async def wrapper(client: SpotanticClient, *args: P.args, **kwargs: P.kwargs) -> APIResponse:
+    async def wrapper(client: SpotanticClient, *args: P.args, **kwargs: P.kwargs) -> RawAPIResponse:
         for attempt in range(2, client.max_attempts + 1):
             try:
                 return await func(client, *args, **kwargs)
@@ -132,14 +134,14 @@ class SpotanticClient:
         return required_scopes - client_scopes
 
     @retry_on_failure_decorator
-    async def request(self, request: RequestModel) -> APIResponse:
-        """Execute an HTTP request described by `request` and return parsed response.
+    async def request(self, request: RequestModel) -> RawAPIResponse:
+        """Execute an HTTP request described by ``request`` and return raw response.
 
         Args:
             request: `RequestModel` describing method, url, headers, params and body.
 
         Returns:
-            Parsed API response or `None` for empty or unparsable responses.
+            Raw API response or `None` for empty responses.
         """
         self._logger.debug(f"Request: {request}")
         access_token_info = await self.__auth_manager.get_valid_access_token()
@@ -168,17 +170,30 @@ class SpotanticClient:
                 response_data = await resp.read()
                 response_data = response_data.strip()
 
-        if not response_data:
-            return None
+        return response_data if response_data else None
+
+    async def request_json(self, request: RequestModel) -> JsonAPIResponse:
+        """Execute an HTTP request described by ``request`` and return parsed response.
+
+        Args:
+            request: `RequestModel` describing method, url, headers, params and body.
+
+        Returns:
+            Parsed API response as Python object.
+
+        Raises:
+            SpotanticInvalidResponseError: If server response is empty or cannot be deserialized.
+        """
+        response_data = await self.request(request=request)
+        if response_data is None:
+            raise SpotanticInvalidResponseError(f"Expected JSON response from {request.url}, got empty body.")
 
         try:
             json_data = from_json(response_data)
-        except ValueError:
-            self._logger.debug(f"Response body (raw): {response_data}")
-            self._logger.warning("Failed to deserialize response body as JSON; returning None.")
-            return None
-        else:
-            return json_data
+        except ValueError as e:
+            raise SpotanticInvalidResponseError("Expected JSON response, got invalid JSON.") from e
+
+        return json_data
 
     @staticmethod
     async def __check_response(response: ClientResponse) -> None:
@@ -191,12 +206,19 @@ class SpotanticClient:
             SpotanticUnauthorizedError: In case of bad or expired token.
             SpotanticTooManyRequests: In case of rate limiting has been applied.
             SpotanticResponseError: Any other unsuccessful response.
+            SpotanticInvalidResponseError: Request failed and response does not match Spotify error response type.
         """
         if response.ok:
             return
 
         status = HTTPStatus(response.status)
-        payload = await response.json()
+        try:
+            payload = await response.json()
+        except Exception as e:
+            raise SpotanticInvalidResponseError(
+                "Invalid error response! Expected to get response with the error details!"
+            ) from e
+
         err_info = ErrorResponseModel(**payload.get("error"))
         if status == HTTPStatus.UNAUTHORIZED:
             raise SpotanticUnauthorizedError(error_response=err_info)

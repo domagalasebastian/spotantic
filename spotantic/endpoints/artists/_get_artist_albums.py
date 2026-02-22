@@ -7,7 +7,7 @@ from spotantic.models.artists.requests import GetArtistAlbumsRequest
 from spotantic.models.spotify import PagedResultModel
 from spotantic.models.spotify import SimplifiedAlbumModel
 from spotantic.types import AlbumTypes
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
@@ -20,7 +20,7 @@ async def get_artist_albums(
     offset: int = 0,
     market: Optional[SpotifyMarketID] = None,
     include_groups: Optional[Sequence[AlbumTypes]] = None,
-) -> APICallModel[GetArtistAlbumsRequest, APIResponse, PagedResultModel[SimplifiedAlbumModel]]:
+) -> APICallModel[GetArtistAlbumsRequest, JsonAPIResponse, PagedResultModel[SimplifiedAlbumModel]]:
     """Get Spotify catalog information about an artist's albums.
 
     Args:
@@ -44,8 +44,7 @@ async def get_artist_albums(
         market=market,
         include_groups=include_groups,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[SimplifiedAlbumModel](**response)
+    response = await client.request_json(request)
+    data = PagedResultModel[SimplifiedAlbumModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

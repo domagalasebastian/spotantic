@@ -1,14 +1,16 @@
 from pydantic import BaseModel
 
+from spotantic.types import APIResponse
 
-class APICallModel[RequestModelT, ResponseModelT, DataModelT](BaseModel):
+
+class APICallModel[RequestModelT, ResponseT: APIResponse, DataModelT](BaseModel):
     """Generic container model representing an API call."""
 
     request: RequestModelT
-    """Pydantic model or type representing the request."""
+    """Represents the request."""
 
-    response: ResponseModelT
-    """Pydantic model or type representing the response."""
+    response: ResponseT
+    """Represents the response."""
 
     data: DataModelT
-    """Pydantic model or type representing associated or derived data."""
+    """Represents associated or derived data."""

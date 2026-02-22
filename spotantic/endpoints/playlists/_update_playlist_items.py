@@ -6,7 +6,7 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import UpdatePlaylistItemsRequest
 from spotantic.models.playlists.responses import PlaylistSnapshotResponseModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyEpisodeURI
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyTrackURI
@@ -21,7 +21,7 @@ async def update_playlist_items(
     insert_before: int,
     range_length: int = 1,
     snapshot_id: Optional[str] = None,
-) -> APICallModel[UpdatePlaylistItemsRequest, APIResponse, PlaylistSnapshotResponseModel]:
+) -> APICallModel[UpdatePlaylistItemsRequest, JsonAPIResponse, PlaylistSnapshotResponseModel]:
     """Reorder items in a playlist.
 
     Either reorder or replace items in a playlist depending on the request's parameters.
@@ -51,8 +51,7 @@ async def update_playlist_items(
         range_length=range_length,
         snapshot_id=snapshot_id,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PlaylistSnapshotResponseModel(**response)
+    response = await client.request_json(request)
+    data = PlaylistSnapshotResponseModel.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

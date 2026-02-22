@@ -6,7 +6,7 @@ from spotantic.models import APICallModel
 from spotantic.models.search.requests import SearchForItemIncludeExternal
 from spotantic.models.search.requests import SearchForItemRequest
 from spotantic.models.search.responses import SearchForItemResponse
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemType
 from spotantic.types import SpotifyMarketID
 
@@ -20,7 +20,7 @@ async def search_for_item(
     limit: int = 20,
     offset: int = 0,
     include_external: Optional[SearchForItemIncludeExternal] = None,
-) -> APICallModel[SearchForItemRequest, APIResponse, SearchForItemResponse]:
+) -> APICallModel[SearchForItemRequest, JsonAPIResponse, SearchForItemResponse]:
     """Search for specified items based on a provided query.
 
     Get Spotify catalog information about albums, artists, playlists, tracks, shows,
@@ -51,8 +51,7 @@ async def search_for_item(
         offset=offset,
         include_external=include_external,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = SearchForItemResponse(**response)
+    response = await client.request_json(request)
+    data = SearchForItemResponse.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

@@ -6,8 +6,9 @@ from typing_extensions import deprecated
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.shows.requests import GetSeveralShowsRequest
+from spotantic.models.shows.responses import GetSeveralShowsResponse
 from spotantic.models.spotify import SimplifiedShowModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
@@ -15,7 +16,7 @@ from spotantic.types import SpotifyMarketID
 @deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_several_shows(
     client: SpotanticClient, *, show_ids: Sequence[SpotifyItemID], market: Optional[SpotifyMarketID] = None
-) -> APICallModel[GetSeveralShowsRequest, APIResponse, list[SimplifiedShowModel]]:
+) -> APICallModel[GetSeveralShowsRequest, JsonAPIResponse, list[SimplifiedShowModel]]:
     """Get Spotify catalog information for several shows based on their Spotify IDs.
 
     .. version-deprecated:: 0.1.0
@@ -31,8 +32,7 @@ async def get_several_shows(
         parsed data as model.
     """
     request = GetSeveralShowsRequest.build(show_ids=show_ids, market=market)
-    response = await client.request(request)
-    assert response is not None
-    data = [SimplifiedShowModel(**show_data) for show_data in response["shows"]]
+    response = await client.request_json(request)
+    data = GetSeveralShowsResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.shows)

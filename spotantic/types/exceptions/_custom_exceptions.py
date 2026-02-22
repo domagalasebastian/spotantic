@@ -82,6 +82,16 @@ class SpotanticInsufficientScopeError(SpotanticException):
         return f"<{self.__class__.__name__}: Missing scopes={self.missing_scopes!r}>"
 
 
+class SpotanticInvalidResponseError(SpotanticException):
+    """Exception raised for invalid Spotify API responses (empty or deserialization fails).
+
+    Probably this should never happen. If it fails then most likely the issue is based on
+    the Spotify API server side.
+    """
+
+    pass
+
+
 class SpotanticResponseError(HttpProcessingError, SpotanticException):
     """Exception raised for unsuccessful Spotify API responses (non-2xx status codes).
 

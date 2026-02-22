@@ -5,7 +5,8 @@ from spotantic.models import APICallModel
 from spotantic.models.spotify import ArtistModel
 from spotantic.models.spotify import PagedResultWithCursorsModel
 from spotantic.models.users.requests import GetFollowedArtistsRequest
-from spotantic.types import APIResponse
+from spotantic.models.users.responses import GetFollowedArtistsResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyItemType
 
@@ -16,7 +17,7 @@ async def get_followed_artists(
     item_type: SpotifyItemType = SpotifyItemType.ARTIST,
     after: Optional[SpotifyItemID] = None,
     limit: Optional[int] = 20,
-) -> APICallModel[GetFollowedArtistsRequest, APIResponse, PagedResultWithCursorsModel[ArtistModel]]:
+) -> APICallModel[GetFollowedArtistsRequest, JsonAPIResponse, PagedResultWithCursorsModel[ArtistModel]]:
     """Get the current user's followed artists.
 
     Args:
@@ -35,8 +36,7 @@ async def get_followed_artists(
         after=after,
         limit=limit,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultWithCursorsModel[ArtistModel](**response["artists"])
+    response = await client.request_json(request)
+    data = GetFollowedArtistsResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.artists)

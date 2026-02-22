@@ -3,12 +3,12 @@ from typing import Optional
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import SetPlaybackVolumeRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 
 
 async def set_playback_volume(
     client: SpotanticClient, *, volume_percent: int, device_id: Optional[str] = None
-) -> APICallModel[SetPlaybackVolumeRequest, APIResponse, None]:
+) -> APICallModel[SetPlaybackVolumeRequest, RawAPIResponse, None]:
     """Set the volume for the user's current playback device.
 
     Set the volume for the user’s current playback device. This API only works for users

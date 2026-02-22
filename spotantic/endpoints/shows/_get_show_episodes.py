@@ -5,7 +5,7 @@ from spotantic.models import APICallModel
 from spotantic.models.shows.requests import GetShowEpisodesRequest
 from spotantic.models.spotify import PagedResultModel
 from spotantic.models.spotify import SimplifiedEpisodeModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
@@ -17,7 +17,7 @@ async def get_show_episodes(
     limit: int = 20,
     offset: int = 0,
     market: Optional[SpotifyMarketID] = None,
-) -> APICallModel[GetShowEpisodesRequest, APIResponse, PagedResultModel[SimplifiedEpisodeModel]]:
+) -> APICallModel[GetShowEpisodesRequest, JsonAPIResponse, PagedResultModel[SimplifiedEpisodeModel]]:
     """Return episodes for a show.
 
     Get Spotify catalog information about an show’s episodes.
@@ -41,8 +41,7 @@ async def get_show_episodes(
         offset=offset,
         market=market,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[SimplifiedEpisodeModel](**response)
+    response = await client.request_json(request)
+    data = PagedResultModel[SimplifiedEpisodeModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

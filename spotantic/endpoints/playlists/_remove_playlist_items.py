@@ -6,7 +6,7 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import RemovePlaylistItemsRequest
 from spotantic.models.playlists.responses import PlaylistSnapshotResponseModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyEpisodeURI
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyTrackURI
@@ -18,7 +18,7 @@ async def remove_playlist_items(
     playlist_id: SpotifyItemID,
     uris: Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]],
     snapshot_id: Optional[str] = None,
-) -> APICallModel[RemovePlaylistItemsRequest, APIResponse, PlaylistSnapshotResponseModel]:
+) -> APICallModel[RemovePlaylistItemsRequest, JsonAPIResponse, PlaylistSnapshotResponseModel]:
     """Remove one or more items from a user's playlist.
 
     Args:
@@ -36,8 +36,7 @@ async def remove_playlist_items(
         uris=uris,
         snapshot_id=snapshot_id,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PlaylistSnapshotResponseModel(**response)
+    response = await client.request_json(request)
+    data = PlaylistSnapshotResponseModel.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)
