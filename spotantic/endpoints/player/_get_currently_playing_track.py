@@ -5,7 +5,7 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import GetCurrentlyPlayingTrackRequest
 from spotantic.models.spotify import CurrentlyPlayingItemModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemType
 from spotantic.types import SpotifyMarketID
 
@@ -15,7 +15,7 @@ async def get_currently_playing_track(
     *,
     additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
     market: Optional[SpotifyMarketID] = None,
-) -> APICallModel[GetCurrentlyPlayingTrackRequest, APIResponse, CurrentlyPlayingItemModel]:
+) -> APICallModel[GetCurrentlyPlayingTrackRequest, JsonAPIResponse, CurrentlyPlayingItemModel]:
     """Get the object currently being played on the user's Spotify account.
 
     Args:
@@ -31,8 +31,7 @@ async def get_currently_playing_track(
         additional_types=additional_types,
         market=market,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = CurrentlyPlayingItemModel(**response)
+    response = await client.request_json(request)
+    data = CurrentlyPlayingItemModel.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

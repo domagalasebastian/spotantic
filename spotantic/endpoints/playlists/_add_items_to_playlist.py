@@ -6,7 +6,7 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import AddItemsToPlaylistRequest
 from spotantic.models.playlists.responses import PlaylistSnapshotResponseModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyEpisodeURI
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyTrackURI
@@ -18,7 +18,7 @@ async def add_items_to_playlist(
     playlist_id: SpotifyItemID,
     uris: Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]],
     position: Optional[int] = None,
-) -> APICallModel[AddItemsToPlaylistRequest, APIResponse, PlaylistSnapshotResponseModel]:
+) -> APICallModel[AddItemsToPlaylistRequest, JsonAPIResponse, PlaylistSnapshotResponseModel]:
     """Add one or more items to a user's playlist.
 
     Args:
@@ -36,8 +36,7 @@ async def add_items_to_playlist(
         uris=uris,
         position=position,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PlaylistSnapshotResponseModel(**response)
+    response = await client.request_json(request)
+    data = PlaylistSnapshotResponseModel.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

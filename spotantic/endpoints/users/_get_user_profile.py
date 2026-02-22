@@ -4,7 +4,7 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.spotify import UserModel
 from spotantic.models.users.requests import GetUserProfileRequest
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 
 
 @deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
@@ -12,7 +12,7 @@ async def get_user_profile(
     client: SpotanticClient,
     *,
     user_id: str,
-) -> APICallModel[GetUserProfileRequest, APIResponse, UserModel]:
+) -> APICallModel[GetUserProfileRequest, JsonAPIResponse, UserModel]:
     """Get public profile information about a Spotify user.
 
     .. version-deprecated:: 0.1.0
@@ -27,8 +27,7 @@ async def get_user_profile(
         parsed data as model.
     """
     request = GetUserProfileRequest.build(user_id=user_id)
-    response = await client.request(request)
-    assert response is not None
-    data = UserModel(**response)
+    response = await client.request_json(request)
+    data = UserModel.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

@@ -5,7 +5,7 @@ from spotantic.models import APICallModel
 from spotantic.models.albums.requests import GetAlbumTracksRequest
 from spotantic.models.spotify import PagedResultModel
 from spotantic.models.spotify import SimplifiedTrackModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
@@ -17,7 +17,7 @@ async def get_album_tracks(
     limit: int = 20,
     offset: int = 0,
     market: Optional[SpotifyMarketID] = None,
-) -> APICallModel[GetAlbumTracksRequest, APIResponse, PagedResultModel[SimplifiedTrackModel]]:
+) -> APICallModel[GetAlbumTracksRequest, JsonAPIResponse, PagedResultModel[SimplifiedTrackModel]]:
     """Get Spotify catalog information about an album’s tracks.
     Optional parameters can be used to limit the number of tracks returned.
 
@@ -39,8 +39,7 @@ async def get_album_tracks(
         offset=offset,
         market=market,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[SimplifiedTrackModel](**response)
+    response = await client.request_json(request)
+    data = PagedResultModel[SimplifiedTrackModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

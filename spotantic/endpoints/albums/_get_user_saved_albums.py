@@ -5,13 +5,13 @@ from spotantic.models import APICallModel
 from spotantic.models.albums.requests import GetUserSavedAlbumsRequest
 from spotantic.models.spotify import PagedResultModel
 from spotantic.models.spotify import SavedAlbumModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyMarketID
 
 
 async def get_user_saved_albums(
     client: SpotanticClient, *, limit: int = 20, offset: int = 0, market: Optional[SpotifyMarketID] = None
-) -> APICallModel[GetUserSavedAlbumsRequest, APIResponse, PagedResultModel[SavedAlbumModel]]:
+) -> APICallModel[GetUserSavedAlbumsRequest, JsonAPIResponse, PagedResultModel[SavedAlbumModel]]:
     """Get a list of the albums saved in the current Spotify user's 'Your Music' library.
 
     Args:
@@ -30,8 +30,7 @@ async def get_user_saved_albums(
         offset=offset,
         market=market,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[SavedAlbumModel](**response)
+    response = await client.request_json(request)
+    data = PagedResultModel[SavedAlbumModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

@@ -6,8 +6,9 @@ from typing_extensions import deprecated
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.albums.requests import GetSeveralAlbumsRequest
+from spotantic.models.albums.responses import GetSeveralAlbumsResponse
 from spotantic.models.spotify import AlbumModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
@@ -15,7 +16,7 @@ from spotantic.types import SpotifyMarketID
 @deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_several_albums(
     client: SpotanticClient, *, album_ids: Sequence[SpotifyItemID], market: Optional[SpotifyMarketID] = None
-) -> APICallModel[GetSeveralAlbumsRequest, APIResponse, list[AlbumModel]]:
+) -> APICallModel[GetSeveralAlbumsRequest, JsonAPIResponse, list[AlbumModel]]:
     """Get Spotify catalog information for multiple albums identified by their Spotify IDs.
 
     .. version-deprecated:: 0.1.0
@@ -31,8 +32,7 @@ async def get_several_albums(
         parsed data as model.
     """
     request = GetSeveralAlbumsRequest.build(album_ids=album_ids, market=market)
-    response = await client.request(request)
-    assert response is not None
-    data = [AlbumModel(**album_data) for album_data in response["albums"]]
+    response = await client.request_json(request)
+    data = GetSeveralAlbumsResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.albums)

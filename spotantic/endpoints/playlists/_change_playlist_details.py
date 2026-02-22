@@ -3,7 +3,7 @@ from typing import Optional
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import ChangePlaylistDetailsRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 from spotantic.types import SpotifyItemID
 
 
@@ -15,7 +15,7 @@ async def change_playlist_details(
     public: Optional[bool] = None,
     collaborative: Optional[bool] = None,
     description: Optional[str] = None,
-) -> APICallModel[ChangePlaylistDetailsRequest, APIResponse, None]:
+) -> APICallModel[ChangePlaylistDetailsRequest, RawAPIResponse, None]:
     """Change a playlist's name and public/private state.
 
     Args:

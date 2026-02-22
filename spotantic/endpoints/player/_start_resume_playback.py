@@ -5,7 +5,7 @@ from typing import Union
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import StartResumePlaybackRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 from spotantic.types import SpotifyAlbumURI
 from spotantic.types import SpotifyArtistURI
 from spotantic.types import SpotifyPlaylistURI
@@ -20,7 +20,7 @@ async def start_resume_playback(
     uris: Optional[Sequence[SpotifyTrackURI]] = None,
     offset: Optional[Union[int, SpotifyTrackURI]] = None,
     position_ms: Optional[int] = None,
-) -> APICallModel[StartResumePlaybackRequest, APIResponse, None]:
+) -> APICallModel[StartResumePlaybackRequest, RawAPIResponse, None]:
     """Start or resume the user's playback.
 
     Start a new context or resume current playback on the user's active device. This API only works for users

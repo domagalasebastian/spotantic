@@ -5,7 +5,7 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import GetPlaybackStateRequest
 from spotantic.models.spotify import PlaybackStateModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemType
 from spotantic.types import SpotifyMarketID
 
@@ -15,7 +15,7 @@ async def get_playback_state(
     *,
     additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
     market: Optional[SpotifyMarketID] = None,
-) -> APICallModel[GetPlaybackStateRequest, APIResponse, PlaybackStateModel]:
+) -> APICallModel[GetPlaybackStateRequest, JsonAPIResponse, PlaybackStateModel]:
     """Get information about the user’s current playback state, including track or episode, progress,
     and active device.
 
@@ -32,8 +32,7 @@ async def get_playback_state(
         additional_types=additional_types,
         market=market,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PlaybackStateModel(**response)
+    response = await client.request_json(request)
+    data = PlaybackStateModel.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

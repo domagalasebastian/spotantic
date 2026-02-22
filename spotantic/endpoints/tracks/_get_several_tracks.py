@@ -7,7 +7,8 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.spotify import TrackModel
 from spotantic.models.tracks.requests import GetSeveralTracksRequest
-from spotantic.types import APIResponse
+from spotantic.models.tracks.responses import GetSeveralTracksResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
@@ -15,7 +16,7 @@ from spotantic.types import SpotifyMarketID
 @deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_several_tracks(
     client: SpotanticClient, *, track_ids: Sequence[SpotifyItemID], market: Optional[SpotifyMarketID] = None
-) -> APICallModel[GetSeveralTracksRequest, APIResponse, list[TrackModel]]:
+) -> APICallModel[GetSeveralTracksRequest, JsonAPIResponse, list[TrackModel]]:
     """Get Spotify catalog information for multiple tracks based on their Spotify IDs.
 
     .. version-deprecated:: 0.1.0
@@ -31,8 +32,7 @@ async def get_several_tracks(
         parsed data as model.
     """
     request = GetSeveralTracksRequest.build(track_ids=track_ids, market=market)
-    response = await client.request(request)
-    assert response is not None
-    data = [TrackModel(**track_data) for track_data in response["tracks"]]
+    response = await client.request_json(request)
+    data = GetSeveralTracksResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.tracks)

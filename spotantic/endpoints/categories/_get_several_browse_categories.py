@@ -5,16 +5,17 @@ from typing_extensions import deprecated
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.categories.requests import GetSeveralBrowseCategoriesRequest
+from spotantic.models.categories.responses import GetSeveralBrowseCategoriesResponse
 from spotantic.models.spotify import CategoryModel
 from spotantic.models.spotify import PagedResultModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyLocaleID
 
 
 @deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_several_browse_categories(
     client: SpotanticClient, *, limit: int = 20, offset: int = 0, locale: Optional[SpotifyLocaleID] = None
-) -> APICallModel[GetSeveralBrowseCategoriesRequest, APIResponse, PagedResultModel[CategoryModel]]:
+) -> APICallModel[GetSeveralBrowseCategoriesRequest, JsonAPIResponse, PagedResultModel[CategoryModel]]:
     """Get a list of categories used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
 
     .. version-deprecated:: 0.1.0
@@ -37,8 +38,7 @@ async def get_several_browse_categories(
         offset=offset,
         locale=locale,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[CategoryModel](**response["categories"])
+    response = await client.request_json(request)
+    data = GetSeveralBrowseCategoriesResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.categories)

@@ -4,7 +4,7 @@ from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import CreatePlaylistRequest
 from spotantic.models.spotify import PlaylistModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 
 
 async def create_playlist(
@@ -15,7 +15,7 @@ async def create_playlist(
     description: Optional[str] = None,
     public: Optional[bool] = None,
     collaborative: Optional[bool] = None,
-) -> APICallModel[CreatePlaylistRequest, APIResponse, PlaylistModel]:
+) -> APICallModel[CreatePlaylistRequest, JsonAPIResponse, PlaylistModel]:
     """Create a playlist for the current Spotify user.
 
     Each user is generally limited to a maximum of 11000 playlists.
@@ -39,8 +39,7 @@ async def create_playlist(
         public=public,
         collaborative=collaborative,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PlaylistModel(**response)
+    response = await client.request_json(request)
+    data = PlaylistModel.model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

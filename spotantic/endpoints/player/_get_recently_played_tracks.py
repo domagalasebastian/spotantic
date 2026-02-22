@@ -5,12 +5,12 @@ from spotantic.models import APICallModel
 from spotantic.models.player.requests import GetRecentlyPlayedTracksRequest
 from spotantic.models.spotify import PagedResultWithCursorsModel
 from spotantic.models.spotify import PlayHistoryModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 
 
 async def get_recently_played_tracks(
     client: SpotanticClient, *, limit: int = 20, after: Optional[int] = None, before: Optional[int] = None
-) -> APICallModel[GetRecentlyPlayedTracksRequest, APIResponse, PagedResultWithCursorsModel[PlayHistoryModel]]:
+) -> APICallModel[GetRecentlyPlayedTracksRequest, JsonAPIResponse, PagedResultWithCursorsModel[PlayHistoryModel]]:
     """Get tracks from the current user's recently played tracks.
 
     Args:
@@ -24,8 +24,7 @@ async def get_recently_played_tracks(
         parsed data as model.
     """
     request = GetRecentlyPlayedTracksRequest.build(limit=limit, after=after, before=before)
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultWithCursorsModel[PlayHistoryModel](**response)
+    response = await client.request_json(request)
+    data = PagedResultWithCursorsModel[PlayHistoryModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

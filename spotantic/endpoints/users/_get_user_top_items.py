@@ -8,7 +8,7 @@ from spotantic.models.spotify import TrackModel
 from spotantic.models.users.requests import GetUserTopItemsRequest
 from spotantic.models.users.requests import GetUserTopItemsTimeRange
 from spotantic.models.users.requests import GetUserTopItemsType
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 
 
 async def get_user_top_items(
@@ -19,7 +19,7 @@ async def get_user_top_items(
     limit: int = 20,
     offset: int = 0,
 ) -> APICallModel[
-    GetUserTopItemsRequest, APIResponse, Union[PagedResultModel[ArtistModel], PagedResultModel[TrackModel]]
+    GetUserTopItemsRequest, JsonAPIResponse, Union[PagedResultModel[ArtistModel], PagedResultModel[TrackModel]]
 ]:
     """Get the current user's top artists or tracks based on calculated affinity.
 
@@ -41,12 +41,11 @@ async def get_user_top_items(
         limit=limit,
         offset=offset,
     )
-    response = await client.request(request)
-    assert response is not None
+    response = await client.request_json(request)
     match item_type:
         case GetUserTopItemsType.ARTISTS:
-            data = PagedResultModel[ArtistModel](**response)
+            data = PagedResultModel[ArtistModel].model_validate(response)
         case GetUserTopItemsType.TRACKS:
-            data = PagedResultModel[TrackModel](**response)
+            data = PagedResultModel[TrackModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

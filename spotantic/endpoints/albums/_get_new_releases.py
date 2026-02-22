@@ -3,15 +3,16 @@ from typing_extensions import deprecated
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.albums.requests import GetNewReleasesRequest
+from spotantic.models.albums.responses import GetNewReleasesResponse
 from spotantic.models.spotify import PagedResultModel
 from spotantic.models.spotify import SimplifiedAlbumModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 
 
 @deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_new_releases(
     client: SpotanticClient, *, limit: int = 20, offset: int = 0
-) -> APICallModel[GetNewReleasesRequest, APIResponse, PagedResultModel[SimplifiedAlbumModel]]:
+) -> APICallModel[GetNewReleasesRequest, JsonAPIResponse, PagedResultModel[SimplifiedAlbumModel]]:
     """Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
 
     .. version-deprecated:: 0.1.0
@@ -28,8 +29,7 @@ async def get_new_releases(
         parsed data as model.
     """
     request = GetNewReleasesRequest.build(limit=limit, offset=offset)
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[SimplifiedAlbumModel](**response["albums"])
+    response = await client.request_json(request)
+    data = GetNewReleasesResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.albums)

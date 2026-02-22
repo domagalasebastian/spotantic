@@ -2,17 +2,18 @@ from collections.abc import Sequence
 
 from typing_extensions import deprecated
 
+from spotantic._utils.models._type_validation import validate_is_instance_of
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.tracks.requests import CheckUserSavedTracksRequest
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 
 
 @deprecated("This endpoint is deprecated. Use Check User's Saved Items instead.")
 async def check_user_saved_tracks(
     client: SpotanticClient, *, track_ids: Sequence[SpotifyItemID]
-) -> APICallModel[CheckUserSavedTracksRequest, APIResponse, dict[SpotifyItemID, bool]]:
+) -> APICallModel[CheckUserSavedTracksRequest, JsonAPIResponse, dict[SpotifyItemID, bool]]:
     """Check if one or more tracks is already saved in the current Spotify user's 'Your Music' library.
 
     .. version-deprecated:: 0.1.0
@@ -28,8 +29,8 @@ async def check_user_saved_tracks(
         parsed data as model.
     """
     request = CheckUserSavedTracksRequest.build(track_ids=track_ids)
-    response = await client.request(request)
-    assert response is not None
-    data = dict(zip(track_ids, response))
+    response = await client.request_json(request)
+    validated_response = validate_is_instance_of(response, list[bool])
+    data = dict(zip(track_ids, validated_response, strict=True))
 
     return APICallModel(request=request, response=response, data=data)

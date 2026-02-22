@@ -6,8 +6,9 @@ from typing_extensions import deprecated
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.episodes.requests import GetSeveralEpisodesRequest
+from spotantic.models.episodes.responses import GetSeveralEpisodesResponse
 from spotantic.models.spotify import EpisodeModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
 
@@ -15,7 +16,7 @@ from spotantic.types import SpotifyMarketID
 @deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
 async def get_several_episodes(
     client: SpotanticClient, *, episode_ids: Sequence[SpotifyItemID], market: Optional[SpotifyMarketID] = None
-) -> APICallModel[GetSeveralEpisodesRequest, APIResponse, list[EpisodeModel]]:
+) -> APICallModel[GetSeveralEpisodesRequest, JsonAPIResponse, list[EpisodeModel]]:
     """Get Spotify catalog information for several episodes based on their Spotify IDs.
 
     .. version-deprecated:: 0.1.0
@@ -31,8 +32,7 @@ async def get_several_episodes(
         parsed data as model.
     """
     request = GetSeveralEpisodesRequest.build(episode_ids=episode_ids, market=market)
-    response = await client.request(request)
-    assert response is not None
-    data = [EpisodeModel(**episode_data) for episode_data in response["episodes"]]
+    response = await client.request_json(request)
+    data = GetSeveralEpisodesResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.episodes)

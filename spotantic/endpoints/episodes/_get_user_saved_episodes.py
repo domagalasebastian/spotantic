@@ -5,13 +5,13 @@ from spotantic.models import APICallModel
 from spotantic.models.episodes.requests import GetUserSavedEpisodesRequest
 from spotantic.models.spotify import PagedResultModel
 from spotantic.models.spotify import SavedEpisodeModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyMarketID
 
 
 async def get_user_saved_episodes(
     client: SpotanticClient, *, limit: int = 20, offset: int = 0, market: Optional[SpotifyMarketID] = None
-) -> APICallModel[GetUserSavedEpisodesRequest, APIResponse, PagedResultModel[SavedEpisodeModel]]:
+) -> APICallModel[GetUserSavedEpisodesRequest, JsonAPIResponse, PagedResultModel[SavedEpisodeModel]]:
     """Return a list of the episodes saved in the current Spotify user's library.
 
     Get a list of the episodes saved in the current Spotify user's library.
@@ -32,8 +32,7 @@ async def get_user_saved_episodes(
         offset=offset,
         market=market,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[SavedEpisodeModel](**response)
+    response = await client.request_json(request)
+    data = PagedResultModel[SavedEpisodeModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

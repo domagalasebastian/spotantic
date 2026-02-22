@@ -1,8 +1,9 @@
+from spotantic._utils.models._type_validation import validate_is_instance_of
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import GetPlaylistCoverImageRequest
 from spotantic.models.spotify import ImageModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 
 
@@ -10,7 +11,7 @@ async def get_playlist_cover_image(
     client: SpotanticClient,
     *,
     playlist_id: SpotifyItemID,
-) -> APICallModel[GetPlaylistCoverImageRequest, APIResponse, list[ImageModel]]:
+) -> APICallModel[GetPlaylistCoverImageRequest, JsonAPIResponse, list[ImageModel]]:
     """Get the current image associated with a specific playlist.
 
     Args:
@@ -24,8 +25,7 @@ async def get_playlist_cover_image(
     request = GetPlaylistCoverImageRequest.build(
         playlist_id=playlist_id,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = [ImageModel(**image_data) for image_data in response]
+    response = await client.request_json(request)
+    data = validate_is_instance_of(response, list[ImageModel])
 
     return APICallModel(request=request, response=response, data=data)

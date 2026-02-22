@@ -3,12 +3,12 @@ from typing import Optional
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import TogglePlaybackShuffleRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 
 
 async def toggle_playback_shuffle(
     client: SpotanticClient, *, state: bool, device_id: Optional[str] = None
-) -> APICallModel[TogglePlaybackShuffleRequest, APIResponse, None]:
+) -> APICallModel[TogglePlaybackShuffleRequest, RawAPIResponse, None]:
     """Toggle shuffle state for user's playback.
 
     Toggle shuffle on or off for user’s playback. This API only works for users who have Spotify Premium.

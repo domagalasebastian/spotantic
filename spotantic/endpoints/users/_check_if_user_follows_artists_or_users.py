@@ -2,10 +2,11 @@ from collections.abc import Sequence
 
 from typing_extensions import deprecated
 
+from spotantic._utils.models._type_validation import validate_is_instance_of
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.users.requests import CheckIfUserFollowsArtistsOrUsersRequest
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyItemType
 
@@ -16,7 +17,7 @@ async def check_if_user_follows_artists_or_users(
     *,
     item_type: SpotifyItemType,
     item_ids: Sequence[str],
-) -> APICallModel[CheckIfUserFollowsArtistsOrUsersRequest, APIResponse, dict[SpotifyItemID, bool]]:
+) -> APICallModel[CheckIfUserFollowsArtistsOrUsersRequest, JsonAPIResponse, dict[SpotifyItemID, bool]]:
     """Check to see if the current user is following one or more artists or other Spotify users.
 
     .. version-deprecated:: 0.1.0
@@ -36,8 +37,8 @@ async def check_if_user_follows_artists_or_users(
         item_type=item_type,
         item_ids=item_ids,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = dict(zip(item_ids, response))
+    response = await client.request_json(request)
+    validated_response = validate_is_instance_of(response, list[bool])
+    data = dict(zip(item_ids, validated_response, strict=True))
 
     return APICallModel(request=request, response=response, data=data)

@@ -9,8 +9,8 @@ from spotantic.models.spotify import EpisodeModel
 from spotantic.models.spotify import TrackModel
 
 
-class UserQueueModel(BaseModel):
-    """Model representing information about the queue."""
+class GetUserQueueResponse(BaseModel):
+    """Response model for Get User Queue endpoint."""
 
     currently_playing: Optional[Union[TrackModel, EpisodeModel]] = Field(None, discriminator="item_type")
     """The currently playing track or episode."""

@@ -3,12 +3,12 @@ from typing import Optional
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import SeekToPositionRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 
 
 async def seek_to_position(
     client: SpotanticClient, *, position_ms: int, device_id: Optional[str] = None
-) -> APICallModel[SeekToPositionRequest, APIResponse, None]:
+) -> APICallModel[SeekToPositionRequest, RawAPIResponse, None]:
     """Seek to position in currently playing track.
 
     Seeks to the given position in the user’s currently playing track. This API only works for users

@@ -4,12 +4,12 @@ from typing import Optional
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import TransferPlaybackRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 
 
 async def transfer_playback(
     client: SpotanticClient, *, device_ids: Sequence[str], play: Optional[bool] = None
-) -> APICallModel[TransferPlaybackRequest, APIResponse, None]:
+) -> APICallModel[TransferPlaybackRequest, RawAPIResponse, None]:
     """Transfer playback to a new device.
 
     Transfer playback to a new device and optionally begin playback. This API only works for users

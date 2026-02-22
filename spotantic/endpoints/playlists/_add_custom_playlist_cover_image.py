@@ -5,7 +5,7 @@ from pydantic import FilePath
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import AddCustomPlaylistCoverImageRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 from spotantic.types import SpotifyItemID
 
 
@@ -15,7 +15,7 @@ async def add_custom_playlist_cover_image(
     playlist_id: SpotifyItemID,
     image_data: Optional[bytes] = None,
     file_path: Optional[FilePath] = None,
-) -> APICallModel[AddCustomPlaylistCoverImageRequest, APIResponse, None]:
+) -> APICallModel[AddCustomPlaylistCoverImageRequest, RawAPIResponse, None]:
     """Replace the image used to represent a specific playlist.
 
     Args:

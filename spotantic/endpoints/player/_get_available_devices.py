@@ -1,13 +1,14 @@
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import GetAvailableDevicesRequest
+from spotantic.models.player.responses import GetAvailableDevicesResponse
 from spotantic.models.spotify import DeviceModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 
 
 async def get_available_devices(
     client: SpotanticClient,
-) -> APICallModel[GetAvailableDevicesRequest, APIResponse, list[DeviceModel]]:
+) -> APICallModel[GetAvailableDevicesRequest, JsonAPIResponse, list[DeviceModel]]:
     """Get information about a user’s available Spotify Connect devices.
 
     Some device models are not supported and will not be listed in the API response.
@@ -20,8 +21,7 @@ async def get_available_devices(
         parsed data as model.
     """
     request = GetAvailableDevicesRequest.build()
-    response = await client.request(request)
-    assert response is not None
-    data = [DeviceModel(**device_data) for device_data in response["devices"]]
+    response = await client.request_json(request)
+    data = GetAvailableDevicesResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.devices)

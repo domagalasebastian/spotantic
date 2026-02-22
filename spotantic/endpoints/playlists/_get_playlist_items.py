@@ -6,7 +6,7 @@ from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import GetPlaylistItemsRequest
 from spotantic.models.spotify import PagedResultModel
 from spotantic.models.spotify import PlaylistTrackModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyItemType
 from spotantic.types import SpotifyMarketID
@@ -21,7 +21,7 @@ async def get_playlist_items(
     offset: int = 0,
     additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
     market: Optional[SpotifyMarketID] = None,
-) -> APICallModel[GetPlaylistItemsRequest, APIResponse, PagedResultModel[PlaylistTrackModel]]:
+) -> APICallModel[GetPlaylistItemsRequest, JsonAPIResponse, PagedResultModel[PlaylistTrackModel]]:
     """Get full details of the items of a playlist owned by a Spotify user.
 
     Note: This endpoint is only accessible for playlists owned by the current user or
@@ -49,8 +49,7 @@ async def get_playlist_items(
         additional_types=additional_types,
         market=market,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[PlaylistTrackModel](**response)
+    response = await client.request_json(request)
+    data = PagedResultModel[PlaylistTrackModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)

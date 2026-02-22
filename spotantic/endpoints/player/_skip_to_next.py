@@ -3,12 +3,12 @@ from typing import Optional
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.player.requests import SkipToNextRequest
-from spotantic.types import APIResponse
+from spotantic.types import RawAPIResponse
 
 
 async def skip_to_next(
     client: SpotanticClient, *, device_id: Optional[str] = None
-) -> APICallModel[SkipToNextRequest, APIResponse, None]:
+) -> APICallModel[SkipToNextRequest, RawAPIResponse, None]:
     """Skip to next track in the user's queue.
 
     Skips to next track in the user’s queue. This API only works for users who have Spotify Premium.

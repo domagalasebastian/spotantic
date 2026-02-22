@@ -3,7 +3,7 @@ from spotantic.models import APICallModel
 from spotantic.models.playlists.requests import GetCurrentUserPlaylistsRequest
 from spotantic.models.spotify import PagedResultModel
 from spotantic.models.spotify import SimplifiedPlaylistModel
-from spotantic.types import APIResponse
+from spotantic.types import JsonAPIResponse
 
 
 async def get_current_user_playlist(
@@ -11,7 +11,7 @@ async def get_current_user_playlist(
     *,
     limit: int = 20,
     offset: int = 0,
-) -> APICallModel[GetCurrentUserPlaylistsRequest, APIResponse, PagedResultModel[SimplifiedPlaylistModel]]:
+) -> APICallModel[GetCurrentUserPlaylistsRequest, JsonAPIResponse, PagedResultModel[SimplifiedPlaylistModel]]:
     """Get a list of the playlists owned or followed by the current Spotify user.
 
     Args:
@@ -27,8 +27,7 @@ async def get_current_user_playlist(
         limit=limit,
         offset=offset,
     )
-    response = await client.request(request)
-    assert response is not None
-    data = PagedResultModel[SimplifiedPlaylistModel](**response)
+    response = await client.request_json(request)
+    data = PagedResultModel[SimplifiedPlaylistModel].model_validate(response)
 
     return APICallModel(request=request, response=response, data=data)
