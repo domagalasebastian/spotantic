@@ -226,7 +226,7 @@ class AuthManagerBase(ABC):
 
                 access_token_data = await response.json()
 
-        token_info = AccessTokenInfo(**access_token_data)
+        token_info = AccessTokenInfo.model_validate(access_token_data)
 
         if self._auth_settings.store_access_token:
             self._logger.info(f"Saving access token to file: {self._auth_settings.access_token_file_path}")

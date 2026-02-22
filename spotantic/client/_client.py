@@ -219,7 +219,7 @@ class SpotanticClient:
                 "Invalid error response! Expected to get response with the error details!"
             ) from e
 
-        err_info = ErrorResponseModel(**payload.get("error"))
+        err_info = ErrorResponseModel.model_validate(payload.get("error"))
         if status == HTTPStatus.UNAUTHORIZED:
             raise SpotanticUnauthorizedError(error_response=err_info)
         elif status == HTTPStatus.TOO_MANY_REQUESTS:
