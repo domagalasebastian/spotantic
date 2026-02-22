@@ -1,5 +1,3 @@
-from aiohttp import BasicAuth
-
 from spotantic.models.auth import AccessTokenRequestBody
 from spotantic.models.auth import AuthCodeRequestParams
 
@@ -62,7 +60,7 @@ class AuthCodeFlowManager(RefreshableAuthManager):
             code=code,
             redirect_uri=self._auth_settings.redirect_uri,
         )
-        auth_header = BasicAuth(self._auth_settings.client_id, self._auth_settings.client_secret.get_secret_value())
+        auth_header = self.auth_settings.get_basic_auth()
         self._access_token_info = await self._get_access_token(request_body=request_body, auth=auth_header)
 
     async def refresh(self) -> None:
@@ -94,5 +92,5 @@ class AuthCodeFlowManager(RefreshableAuthManager):
             grant_type=REFRESH_AUTH_CODE_FLOW_GRANT_TYPE,
             refresh_token=self._access_token_info.refresh_token,
         )
-        auth_header = BasicAuth(self._auth_settings.client_id, self._auth_settings.client_secret.get_secret_value())
+        auth_header = self.auth_settings.get_basic_auth()
         self._access_token_info = await self._get_access_token(request_body=request_body, auth=auth_header)
