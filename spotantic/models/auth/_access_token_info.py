@@ -8,12 +8,16 @@ from typing import Literal
 from typing import Optional
 
 from pydantic import BaseModel
+from pydantic import SecretStr
+from pydantic import field_serializer
+
+from spotantic._utils.models._custom_serializers import secret_str_to_str
 
 
 class AccessTokenInfo(BaseModel):
     """Model representing information about an access token."""
 
-    access_token: str
+    access_token: SecretStr
     """An access token that can be provided in subsequent calls, for example to Spotify Web API services."""
 
     token_type: Literal["Bearer"]
@@ -25,12 +29,24 @@ class AccessTokenInfo(BaseModel):
     expires_in: int
     """The time period (in seconds) for which the access token is valid."""
 
-    refresh_token: Optional[str] = None
+    refresh_token: Optional[SecretStr] = None
     """A security credential that allows client applications to obtain new access tokens
     without requiring users to reauthorize the application."""
 
     expires_at: Optional[datetime] = None
     """Datetime object informing when the token expires."""
+
+    @field_serializer("access_token", "refresh_token", when_used="json-unless-none")
+    def dump_secret_value(self, secret_val: SecretStr) -> str:
+        """Dumps a secret value to plain str.
+
+        Args:
+            secret_val: Secret string.
+
+        Returns:
+            The same string in the plain-text form.
+        """
+        return secret_str_to_str(secret_val)
 
     def model_post_init(self, context: Any, /) -> None:
         """Set `expires_at` when not provided, assuming this is a new access token.
@@ -95,4 +111,4 @@ class AccessTokenInfo(BaseModel):
         Returns:
             Authorization header for API calls.
         """
-        return {"Authorization": f"{self.token_type} {self.access_token}"}
+        return {"Authorization": f"{self.token_type} {self.access_token.get_secret_value()}"}

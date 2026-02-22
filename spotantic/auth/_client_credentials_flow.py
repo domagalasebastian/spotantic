@@ -1,5 +1,3 @@
-from aiohttp import BasicAuth
-
 from spotantic.models.auth import AccessTokenRequestBody
 
 from ._auth_manager_base import AuthManagerBase
@@ -40,5 +38,5 @@ class ClientCredentialsFlowManager(AuthManagerBase):
         request_body = AccessTokenRequestBody(
             grant_type=CLIENT_CREDENTIALS_FLOW_GRANT_TYPE,
         )
-        auth_header = BasicAuth(self._auth_settings.client_id, self._auth_settings.client_secret.get_secret_value())
+        auth_header = self.auth_settings.get_basic_auth()
         self._access_token_info = await self._get_access_token(request_body=request_body, auth=auth_header)
