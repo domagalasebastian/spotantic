@@ -10,3 +10,8 @@ Request models
 --------------
 
 .. automodule:: spotantic.models.albums.requests
+
+Response models
+---------------
+
+.. automodule:: spotantic.models.albums.responses

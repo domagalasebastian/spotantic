@@ -10,3 +10,8 @@ Request models
 --------------
 
 .. automodule:: spotantic.models.shows.requests
+
+Response models
+---------------
+
+.. automodule:: spotantic.models.shows.responses
