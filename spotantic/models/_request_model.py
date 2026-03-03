@@ -46,7 +46,7 @@ class RequestHeadersModel(EntityHeadersModel):
     pass
 
 
-class RequestModel[ParamsModelT, BodyModelT](BaseModel):
+class RequestModel[ParamsModelT: (BaseModel, None), BodyModelT: (BaseModel, None)](BaseModel):
     """Model representing a complete Spotify API request.
 
     Encapsulates all information needed to make an HTTP request to the Spotify API:
