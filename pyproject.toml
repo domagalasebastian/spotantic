@@ -22,9 +22,6 @@ dev = [
     "sphinx-rtd-theme>=3.1.0",
 ]
 
-[tool.setuptools]
-packages = ["spotantic"]
-
 [tool.ruff]
 line-length = 120
 indent-width = 4
@@ -39,7 +36,7 @@ fixable = ["ALL"]
 unfixable = []
 
 [tool.ruff.lint.isort]
-known-first-party = ["spotantic"]
+known-first-party = ["src"]
 force-single-line = true
 
 [tool.ruff.lint.pydocstyle]
@@ -59,12 +56,15 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 
 [tool.pyright]
-exclude = ["**/__pycache__", ".venv"]
+exclude = ["**/__pycache__", ".venv", "**/node_modules", "**/.*"]
 venvPath = "."
 venv = ".venv"
 
 [tool.pytest]
 minversion = "9.0"
-addopts = ["-ra"]
+addopts = [
+    "-ra",
+    "--import-mode=importlib",
+]
 testpaths = ["tests"]
 asyncio_mode = "auto"
