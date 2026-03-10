@@ -34,7 +34,7 @@ class AddItemsToPlaylistRequestParams(BaseModel):
     uris: Annotated[
         Optional[Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]]],
         Field(max_length=100),
-        PlainSerializer(sequence_to_comma_separated_str, return_type=str),
+        PlainSerializer(sequence_to_comma_separated_str, return_type=str, when_used="unless-none"),
     ] = None
     """A list of Spotify URIs for the items to add."""
 
