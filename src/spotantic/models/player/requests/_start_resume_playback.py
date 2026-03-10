@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import model_validator
 
+from spotantic._utils.models._type_validation import validate_is_instance_of
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -23,7 +24,7 @@ class PositionOffsetModel(BaseModel):
     """Offset model based on position index."""
 
     position: Annotated[int, Field(ge=0)]
-    """Indicates the position in milliseconds to start playback."""
+    """Position in Album/Playlist to start playback from. It is 0-based value."""
 
 
 class URIOffsetModel(BaseModel):
@@ -72,8 +73,11 @@ class StartResumePlaybackRequestBody(BaseModel):
             if self.context_uri is None and self.uris is None:
                 raise ValueError("Offset without `context_uri` or `uris` not allowed!")
 
-            if not isinstance(self.context_uri, Optional[Union[SpotifyAlbumURI, SpotifyPlaylistURI]]):
-                raise ValueError("Offset is available when `context_uri` corresponds to an album or playlist object!")
+            if self.context_uri is not None:
+                if not validate_is_instance_of(self.context_uri, Union[SpotifyAlbumURI, SpotifyPlaylistURI]):
+                    raise ValueError(
+                        "Offset is available when `context_uri` corresponds to an album or playlist object!"
+                    )
 
             if self.uris is not None:
                 if isinstance(self.offset, PositionOffsetModel) and self.offset.position > len(self.uris):
