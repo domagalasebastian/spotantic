@@ -1,9 +1,9 @@
 from typing_extensions import deprecated
 
-from spotantic._utils.models._type_validation import validate_is_instance_of
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
 from spotantic.models.markets.requests import GetAvailableMarketsRequest
+from spotantic.models.markets.responses import GetAvailableMarketsResponse
 from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyMarketID
 
@@ -26,6 +26,6 @@ async def get_available_markets(
     """
     request = GetAvailableMarketsRequest.build()
     response = await client.request_json(request)
-    data = validate_is_instance_of(response, list[SpotifyMarketID])
+    data = GetAvailableMarketsResponse.model_validate(response)
 
-    return APICallModel(request=request, response=response, data=data)
+    return APICallModel(request=request, response=response, data=data.markets)
