@@ -48,7 +48,7 @@ def retry_on_failure_decorator(
 
     @wraps(func)
     async def wrapper(client: SpotanticClient, *args: P.args, **kwargs: P.kwargs) -> RawAPIResponse:
-        for attempt in range(2, client.max_attempts + 1):
+        for attempt in range(1, client.max_attempts + 1):
             try:
                 return await func(client, *args, **kwargs)
             except (SpotanticUnauthorizedError, SpotanticTooManyRequests) as e:
