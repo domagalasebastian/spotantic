@@ -6,11 +6,10 @@ from spotantic.models.episodes.requests import CheckUserSavedEpisodesRequest
 from spotantic.models.episodes.requests import CheckUserSavedEpisodesRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_check_user_saved_episodes_request():
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_check_user_saved_episodes_request(example_instances_of_type):
+    example_id = example_instances_of_type[SpotifyItemID]
     req = CheckUserSavedEpisodesRequest.build(episode_ids=[example_id, example_id])
 
     assert req.endpoint == "me/episodes/contains"

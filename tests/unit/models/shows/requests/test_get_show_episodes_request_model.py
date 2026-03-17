@@ -7,11 +7,10 @@ from spotantic.models.shows.requests import GetShowEpisodesRequest
 from spotantic.models.shows.requests import GetShowEpisodesRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_show_episodes_request_model_serializes_params() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_get_show_episodes_request_model_serializes_params(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
 
     req = GetShowEpisodesRequest.build(show_id=example_id, limit=5, offset=2, market="US")
 
@@ -27,8 +26,8 @@ def test_get_show_episodes_request_model_serializes_params() -> None:
     assert params.market == "US"
 
 
-def test_get_show_episodes_request_model_rejects_invalid_limit() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_get_show_episodes_request_model_rejects_invalid_limit(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
 
     with pytest.raises(ValidationError):
         GetShowEpisodesRequest.build(show_id=example_id, limit=0, offset=0)

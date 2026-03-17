@@ -9,12 +9,11 @@ from spotantic.models.playlists.requests import RemovePlaylistItemsRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyTrackURI
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_remove_playlist_items_request_model_serializes_tracks() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
-    example_uri = _example_instances_of_type[SpotifyTrackURI]
+def test_remove_playlist_items_request_model_serializes_tracks(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
+    example_uri = example_instances_of_type[SpotifyTrackURI]
     snapshot_id = "s1"
     req = RemovePlaylistItemsRequest.build(playlist_id=example_id, uris=[example_uri], snapshot_id=snapshot_id)
 
@@ -37,9 +36,9 @@ def test_remove_playlist_items_request_model_serializes_tracks() -> None:
     assert params.playlist_id == example_id
 
 
-def test_remove_playlist_items_request_model_rejects_too_many_uris() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
-    example_uri = _example_instances_of_type[SpotifyTrackURI]
+def test_remove_playlist_items_request_model_rejects_too_many_uris(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
+    example_uri = example_instances_of_type[SpotifyTrackURI]
     uris = [example_uri] * 101
     with pytest.raises(ValidationError):
         RemovePlaylistItemsRequest.build(playlist_id=example_id, uris=uris)

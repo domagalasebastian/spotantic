@@ -7,11 +7,10 @@ from spotantic.models.albums.requests import RemoveUserSavedAlbumsRequest
 from spotantic.models.albums.requests import RemoveUserSavedAlbumsRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_remove_user_saved_albums_request():
-    example_album_id = _example_instances_of_type[SpotifyItemID]
+def test_remove_user_saved_albums_request(example_instances_of_type):
+    example_album_id = example_instances_of_type[SpotifyItemID]
     album_ids = [example_album_id, example_album_id]
     req = RemoveUserSavedAlbumsRequest.build(album_ids=album_ids)
 

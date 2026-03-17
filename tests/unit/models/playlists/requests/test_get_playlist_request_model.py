@@ -6,11 +6,10 @@ from spotantic.models.playlists.requests import GetPlaylistRequest
 from spotantic.models.playlists.requests import GetPlaylistRequestParams
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyItemType
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_playlist_request_model_serializes_additional_types() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_get_playlist_request_model_serializes_additional_types(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     fields = "name"
     market = "US"
     req = GetPlaylistRequest.build(
@@ -33,8 +32,8 @@ def test_get_playlist_request_model_serializes_additional_types() -> None:
     assert params_dump["id"] == example_id
 
 
-def test_get_playlist_request_model_rejects_unsupported_item_type() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_get_playlist_request_model_rejects_unsupported_item_type(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     with pytest.raises(ValueError):
         GetPlaylistRequest.build(
             playlist_id=example_id,

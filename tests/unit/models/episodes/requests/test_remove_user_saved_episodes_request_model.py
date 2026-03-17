@@ -7,11 +7,10 @@ from spotantic.models.episodes.requests import RemoveUserSavedEpisodesRequest
 from spotantic.models.episodes.requests import RemoveUserSavedEpisodesRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_remove_user_saved_episodes_request():
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_remove_user_saved_episodes_request(example_instances_of_type):
+    example_id = example_instances_of_type[SpotifyItemID]
     req = RemoveUserSavedEpisodesRequest.build(episode_ids=[example_id, example_id])
 
     assert req.endpoint == "me/episodes"

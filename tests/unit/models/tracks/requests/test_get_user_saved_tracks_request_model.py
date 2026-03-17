@@ -7,11 +7,10 @@ from spotantic.models.tracks.requests import GetUserSavedTracksRequest
 from spotantic.models.tracks.requests import GetUserSavedTracksRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyMarketID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_user_saved_tracks_request():
-    market = _example_instances_of_type[SpotifyMarketID]
+def test_get_user_saved_tracks_request(example_instances_of_type):
+    market = example_instances_of_type[SpotifyMarketID]
     limit = 50
     offset = 10
     request = GetUserSavedTracksRequest.build(limit=limit, offset=offset, market=market)

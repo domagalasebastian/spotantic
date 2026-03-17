@@ -3,11 +3,10 @@ from http import HTTPMethod
 from spotantic.models.playlists.requests import GetPlaylistCoverImageRequest
 from spotantic.models.playlists.requests import GetPlaylistCoverImageRequestParams
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_playlist_cover_image_request_model():
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_get_playlist_cover_image_request_model(example_instances_of_type):
+    example_id = example_instances_of_type[SpotifyItemID]
     req = GetPlaylistCoverImageRequest.build(playlist_id=example_id)
 
     assert req.endpoint == f"playlists/{example_id}/images"

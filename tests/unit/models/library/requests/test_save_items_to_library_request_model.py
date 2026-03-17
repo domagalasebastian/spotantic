@@ -7,11 +7,10 @@ from spotantic.models.library.requests import SaveItemsToLibraryRequest
 from spotantic.models.library.requests import SaveItemsToLibraryRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyTrackURI
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_save_items_to_library_request_model():
-    example_uri = _example_instances_of_type[SpotifyTrackURI]
+def test_save_items_to_library_request_model(example_instances_of_type):
+    example_uri = example_instances_of_type[SpotifyTrackURI]
 
     req = SaveItemsToLibraryRequest.build(uris=[example_uri, example_uri])
 
@@ -30,8 +29,8 @@ def test_save_items_to_library_request_model():
     assert params_dump["uris"] == ",".join([example_uri, example_uri])
 
 
-def test_save_items_to_library_request_model_rejects_too_many_uris():
-    example_uri = _example_instances_of_type[SpotifyTrackURI]
+def test_save_items_to_library_request_model_rejects_too_many_uris(example_instances_of_type):
+    example_uri = example_instances_of_type[SpotifyTrackURI]
 
     with pytest.raises(ValidationError):
         too_many = [example_uri] * 41

@@ -6,11 +6,10 @@ from spotantic.models.shows.requests import CheckUserSavedShowsRequest
 from spotantic.models.shows.requests import CheckUserSavedShowsRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_check_user_saved_shows_request_model_serializes_ids() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_check_user_saved_shows_request_model_serializes_ids(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     req = CheckUserSavedShowsRequest.build(show_ids=[example_id, example_id])
 
     assert req.endpoint == "me/shows/contains"
@@ -25,8 +24,8 @@ def test_check_user_saved_shows_request_model_serializes_ids() -> None:
     assert params_dump["ids"] == ",".join([example_id, example_id])
 
 
-def test_check_user_saved_shows_request_model_rejects_too_many_ids() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_check_user_saved_shows_request_model_rejects_too_many_ids(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
 
     with pytest.raises(Exception):
         too_many = [example_id] * 51
