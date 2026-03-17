@@ -7,11 +7,10 @@ from spotantic.models.episodes.requests import GetUserSavedEpisodesRequest
 from spotantic.models.episodes.requests import GetUserSavedEpisodesRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyMarketID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_user_saved_episodes_request():
-    market = _example_instances_of_type[SpotifyMarketID]
+def test_get_user_saved_episodes_request(example_instances_of_type):
+    market = example_instances_of_type[SpotifyMarketID]
     req = GetUserSavedEpisodesRequest.build(limit=10, offset=2, market=market)
 
     assert req.endpoint == "me/episodes"

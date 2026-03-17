@@ -6,11 +6,10 @@ from pydantic import ValidationError
 from spotantic.models.player.requests import AddItemToPlaybackQueueRequest
 from spotantic.models.player.requests import AddItemToPlaybackQueueRequestParams
 from spotantic.types import SpotifyTrackURI
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_add_item_to_playback_queue_request_model():
-    example_uri = _example_instances_of_type[SpotifyTrackURI]
+def test_add_item_to_playback_queue_request_model(example_instances_of_type):
+    example_uri = example_instances_of_type[SpotifyTrackURI]
     req = AddItemToPlaybackQueueRequest.build(uri=example_uri, device_id="device-1")
 
     assert req.endpoint == "me/player/queue"

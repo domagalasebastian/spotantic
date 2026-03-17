@@ -8,7 +8,6 @@ from spotantic.models.users.requests import GetFollowedArtistsRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyItemType
-from tests.unit._helpers import _example_instances_of_type
 
 
 def test_get_followed_artists_request():
@@ -26,8 +25,8 @@ def test_get_followed_artists_request():
     assert request.body is None
 
 
-def test_get_followed_artists_request_with_after_and_limit():
-    after_id = _example_instances_of_type[SpotifyItemID]
+def test_get_followed_artists_request_with_after_and_limit(example_instances_of_type):
+    after_id = example_instances_of_type[SpotifyItemID]
     request = GetFollowedArtistsRequest.build(
         item_type=SpotifyItemType.ARTIST,
         after=after_id,

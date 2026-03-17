@@ -8,12 +8,11 @@ from spotantic.models.artists.requests import GetArtistAlbumsRequestParams
 from spotantic.types import AlbumTypes
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_artist_albums_request():
-    artist_id = _example_instances_of_type[SpotifyItemID]
-    market = _example_instances_of_type[SpotifyMarketID]
+def test_get_artist_albums_request(example_instances_of_type):
+    artist_id = example_instances_of_type[SpotifyItemID]
+    market = example_instances_of_type[SpotifyMarketID]
     include = [AlbumTypes.ALBUM, AlbumTypes.SINGLE]
     request = GetArtistAlbumsRequest.build(
         artist_id=artist_id,

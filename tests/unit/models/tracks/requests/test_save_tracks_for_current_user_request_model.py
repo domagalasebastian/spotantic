@@ -10,11 +10,10 @@ from spotantic.models.tracks.requests import SaveTracksForCurrentUserRequestBody
 from spotantic.models.tracks.requests._save_tracks_for_current_user import TimestampTrackIDModel
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_save_tracks_for_current_user_request_with_track_ids():
-    example_track_id = _example_instances_of_type[SpotifyItemID]
+def test_save_tracks_for_current_user_request_with_track_ids(example_instances_of_type):
+    example_track_id = example_instances_of_type[SpotifyItemID]
     track_ids = [example_track_id, example_track_id]
     request = SaveTracksForCurrentUserRequest.build(track_ids=track_ids)
 
@@ -32,8 +31,8 @@ def test_save_tracks_for_current_user_request_with_track_ids():
     assert body_dump["ids"] == track_ids
 
 
-def test_save_tracks_for_current_user_request_with_timestamped_ids():
-    example_track_id = _example_instances_of_type[SpotifyItemID]
+def test_save_tracks_for_current_user_request_with_timestamped_ids(example_instances_of_type):
+    example_track_id = example_instances_of_type[SpotifyItemID]
     now = datetime.now(timezone.utc)
     timestamped_ids = {example_track_id: now}
     request = SaveTracksForCurrentUserRequest.build(timestamped_ids=timestamped_ids)
@@ -50,8 +49,8 @@ def test_save_tracks_for_current_user_request_with_timestamped_ids():
     assert request.params is None
 
 
-def test_save_tracks_for_current_user_request_too_many_ids():
-    example_track_id = _example_instances_of_type[SpotifyItemID]
+def test_save_tracks_for_current_user_request_too_many_ids(example_instances_of_type):
+    example_track_id = example_instances_of_type[SpotifyItemID]
     too_many_ids = [example_track_id] * 51
 
     with pytest.raises(ValidationError):

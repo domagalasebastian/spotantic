@@ -7,13 +7,12 @@ from spotantic.models.albums.requests import GetSeveralAlbumsRequest
 from spotantic.models.albums.requests import GetSeveralAlbumsRequestParams
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_several_albums_request():
-    example_album_id = _example_instances_of_type[SpotifyItemID]
+def test_get_several_albums_request(example_instances_of_type):
+    example_album_id = example_instances_of_type[SpotifyItemID]
     album_ids = [example_album_id, example_album_id]
-    market = _example_instances_of_type[SpotifyMarketID]
+    market = example_instances_of_type[SpotifyMarketID]
     request = GetSeveralAlbumsRequest.build(album_ids=album_ids, market=market)
 
     assert request.endpoint == "albums"

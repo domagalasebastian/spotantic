@@ -4,12 +4,11 @@ from spotantic.models.tracks.requests import GetTrackRequest
 from spotantic.models.tracks.requests import GetTrackRequestParams
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_track_request():
-    track_id = _example_instances_of_type[SpotifyItemID]
-    market = _example_instances_of_type[SpotifyMarketID]
+def test_get_track_request(example_instances_of_type):
+    track_id = example_instances_of_type[SpotifyItemID]
+    market = example_instances_of_type[SpotifyMarketID]
     request = GetTrackRequest.build(track_id=track_id, market=market)
 
     assert request.endpoint == f"tracks/{track_id}"

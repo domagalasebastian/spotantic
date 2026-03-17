@@ -5,11 +5,10 @@ from spotantic.models.users.requests import FollowPlaylistRequestBody
 from spotantic.models.users.requests import FollowPlaylistRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_follow_playlist_request():
-    playlist_id = _example_instances_of_type[SpotifyItemID]
+def test_follow_playlist_request(example_instances_of_type):
+    playlist_id = example_instances_of_type[SpotifyItemID]
     request = FollowPlaylistRequest.build(playlist_id=playlist_id, public=True)
 
     assert request.endpoint == f"playlists/{playlist_id}/followers"

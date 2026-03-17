@@ -3,11 +3,10 @@ from http import HTTPMethod
 from spotantic.models.artists.requests import GetArtistRequest
 from spotantic.models.artists.requests import GetArtistRequestParams
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_artist_request():
-    artist_id = _example_instances_of_type[SpotifyItemID]
+def test_get_artist_request(example_instances_of_type):
+    artist_id = example_instances_of_type[SpotifyItemID]
     request = GetArtistRequest.build(artist_id=artist_id)
 
     assert request.endpoint == f"artists/{artist_id}"

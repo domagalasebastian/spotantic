@@ -7,12 +7,13 @@ from spotantic.models.episodes.requests import GetSeveralEpisodesRequest
 from spotantic.models.episodes.requests import GetSeveralEpisodesRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
+from spotantic.types import SpotifyMarketID
 
 
-def test_get_several_episodes_request():
-    example_id = _example_instances_of_type[SpotifyItemID]
-    req = GetSeveralEpisodesRequest.build(episode_ids=[example_id, example_id], market="US")
+def test_get_several_episodes_request(example_instances_of_type):
+    example_id = example_instances_of_type[SpotifyItemID]
+    market = example_instances_of_type[SpotifyMarketID]
+    req = GetSeveralEpisodesRequest.build(episode_ids=[example_id, example_id], market=market)
 
     assert req.endpoint == "episodes"
     assert AuthScope.USER_READ_PLAYBACK_POSITION in req.required_scopes
@@ -21,7 +22,7 @@ def test_get_several_episodes_request():
     params = req.params
     assert isinstance(params, GetSeveralEpisodesRequestParams)
     assert params.episode_ids == [example_id, example_id]
-    assert params.market == "US"
+    assert params.market == market
     assert req.body is None
 
     params_dump = params.model_dump(by_alias=True)

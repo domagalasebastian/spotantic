@@ -5,12 +5,11 @@ from spotantic.models.episodes.requests import GetEpisodeRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_episode_request():
-    episode_id = _example_instances_of_type[SpotifyItemID]
-    market = _example_instances_of_type[SpotifyMarketID]
+def test_get_episode_request(example_instances_of_type):
+    episode_id = example_instances_of_type[SpotifyItemID]
+    market = example_instances_of_type[SpotifyMarketID]
     req = GetEpisodeRequest.build(episode_id=episode_id, market=market)
 
     assert req.endpoint == f"episodes/{episode_id}"

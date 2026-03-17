@@ -9,12 +9,11 @@ from spotantic.models.playlists.requests import UpdatePlaylistItemsRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyTrackURI
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_update_playlist_items_request_model_serializes_uris_and_range_params() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
-    example_uri = _example_instances_of_type[SpotifyTrackURI]
+def test_update_playlist_items_request_model_serializes_uris_and_range_params(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
+    example_uri = example_instances_of_type[SpotifyTrackURI]
     range_start = 0
     insert_before = 1
     range_length = 2
@@ -48,9 +47,9 @@ def test_update_playlist_items_request_model_serializes_uris_and_range_params() 
     assert params_dump["id"] == example_id
 
 
-def test_update_playlist_items_request_model_rejects_too_many_uris() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
-    example_uri = _example_instances_of_type[SpotifyTrackURI]
+def test_update_playlist_items_request_model_rejects_too_many_uris(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
+    example_uri = example_instances_of_type[SpotifyTrackURI]
     uris = [example_uri] * 101
     with pytest.raises(ValidationError):
         UpdatePlaylistItemsRequest.build(

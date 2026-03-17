@@ -9,11 +9,10 @@ from spotantic.models.playlists.requests import AddCustomPlaylistCoverImageReque
 from spotantic.models.playlists.requests import AddCustomPlaylistCoverImageRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_add_custom_playlist_cover_image_request_model_uses_image_data_bytes() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_add_custom_playlist_cover_image_request_model_uses_image_data_bytes(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     image_data = b"abc"
 
     req = AddCustomPlaylistCoverImageRequest.build(playlist_id=example_id, image_data=image_data)
@@ -35,8 +34,10 @@ def test_add_custom_playlist_cover_image_request_model_uses_image_data_bytes() -
     assert params.playlist_id == example_id
 
 
-def test_add_custom_playlist_cover_image_request_model_loads_image_from_file(tmp_path) -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_add_custom_playlist_cover_image_request_model_loads_image_from_file(
+    tmp_path, example_instances_of_type
+) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     raw_bytes = b"\xff\xd8\xff"
     file_path = tmp_path / "cover.jpg"
     file_path.write_bytes(raw_bytes)
@@ -49,15 +50,17 @@ def test_add_custom_playlist_cover_image_request_model_loads_image_from_file(tmp
     assert req.body.model_dump() == expected_base64
 
 
-def test_add_custom_playlist_cover_image_request_model_requires_image_data_or_file() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_add_custom_playlist_cover_image_request_model_requires_image_data_or_file(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
 
     with pytest.raises(ValidationError):
         AddCustomPlaylistCoverImageRequest.build(playlist_id=example_id)
 
 
-def test_add_custom_playlist_cover_image_request_model_rejects_non_jpeg_file(tmp_path) -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_add_custom_playlist_cover_image_request_model_rejects_non_jpeg_file(
+    tmp_path, example_instances_of_type
+) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     file_path = tmp_path / "cover.png"
     file_path.write_bytes(b"notajpeg")
 

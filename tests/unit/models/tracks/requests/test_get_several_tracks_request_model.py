@@ -7,12 +7,11 @@ from spotantic.models.tracks.requests import GetSeveralTracksRequest
 from spotantic.models.tracks.requests import GetSeveralTracksRequestParams
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_several_tracks_request():
-    example_track_id = _example_instances_of_type[SpotifyItemID]
-    example_market = _example_instances_of_type[SpotifyMarketID]
+def test_get_several_tracks_request(example_instances_of_type):
+    example_track_id = example_instances_of_type[SpotifyItemID]
+    example_market = example_instances_of_type[SpotifyMarketID]
     track_ids = [example_track_id, example_track_id]
     request = GetSeveralTracksRequest.build(track_ids=track_ids, market=example_market)
 
@@ -30,8 +29,8 @@ def test_get_several_tracks_request():
     assert params_dump["market"] == example_market
 
 
-def test_get_several_tracks_request_too_many_ids():
-    example_track_id = _example_instances_of_type[SpotifyItemID]
+def test_get_several_tracks_request_too_many_ids(example_instances_of_type):
+    example_track_id = example_instances_of_type[SpotifyItemID]
     too_many_ids = [example_track_id] * 51
 
     with pytest.raises(ValidationError):

@@ -7,11 +7,10 @@ from spotantic.models.playlists.requests import GetPlaylistItemsRequest
 from spotantic.models.playlists.requests import GetPlaylistItemsRequestParams
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyItemType
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_playlist_items_request_model_validates_limit_and_offset() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_get_playlist_items_request_model_validates_limit_and_offset(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     limit = 10
     offset = 5
     market = "US"
@@ -35,8 +34,8 @@ def test_get_playlist_items_request_model_validates_limit_and_offset() -> None:
     assert params_dump["additional_types"] == "track,episode"
 
 
-def test_get_playlist_items_request_model_rejects_bad_limit() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_get_playlist_items_request_model_rejects_bad_limit(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     with pytest.raises(ValidationError):
         GetPlaylistItemsRequest.build(playlist_id=example_id, limit=0, offset=0)
 
@@ -44,8 +43,8 @@ def test_get_playlist_items_request_model_rejects_bad_limit() -> None:
         GetPlaylistItemsRequest.build(playlist_id=example_id, limit=51, offset=0)
 
 
-def test_get_playlist_items_request_model_rejects_invalid_additional_types() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_get_playlist_items_request_model_rejects_invalid_additional_types(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
     with pytest.raises(ValidationError):
         GetPlaylistItemsRequest.build(
             playlist_id=example_id,

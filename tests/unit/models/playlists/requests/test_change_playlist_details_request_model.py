@@ -5,11 +5,10 @@ from spotantic.models.playlists.requests import ChangePlaylistDetailsRequestBody
 from spotantic.models.playlists.requests import ChangePlaylistDetailsRequestParams
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_change_playlist_details_request_model_serializes_body_and_params() -> None:
-    example_id = _example_instances_of_type[SpotifyItemID]
+def test_change_playlist_details_request_model_serializes_body_and_params(example_instances_of_type) -> None:
+    example_id = example_instances_of_type[SpotifyItemID]
 
     req = ChangePlaylistDetailsRequest.build(
         playlist_id=example_id,

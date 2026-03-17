@@ -6,11 +6,10 @@ from pydantic import ValidationError
 from spotantic.models.categories.requests import GetSeveralBrowseCategoriesRequest
 from spotantic.models.categories.requests import GetSeveralBrowseCategoriesRequestParams
 from spotantic.types import SpotifyLocaleID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_several_browse_categories_request():
-    locale = _example_instances_of_type[SpotifyLocaleID]
+def test_get_several_browse_categories_request(example_instances_of_type):
+    locale = example_instances_of_type[SpotifyLocaleID]
     req = GetSeveralBrowseCategoriesRequest.build(limit=10, offset=2, locale=locale)
 
     assert req.endpoint == "browse/categories"

@@ -4,12 +4,11 @@ from spotantic.models.artists.requests import GetArtistTopTracksRequest
 from spotantic.models.artists.requests import GetArtistTopTracksRequestParams
 from spotantic.types import SpotifyItemID
 from spotantic.types import SpotifyMarketID
-from tests.unit._helpers import _example_instances_of_type
 
 
-def test_get_artist_top_tracks_request():
-    artist_id = _example_instances_of_type[SpotifyItemID]
-    market = _example_instances_of_type[SpotifyMarketID]
+def test_get_artist_top_tracks_request(example_instances_of_type):
+    artist_id = example_instances_of_type[SpotifyItemID]
+    market = example_instances_of_type[SpotifyMarketID]
     request = GetArtistTopTracksRequest.build(artist_id=artist_id, market=market)
 
     assert request.endpoint == f"artists/{artist_id}/top-tracks"
