@@ -6,7 +6,10 @@ from spotantic.models.auth import AccessTokenInfo
 from spotantic.models.auth import AuthSettings
 from spotantic.types import SpotifyItemType
 
-_example_spotify_item_id = {SpotifyItemType.ALBUM: "4LOrSSPct7B6yCzW1IltRd"}
+_example_spotify_item_id = {
+    SpotifyItemType.ALBUM: "4LOrSSPct7B6yCzW1IltRd",
+    SpotifyItemType.ARTIST: "250b0Wlc5Vk0CoUsaCY84M",
+}
 
 
 @pytest.fixture(scope="session")
