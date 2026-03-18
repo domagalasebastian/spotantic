@@ -9,6 +9,7 @@ from spotantic.types import SpotifyItemType
 _example_spotify_item_id = {
     SpotifyItemType.ALBUM: "4LOrSSPct7B6yCzW1IltRd",
     SpotifyItemType.ARTIST: "250b0Wlc5Vk0CoUsaCY84M",
+    SpotifyItemType.EPISODE: "1ghMJp4jwGNhX8CxDC29w9",
 }
 
 
