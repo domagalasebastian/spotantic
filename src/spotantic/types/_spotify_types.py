@@ -43,6 +43,10 @@ class AlbumTypes(StrEnum):
     COMPILATION = "compilation"
     """Compilation."""
 
+    # NOTE: Spotify docs do not mention this type, but it is returned for some albums
+    EP = "ep"
+    """EP."""
+
 
 class RepeatMode(StrEnum):
     """Possible repeat states."""

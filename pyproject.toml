@@ -64,7 +64,14 @@ venv = ".venv"
 minversion = "9.0"
 addopts = [
     "-ra",
+    "--strict-markers",
     "--import-mode=importlib",
 ]
 testpaths = ["tests"]
 asyncio_mode = "auto"
+
+markers = [
+    "readonly: tests that do not modify data",
+    "mutation: tests that modify data (create/delete/update)",
+    "user_library: tests that are interactive with the user's Spotify library",
+]
