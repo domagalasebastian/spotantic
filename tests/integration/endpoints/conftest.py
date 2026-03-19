@@ -10,12 +10,14 @@ _example_spotify_item_id = {
     SpotifyItemType.ALBUM: "4LOrSSPct7B6yCzW1IltRd",
     SpotifyItemType.ARTIST: "250b0Wlc5Vk0CoUsaCY84M",
     SpotifyItemType.EPISODE: "1ghMJp4jwGNhX8CxDC29w9",
+    SpotifyItemType.TRACK: "7L0dopNg5r1I6OHcVpA47E",
 }
 
 _example_spotify_uri = {
     SpotifyItemType.ALBUM: f"spotify:album:{_example_spotify_item_id[SpotifyItemType.ALBUM]}",
     SpotifyItemType.ARTIST: f"spotify:artist:{_example_spotify_item_id[SpotifyItemType.ARTIST]}",
     SpotifyItemType.EPISODE: f"spotify:episode:{_example_spotify_item_id[SpotifyItemType.EPISODE]}",
+    SpotifyItemType.TRACK: f"spotify:track:{_example_spotify_item_id[SpotifyItemType.TRACK]}",
 }
 
 
