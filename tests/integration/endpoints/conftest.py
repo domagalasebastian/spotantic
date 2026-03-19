@@ -12,6 +12,12 @@ _example_spotify_item_id = {
     SpotifyItemType.EPISODE: "1ghMJp4jwGNhX8CxDC29w9",
 }
 
+_example_spotify_uri = {
+    SpotifyItemType.ALBUM: f"spotify:album:{_example_spotify_item_id[SpotifyItemType.ALBUM]}",
+    SpotifyItemType.ARTIST: f"spotify:artist:{_example_spotify_item_id[SpotifyItemType.ARTIST]}",
+    SpotifyItemType.EPISODE: f"spotify:episode:{_example_spotify_item_id[SpotifyItemType.EPISODE]}",
+}
+
 
 @pytest.fixture(scope="session")
 def client() -> SpotanticClient:
@@ -29,3 +35,9 @@ def client() -> SpotanticClient:
 def example_spotify_item_id() -> dict[SpotifyItemType, str]:
     """Fixture that provides an example Spotify item ID for testing."""
     return _example_spotify_item_id
+
+
+@pytest.fixture
+def example_spotify_uri() -> dict[SpotifyItemType, str]:
+    """Fixture that provides an example Spotify URI for testing."""
+    return _example_spotify_uri
