@@ -9,7 +9,9 @@ from ._change_playlist_details import ChangePlaylistDetailsRequestBody
 from ._change_playlist_details import ChangePlaylistDetailsRequestParams
 from ._create_playlist import CreatePlaylistRequest
 from ._create_playlist import CreatePlaylistRequestBody
-from ._create_playlist import CreatePlaylistRequestParams
+from ._create_playlist_for_user import CreatePlaylistForUserRequest
+from ._create_playlist_for_user import CreatePlaylistForUserRequestBody
+from ._create_playlist_for_user import CreatePlaylistForUserRequestParams
 from ._get_current_user_playlists import GetCurrentUserPlaylistsRequest
 from ._get_current_user_playlists import GetCurrentUserPlaylistsRequestParams
 from ._get_playlist import GetPlaylistRequest
@@ -37,9 +39,11 @@ __all__ = [
     "ChangePlaylistDetailsRequest",
     "ChangePlaylistDetailsRequestBody",
     "ChangePlaylistDetailsRequestParams",
+    "CreatePlaylistForUserRequest",
+    "CreatePlaylistForUserRequestBody",
+    "CreatePlaylistForUserRequestParams",
     "CreatePlaylistRequest",
     "CreatePlaylistRequestBody",
-    "CreatePlaylistRequestParams",
     "GetCurrentUserPlaylistsRequest",
     "GetCurrentUserPlaylistsRequestParams",
     "GetPlaylistCoverImageRequest",

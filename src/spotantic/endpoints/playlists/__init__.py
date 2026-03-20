@@ -2,6 +2,7 @@ from ._add_custom_playlist_cover_image import add_custom_playlist_cover_image
 from ._add_items_to_playlist import add_items_to_playlist
 from ._change_playlist_details import change_playlist_details
 from ._create_playlist import create_playlist
+from ._create_playlist_for_user import create_playlist_for_user
 from ._get_current_user_playlists import get_current_user_playlist
 from ._get_playlist import get_playlist
 from ._get_playlist_cover_image import get_playlist_cover_image
@@ -15,6 +16,7 @@ __all__ = [
     "add_items_to_playlist",
     "change_playlist_details",
     "create_playlist",
+    "create_playlist_for_user",
     "get_current_user_playlist",
     "get_playlist",
     "get_playlist_cover_image",
