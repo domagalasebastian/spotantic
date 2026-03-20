@@ -11,8 +11,15 @@ from spotantic.models import RequestModel
 from spotantic.types import AuthScope
 
 
-class CreatePlaylistRequestBody(BaseModel):
-    """Body model for Create Playlist request."""
+class CreatePlaylistForUserRequestParams(BaseModel):
+    """Params model for Create Playlist For User request."""
+
+    user_id: str
+    """The Spotify user ID of the playlist owner."""
+
+
+class CreatePlaylistForUserRequestBody(BaseModel):
+    """Body model for Create Playlist For User request."""
 
     name: str
     """The name for the new playlist."""
@@ -27,7 +34,7 @@ class CreatePlaylistRequestBody(BaseModel):
     """The description for the new playlist."""
 
     @model_validator(mode="after")
-    def validate_flags(self) -> CreatePlaylistRequestBody:
+    def validate_flags(self) -> CreatePlaylistForUserRequestBody:
         """Validates the `public` and `collaborative` flags.
 
         Returns:
@@ -42,17 +49,14 @@ class CreatePlaylistRequestBody(BaseModel):
         return self
 
 
-class CreatePlaylistRequest(RequestModel[None, CreatePlaylistRequestBody]):
-    """Request model for Create Playlist endpoint."""
+class CreatePlaylistForUserRequest(RequestModel[CreatePlaylistForUserRequestParams, CreatePlaylistForUserRequestBody]):
+    """Request model for Create Playlist For User endpoint."""
 
     required_scopes: set[AuthScope] = {AuthScope.PLAYLIST_MODIFY_PRIVATE, AuthScope.PLAYLIST_MODIFY_PUBLIC}
     """Required authorization scopes for the request."""
 
     method_type: HTTPMethod = HTTPMethod.POST
     """HTTP method for the request."""
-
-    endpoint: Optional[str] = "me/playlists"
-    """Endpoint associated with the request."""
 
     headers: RequestHeadersModel = RequestHeadersModel(content_type="application/json")
     """Headers for the request."""
@@ -61,11 +65,12 @@ class CreatePlaylistRequest(RequestModel[None, CreatePlaylistRequestBody]):
     def build(
         cls,
         *,
+        user_id: str,
         name: str,
         description: Optional[str] = None,
         public: Optional[bool] = None,
         collaborative: Optional[bool] = None,
-    ) -> CreatePlaylistRequest:
+    ) -> CreatePlaylistForUserRequest:
         """Builds a request model based on given parameters.
 
         The function automatically determines the endpoint if it is not static.
@@ -81,11 +86,13 @@ class CreatePlaylistRequest(RequestModel[None, CreatePlaylistRequestBody]):
         Returns:
             Validated Request object.
         """
-        body = CreatePlaylistRequestBody(
+        params = CreatePlaylistForUserRequestParams(user_id=user_id)
+        body = CreatePlaylistForUserRequestBody(
             name=name,
             public=public,
             collaborative=collaborative,
             description=description,
         )
+        endpoint = f"users/{user_id}/playlists"
 
-        return cls(body=body)
+        return cls(endpoint=endpoint, params=params, body=body)
