@@ -5,6 +5,7 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from spotantic.models import RequestBodyJsonModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -18,7 +19,7 @@ class FollowPlaylistRequestParams(BaseModel):
     """The Spotify ID for the playlist."""
 
 
-class FollowPlaylistRequestBody(BaseModel):
+class FollowPlaylistRequestBody(RequestBodyJsonModel):
     """Body model for Follow Playlist request."""
 
     public: Optional[bool] = None

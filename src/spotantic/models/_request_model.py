@@ -1,7 +1,10 @@
 from __future__ import annotations
 
+from abc import ABC
+from abc import abstractmethod
 from http import HTTPMethod
 from typing import Optional
+from typing import Union
 
 from aiohttp.hdrs import CONTENT_ENCODING
 from aiohttp.hdrs import CONTENT_LANGUAGE
@@ -14,6 +17,7 @@ from pydantic import HttpUrl
 from pydantic import model_validator
 from yarl import URL
 
+from spotantic._utils.models._aiohttp_request_kwargs_typed_dict import AiohttpRequestKwargs
 from spotantic.types import AuthScope
 
 API_BASE_URL = URL("https://api.spotify.com/v1/")
@@ -46,7 +50,35 @@ class RequestHeadersModel(EntityHeadersModel):
     pass
 
 
-class RequestModel[ParamsModelT: (BaseModel, None), BodyModelT: (BaseModel, None)](BaseModel):
+class RequestBodyModel(BaseModel, ABC):
+    """Abstract base model for request bodies.
+
+    Specific request body models should inherit from this class and implement necessary validation and serialization logic.
+    """
+
+    @abstractmethod
+    def to_http_body(self) -> Optional[Union[str, bytes]]:
+        """Convert the model to a format suitable for the HTTP request body.
+
+        Returns:
+            The serialized request body data, or `None` if there is no body.
+        """
+        pass
+
+
+class RequestBodyJsonModel(RequestBodyModel):
+    """Base model for request bodies that should be serialized to JSON."""
+
+    def to_http_body(self) -> Optional[str]:
+        """Serialize the model to a JSON string for the HTTP request body.
+
+        Returns:
+            The serialized JSON string, or `None` if there is no body.
+        """
+        return self.model_dump_json(exclude_none=True)
+
+
+class RequestModel[ParamsModelT: (BaseModel, None), BodyModelT: (RequestBodyModel, None)](BaseModel):
     """Model representing a complete Spotify API request.
 
     Encapsulates all information needed to make an HTTP request to the Spotify API:
@@ -104,3 +136,26 @@ class RequestModel[ParamsModelT: (BaseModel, None), BodyModelT: (BaseModel, None
         self.url = HttpUrl(str(API_BASE_URL / self.endpoint))
 
         return self
+
+    def _to_http_request_kwargs(self, auth_headers: dict[str, str]) -> AiohttpRequestKwargs:
+        """Convert the model to a dictionary of data suitable for making an HTTP request.
+
+        This method prepares the data for the HTTP request by converting the URL, headers,
+        query parameters, and body into the appropriate formats. It also allows for optional
+        overrides of any of these components.
+
+        Args:
+            auth_headers: A dictionary containing the authorization headers for the request.
+
+        Returns:
+            A dictionary containing the URL, method, headers, params, and data for the HTTP request.
+        """
+        data = AiohttpRequestKwargs(
+            url=str(self.url),
+            method=self.method_type.value,
+            headers=self.headers.model_dump(mode="json", exclude_none=True) | auth_headers,
+            params=self.params.model_dump(mode="json", exclude_none=True) if self.params is not None else None,
+            data=self.body.to_http_body() if self.body is not None else None,
+        )
+
+        return data

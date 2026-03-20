@@ -11,6 +11,7 @@ from pydantic import ConfigDict
 from pydantic import Field
 from pydantic.functional_serializers import PlainSerializer
 
+from spotantic.models import RequestBodyJsonModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -28,7 +29,7 @@ class RemovePlaylistItemsRequestParams(BaseModel):
     """The Spotify ID of the playlist."""
 
 
-class RemovePlaylistItemsRequestBody(BaseModel):
+class RemovePlaylistItemsRequestBody(RequestBodyJsonModel):
     """Body model for Remove Playlist Items request."""
 
     tracks: Annotated[

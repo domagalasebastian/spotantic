@@ -6,6 +6,7 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import model_validator
 
+from spotantic.models import RequestBodyJsonModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -18,7 +19,7 @@ class CreatePlaylistForUserRequestParams(BaseModel):
     """The Spotify user ID of the playlist owner."""
 
 
-class CreatePlaylistForUserRequestBody(BaseModel):
+class CreatePlaylistForUserRequestBody(RequestBodyJsonModel):
     """Body model for Create Playlist For User request."""
 
     name: str

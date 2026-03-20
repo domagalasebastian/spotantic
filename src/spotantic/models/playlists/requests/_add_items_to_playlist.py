@@ -12,6 +12,7 @@ from pydantic import Field
 from pydantic import PlainSerializer
 
 from spotantic._utils.models import sequence_to_comma_separated_str
+from spotantic.models import RequestBodyJsonModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -39,7 +40,7 @@ class AddItemsToPlaylistRequestParams(BaseModel):
     """A list of Spotify URIs for the items to add."""
 
 
-class AddItemsToPlaylistRequestBody(BaseModel):
+class AddItemsToPlaylistRequestBody(RequestBodyJsonModel):
     """Body model for Add Items to Playlist request."""
 
     uris: Annotated[Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]], Field(max_length=100)]

@@ -3,14 +3,15 @@ from __future__ import annotations
 import base64
 from http import HTTPMethod
 from typing import Optional
+from typing import Union
 
 from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 from pydantic import FilePath
-from pydantic import model_serializer
 from pydantic import model_validator
 
+from spotantic.models import RequestBodyModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -26,7 +27,7 @@ class AddCustomPlaylistCoverImageRequestParams(BaseModel):
     """The Spotify ID of the playlist."""
 
 
-class AddCustomPlaylistCoverImageRequestBody(BaseModel):
+class AddCustomPlaylistCoverImageRequestBody(RequestBodyModel):
     """Body model for Add Custom Playlist Cover Image request."""
 
     image_data: Optional[bytes] = None
@@ -59,17 +60,14 @@ class AddCustomPlaylistCoverImageRequestBody(BaseModel):
 
         return self
 
-    @model_serializer
-    def serialize_to_bytes(self) -> bytes:
-        """Serializes the model to bytes for the request body.
+    def to_http_body(self) -> Optional[Union[str, bytes]]:
+        """Converts the model to the appropriate HTTP body format.
+
+        For this request, the body should be the raw image data as bytes.
 
         Returns:
-            The image data as bytes.
-
-        Raises:
-            AssertionError: If `image_data` is None.
+            The image data as bytes, or None if no image data is available.
         """
-        assert self.image_data is not None
         return self.image_data
 
 

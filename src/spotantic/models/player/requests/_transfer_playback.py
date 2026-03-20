@@ -5,15 +5,15 @@ from http import HTTPMethod
 from typing import Annotated
 from typing import Optional
 
-from pydantic import BaseModel
 from pydantic import Field
 
+from spotantic.models import RequestBodyJsonModel
+from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
-from spotantic.models._request_model import RequestHeadersModel
 from spotantic.types import AuthScope
 
 
-class TransferPlaybackRequestBody(BaseModel):
+class TransferPlaybackRequestBody(RequestBodyJsonModel):
     """Body model for Transfer Playback request."""
 
     device_ids: Annotated[Sequence[str], Field(max_length=1)]

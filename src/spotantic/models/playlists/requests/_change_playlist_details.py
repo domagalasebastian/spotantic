@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from pydantic import ConfigDict
 from pydantic import Field
 
+from spotantic.models import RequestBodyJsonModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -22,7 +23,7 @@ class ChangePlaylistDetailsRequestParams(BaseModel):
     """The Spotify ID of the playlist."""
 
 
-class ChangePlaylistDetailsRequestBody(BaseModel):
+class ChangePlaylistDetailsRequestBody(RequestBodyJsonModel):
     """Body model for Change Playlist Details request."""
 
     name: Optional[str] = None
