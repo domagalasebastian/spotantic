@@ -3,15 +3,15 @@ from __future__ import annotations
 from http import HTTPMethod
 from typing import Optional
 
-from pydantic import BaseModel
 from pydantic import model_validator
 
+from spotantic.models import RequestBodyJsonModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
 
 
-class CreatePlaylistRequestBody(BaseModel):
+class CreatePlaylistRequestBody(RequestBodyJsonModel):
     """Body model for Create Playlist request."""
 
     name: str

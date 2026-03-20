@@ -11,6 +11,7 @@ from pydantic import Field
 from pydantic import model_validator
 
 from spotantic._utils.models._type_validation import validate_is_instance_of
+from spotantic.models import RequestBodyJsonModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -41,7 +42,7 @@ class StartResumePlaybackRequestParams(BaseModel):
     """The id of the device this command is targeting."""
 
 
-class StartResumePlaybackRequestBody(BaseModel):
+class StartResumePlaybackRequestBody(RequestBodyJsonModel):
     """Body model for Start/Resume Playback request."""
 
     context_uri: Optional[Union[SpotifyAlbumURI, SpotifyArtistURI, SpotifyPlaylistURI]] = None

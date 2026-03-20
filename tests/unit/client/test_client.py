@@ -1,3 +1,4 @@
+from http import HTTPMethod
 from http import HTTPStatus
 from unittest import mock
 
@@ -51,7 +52,7 @@ def request_model() -> RequestModel:
     """Fixture for a RequestModel."""
     request = mock.MagicMock(spec=RequestModel)
     request.required_scopes = {AuthScope("user-read-private")}
-    request.method_type = "GET"
+    request.method_type = HTTPMethod.GET
     request.url = "https://api.spotify.com/v1/me"
     request.headers = mock.MagicMock()
     request.headers.model_dump.return_value = {}

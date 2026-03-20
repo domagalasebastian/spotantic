@@ -20,6 +20,7 @@ def test_save_tracks_for_current_user_request_with_track_ids(example_instances_o
     assert request.endpoint == "me/tracks"
     assert AuthScope.USER_LIBRARY_MODIFY in request.required_scopes
     assert request.method_type is HTTPMethod.PUT
+    assert request.headers.content_type == "application/json"
 
     body = request.body
     assert isinstance(body, SaveTracksForCurrentUserRequestBody)

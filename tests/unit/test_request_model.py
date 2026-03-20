@@ -5,10 +5,11 @@ from pydantic import BaseModel
 from pydantic import HttpUrl
 from pydantic import ValidationError
 
+from spotantic.models import EntityHeadersModel
+from spotantic.models import RequestBodyJsonModel
+from spotantic.models import RequestHeadersModel
+from spotantic.models import RequestModel
 from spotantic.models._request_model import API_BASE_URL
-from spotantic.models._request_model import EntityHeadersModel
-from spotantic.models._request_model import RequestHeadersModel
-from spotantic.models._request_model import RequestModel
 from spotantic.types import AuthScope
 
 
@@ -165,10 +166,10 @@ class TestRequestModelGenericParameters:
         assert request.params.limit == 20
         assert request.params.offset == 5
 
-    def test_request_model_with_pydantic_body_model(self):
-        """Test RequestModel with Pydantic BaseModel body."""
+    def test_request_model_with_request_body_json_model(self):
+        """Test RequestModel with RequestBodyJsonModel body."""
 
-        class CustomBody(BaseModel):
+        class CustomBody(RequestBodyJsonModel):
             name: str
             description: str
 
@@ -182,6 +183,7 @@ class TestRequestModelGenericParameters:
         assert isinstance(request.body, CustomBody)
         assert request.body.name == "Test"
         assert request.body.description == "Test body"
+        assert request.body.to_http_body() == request.body.model_dump_json(exclude_none=True)
 
 
 class TestRequestModelHTTPMethods:
@@ -196,3 +198,58 @@ class TestRequestModelHTTPMethods:
         )
 
         assert request.method_type is method
+
+
+class TestRequestModelValidation:
+    """Tests for RequestModel validation logic."""
+
+    def test_request_model_invalid_url(self):
+        """Test that RequestModel raises ValidationError for invalid URL."""
+        with pytest.raises(ValidationError):
+            RequestModel[None, None](
+                url=HttpUrl("https://invalid.com/endpoint"),
+                method_type=HTTPMethod.GET,
+            )
+
+    def test_request_model_missing_url_and_endpoint(self):
+        """Test that RequestModel raises ValidationError when both url and endpoint are missing."""
+        with pytest.raises(ValidationError):
+            RequestModel[None, None](
+                method_type=HTTPMethod.GET,
+            )
+
+
+class TestRequestModelToHttpRequestKwargs:
+    """Tests for RequestModel _to_http_request_kwargs method."""
+
+    def test_request_model_to_http_request_kwargs(self):
+        """Test that _to_http_request_kwargs returns correct data for HTTP request."""
+
+        class CustomParams(BaseModel):
+            limit: int = 10
+            offset: int = 0
+
+        class CustomBody(RequestBodyJsonModel):
+            name: str
+            description: str
+
+        headers = RequestHeadersModel(content_type="application/json")
+        params = CustomParams(limit=20, offset=5)
+        body = CustomBody(name="Test", description="Test body")
+        request = RequestModel[CustomParams, CustomBody](
+            endpoint="me",
+            method_type=HTTPMethod.GET,
+            headers=headers,
+            params=params,
+            body=body,
+        )
+
+        auth_header = {"Authorization": "Bearer token"}
+        http_kwargs = request._to_http_request_kwargs(auth_headers=auth_header)
+
+        assert http_kwargs["method"] == "GET"
+        assert http_kwargs["url"] == str(API_BASE_URL / "me")
+        assert http_kwargs["headers"]["Content-Type"] == "application/json"
+        assert http_kwargs["headers"]["Authorization"] == "Bearer token"
+        assert http_kwargs["params"] == {"limit": 20, "offset": 5}
+        assert http_kwargs["data"] == body.to_http_body()

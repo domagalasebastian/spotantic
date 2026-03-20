@@ -12,6 +12,7 @@ from pydantic import PlainSerializer
 from pydantic import field_validator
 
 from spotantic._utils.models import sequence_to_comma_separated_str
+from spotantic.models import RequestBodyJsonModel
 from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
@@ -50,7 +51,7 @@ class FollowArtistsOrUsersRequestParams(BaseModel):
         return value
 
 
-class FollowArtistsOrUsersRequestBody(BaseModel):
+class FollowArtistsOrUsersRequestBody(RequestBodyJsonModel):
     """Body model for Follow Artists Or Users request."""
 
     model_config = ConfigDict(serialize_by_alias=True)

@@ -13,6 +13,8 @@ from pydantic import Field
 from pydantic import PlainSerializer
 from pydantic import model_validator
 
+from spotantic.models import RequestBodyJsonModel
+from spotantic.models import RequestHeadersModel
 from spotantic.models import RequestModel
 from spotantic.types import AuthScope
 from spotantic.types import SpotifyItemID
@@ -33,7 +35,7 @@ class TimestampTrackIDModel(BaseModel):
     """The timestamp when the track was added."""
 
 
-class SaveTracksForCurrentUserRequestBody(BaseModel):
+class SaveTracksForCurrentUserRequestBody(RequestBodyJsonModel):
     """Body model for Save Tracks For Current User request."""
 
     model_config = ConfigDict(serialize_by_alias=True)
@@ -77,6 +79,9 @@ class SaveTracksForCurrentUserRequest(RequestModel[None, SaveTracksForCurrentUse
 
     endpoint: Optional[str] = "me/tracks"
     """Endpoint associated with the request."""
+
+    headers: RequestHeadersModel = RequestHeadersModel(content_type="application/json")
+    """Headers for the request."""
 
     @classmethod
     def build(

@@ -103,7 +103,7 @@ class AccessTokenInfo(BaseModel):
 
         return datetime.now() >= self.expires_at
 
-    def get_authorization_header(self) -> dict[Literal["Authorization"], str]:
+    def get_authorization_header(self) -> dict[str, str]:
         """Return the `Authorization` header.
 
         The header value is constructed as "{token_type} {access_token}".

@@ -152,19 +152,9 @@ class SpotanticClient:
 
         auth_header = access_token_info.get_authorization_header()
 
-        method = request.method_type
-        url = str(request.url)
-        headers = request.headers.model_dump(mode="json", exclude_none=True) | auth_header
-        params = request.params.model_dump(mode="json", exclude_none=True) if request.params is not None else None
-        data = request.body.model_dump_json(exclude_none=True) if request.body is not None else None
-
         async with ClientSession() as session:
             async with session.request(
-                method=method,
-                headers=headers,
-                url=url,
-                params=params,
-                data=data,
+                **request._to_http_request_kwargs(auth_headers=auth_header),
                 raise_for_status=self.__check_response,
             ) as resp:
                 response_data = await resp.read()

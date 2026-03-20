@@ -27,7 +27,7 @@ def test_add_custom_playlist_cover_image_request_model_uses_image_data_bytes(exa
     body = req.body
     assert isinstance(body, AddCustomPlaylistCoverImageRequestBody)
     assert body.image_data == image_data
-    assert body.model_dump() == image_data
+    assert body.to_http_body() == image_data
 
     params = req.params
     assert isinstance(params, AddCustomPlaylistCoverImageRequestParams)
@@ -47,7 +47,7 @@ def test_add_custom_playlist_cover_image_request_model_loads_image_from_file(
     expected_base64 = base64.b64encode(raw_bytes)
     assert isinstance(req.body, AddCustomPlaylistCoverImageRequestBody)
     assert req.body.image_data == expected_base64
-    assert req.body.model_dump() == expected_base64
+    assert req.body.to_http_body() == expected_base64
 
 
 def test_add_custom_playlist_cover_image_request_model_requires_image_data_or_file(example_instances_of_type) -> None:
