@@ -26,10 +26,10 @@ def test_remove_playlist_items_request_model_serializes_tracks(example_instances
     body = req.body
     assert isinstance(body, RemovePlaylistItemsRequestBody)
     assert body.snapshot_id == snapshot_id
-    assert body.tracks == [example_uri]
+    assert body.items == [example_uri]
 
     body_dump = body.model_dump(by_alias=True)
-    assert body_dump["tracks"] == [{"uri": example_uri}]
+    assert body_dump["items"] == [{"uri": example_uri}]
 
     params = req.params
     assert isinstance(params, RemovePlaylistItemsRequestParams)
