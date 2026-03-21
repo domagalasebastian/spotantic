@@ -32,7 +32,7 @@ class RemovePlaylistItemsRequestParams(BaseModel):
 class RemovePlaylistItemsRequestBody(RequestBodyJsonModel):
     """Body model for Remove Playlist Items request."""
 
-    tracks: Annotated[
+    items: Annotated[
         Sequence[Union[SpotifyEpisodeURI, SpotifyTrackURI]],
         Field(max_length=100),
         PlainSerializer(lambda seq: [{"uri": uri} for uri in seq], return_type=list[dict[str, str]]),
@@ -78,7 +78,7 @@ class RemovePlaylistItemsRequest(RequestModel[RemovePlaylistItemsRequestParams, 
         """
         params = RemovePlaylistItemsRequestParams(playlist_id=playlist_id)
         body = RemovePlaylistItemsRequestBody(
-            tracks=uris,
+            items=uris,
             snapshot_id=snapshot_id,
         )
         endpoint = f"playlists/{playlist_id}/items"
