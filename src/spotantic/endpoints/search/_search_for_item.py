@@ -17,7 +17,7 @@ async def search_for_item(
     query: str,
     item_type: Sequence[SpotifyItemType],
     market: Optional[SpotifyMarketID] = None,
-    limit: int = 20,
+    limit: int = 10,
     offset: int = 0,
     include_external: Optional[SearchForItemIncludeExternal] = None,
 ) -> APICallModel[SearchForItemRequest, JsonAPIResponse, SearchForItemResponse]:
