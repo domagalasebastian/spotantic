@@ -13,6 +13,7 @@ _example_spotify_item_id = {
     SpotifyItemType.ARTIST: "250b0Wlc5Vk0CoUsaCY84M",
     SpotifyItemType.EPISODE: "1ghMJp4jwGNhX8CxDC29w9",
     SpotifyItemType.PLAYLIST: "18KWHm77lxT3jysl3aqiX2",
+    SpotifyItemType.SHOW: "44fyLyzKjE7ZAgy2t82CtD",
     SpotifyItemType.TRACK: "7L0dopNg5r1I6OHcVpA47E",
 }
 
@@ -21,6 +22,7 @@ _example_spotify_uri = {
     SpotifyItemType.ARTIST: f"spotify:artist:{_example_spotify_item_id[SpotifyItemType.ARTIST]}",
     SpotifyItemType.EPISODE: f"spotify:episode:{_example_spotify_item_id[SpotifyItemType.EPISODE]}",
     SpotifyItemType.PLAYLIST: f"spotify:playlist:{_example_spotify_item_id[SpotifyItemType.PLAYLIST]}",
+    SpotifyItemType.SHOW: f"spotify:show:{_example_spotify_item_id[SpotifyItemType.SHOW]}",
     SpotifyItemType.TRACK: f"spotify:track:{_example_spotify_item_id[SpotifyItemType.TRACK]}",
 }
 
