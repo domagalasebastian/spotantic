@@ -6,7 +6,6 @@ from spotantic.types import SpotifyMarketID
 
 from ._user_model import UserModel
 from .submodels import ExplicitContentModel
-from .submodels import UserFollowersModel
 
 
 class CurrentUserModel(UserModel):
@@ -20,9 +19,6 @@ class CurrentUserModel(UserModel):
 
     explicit_content: Optional[ExplicitContentModel] = Field(None, repr=False, deprecated=True)
     """The user's explicit content settings."""
-
-    followers: Optional[UserFollowersModel] = Field(None, repr=False, deprecated=True)
-    """Information about the followers of the user."""
 
     product: Optional[str] = Field(None, repr=False, deprecated=True)
     """The user's Spotify subscription level."""

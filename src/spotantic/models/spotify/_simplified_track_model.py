@@ -62,7 +62,7 @@ class SimplifiedTrackModel(BaseModel):
     track_name: str = Field(alias="name")
     """The name of the track."""
 
-    preview_url: Optional[str] = Field(repr=False, deprecated=True)
+    preview_url: Optional[str] = Field(None, repr=False, deprecated=True)
     """A link to a 30 second preview (MP3 format) of the track."""
 
     track_number: int = Field(repr=False)

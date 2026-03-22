@@ -28,3 +28,8 @@ class PagedResultWithCursorsModel[ItemT: BaseModel](BaseModel):
 
     items: Sequence[ItemT]
     """An array of items collected from the current page."""
+
+    # NOTE: According to the Spotify API documentation, the get-recently-played endpoint should return this field,
+    # but it is currently missing. Therefore, it is marked as Optional here.
+    total: Optional[int] = None
+    """The total number of items available to return."""

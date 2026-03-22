@@ -5,13 +5,13 @@ from pydantic import Field
 
 from ._image_model import ImageModel
 from ._simplified_artist_model import SimplifiedArtistModel
-from .submodels import ArtistFollowersModel
+from .submodels import FollowersModel
 
 
 class ArtistModel(SimplifiedArtistModel):
     """Model representing Spotify catalog information for a single artist identified by their unique Spotify ID."""
 
-    followers: Optional[ArtistFollowersModel] = Field(None, repr=False, deprecated=True)
+    followers: Optional[FollowersModel] = Field(None, repr=False, deprecated=True)
     """Information about the followers of the artist."""
 
     genres: Sequence[str]

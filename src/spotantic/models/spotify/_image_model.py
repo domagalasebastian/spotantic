@@ -17,5 +17,5 @@ class ImageModel(BaseModel):
     height: Optional[int] = None
     """The image height in pixels."""
 
-    width: Optional[int]
+    width: Optional[int] = None
     """The image width in pixels."""

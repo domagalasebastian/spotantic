@@ -31,7 +31,7 @@ class CurrentlyPlayingItemModel(BaseModel):
     is_playing: bool
     """`True` if something is currently playing."""
 
-    item: Optional[Union[TrackModel, EpisodeModel]] = Field(discriminator="item_type")
+    item: Optional[Union[TrackModel, EpisodeModel]] = Field(None, discriminator="item_type")
     """The currently playing track or episode."""
 
     currently_playing_type: Union[SpotifyItemType, Literal["unknown"]] = Field(repr=False)

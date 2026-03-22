@@ -11,6 +11,7 @@ from spotantic.types import SpotifyUserURI
 
 from ._image_model import ImageModel
 from .submodels import ExternalUrlsModel
+from .submodels import FollowersModel
 
 
 class UserModel(BaseModel):
@@ -38,3 +39,6 @@ class UserModel(BaseModel):
 
     user_uri: SpotifyUserURI = Field(alias="uri", repr=False)
     """The Spotify URI for the user."""
+
+    followers: Optional[FollowersModel] = Field(None, repr=False, deprecated=True)
+    """Information about the followers of the user."""

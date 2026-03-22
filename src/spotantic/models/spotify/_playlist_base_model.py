@@ -35,7 +35,7 @@ class PlaylistBaseModel(BaseModel):
     playlist_id: SpotifyItemID = Field(alias="id", repr=False)
     """The Spotify ID for the playlist."""
 
-    images: Sequence[ImageModel] = Field(repr=False)
+    images: Optional[Sequence[ImageModel]] = Field(None, repr=False)
     """Images for the playlist. The array may be empty or contain up to three images.
     The images are returned by size in descending order."""
 
