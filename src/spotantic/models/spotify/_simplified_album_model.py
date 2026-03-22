@@ -65,3 +65,6 @@ class SimplifiedAlbumModel(BaseModel):
 
     artists: Sequence[SimplifiedArtistModel]
     """The artists of the album."""
+
+    album_group: Optional[str] = Field(None, repr=False, deprecated=True)
+    """This field describes the relationship between the artist and the album."""
