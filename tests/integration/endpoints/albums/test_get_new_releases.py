@@ -14,5 +14,4 @@ async def test_get_new_releases(client):
     assert isinstance(result.request, GetNewReleasesRequest)
     assert isinstance(result.response, dict)
     assert isinstance(result.data, PagedResultModel)
-    if result.data.items:
-        assert isinstance(result.data.items[0], SimplifiedAlbumModel)
+    assert all(isinstance(item, SimplifiedAlbumModel) for item in result.data.items)

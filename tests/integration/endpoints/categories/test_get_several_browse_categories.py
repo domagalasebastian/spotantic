@@ -14,5 +14,4 @@ async def test_get_several_browse_categories(client):
     assert isinstance(result.request, GetSeveralBrowseCategoriesRequest)
     assert isinstance(result.response, dict)
     assert isinstance(result.data, PagedResultModel)
-    if result.data.items:
-        assert isinstance(result.data.items[0], CategoryModel)
+    assert all(isinstance(item, CategoryModel) for item in result.data.items)

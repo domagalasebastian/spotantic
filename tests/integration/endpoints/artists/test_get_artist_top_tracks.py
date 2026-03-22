@@ -16,5 +16,4 @@ async def test_get_artist_top_tracks(client, example_spotify_item_id):
     assert isinstance(result.request, GetArtistTopTracksRequest)
     assert isinstance(result.response, dict)
     assert isinstance(result.data, list)
-    if result.data:
-        assert isinstance(result.data[0], TrackModel)
+    assert all(isinstance(item, TrackModel) for item in result.data)

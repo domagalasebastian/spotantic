@@ -17,5 +17,4 @@ async def test_get_album_tracks(client, example_spotify_item_id):
     assert isinstance(result.request, GetAlbumTracksRequest)
     assert isinstance(result.response, dict)
     assert isinstance(result.data, PagedResultModel)
-    if result.data.items:
-        assert isinstance(result.data.items[0], SimplifiedTrackModel)
+    assert all(isinstance(item, SimplifiedTrackModel) for item in result.data.items)

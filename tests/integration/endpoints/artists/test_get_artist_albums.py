@@ -18,5 +18,4 @@ async def test_get_artist_albums(client, example_spotify_item_id):
     assert isinstance(result.request, GetArtistAlbumsRequest)
     assert isinstance(result.response, dict)
     assert isinstance(result.data, PagedResultModel)
-    if result.data.items:
-        assert isinstance(result.data.items[0], SimplifiedAlbumModel)
+    assert all(isinstance(item, SimplifiedAlbumModel) for item in result.data.items)
