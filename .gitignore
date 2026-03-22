@@ -2,6 +2,7 @@ __pycache__/
 *.py[cod]
 *.so
 *.egg-info
+dist/
 
 .venv/
 venv/
