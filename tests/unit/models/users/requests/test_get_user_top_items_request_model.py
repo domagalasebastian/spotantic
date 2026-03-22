@@ -15,7 +15,7 @@ from spotantic.types import AuthScope
 def test_get_user_top_items_request_valid_combinations(item_type, time_range):
     request = GetUserTopItemsRequest.build(item_type=item_type, time_range=time_range)
 
-    assert request.endpoint == f"me/top/{item_type}"
+    assert request.endpoint == f"me/top/{item_type.value}"
     assert request.method_type is HTTPMethod.GET
     assert AuthScope.PLAYLIST_READ_PRIVATE in request.required_scopes
 

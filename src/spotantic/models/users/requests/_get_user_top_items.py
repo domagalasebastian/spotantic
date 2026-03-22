@@ -86,6 +86,6 @@ class GetUserTopItemsRequest(RequestModel[GetUserTopItemsRequestParams, None]):
             Validated Request object.
         """
         params = GetUserTopItemsRequestParams(item_type=item_type, time_range=time_range, limit=limit, offset=offset)
-        endpoint = f"me/top/{item_type}"
+        endpoint = f"me/top/{item_type.value}"
 
         return cls(endpoint=endpoint, params=params)

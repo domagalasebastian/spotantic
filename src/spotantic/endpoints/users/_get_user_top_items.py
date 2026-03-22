@@ -1,4 +1,6 @@
+from typing import Literal
 from typing import Union
+from typing import overload
 
 from spotantic.client import SpotanticClient
 from spotantic.models import APICallModel
@@ -9,6 +11,28 @@ from spotantic.models.users.requests import GetUserTopItemsRequest
 from spotantic.models.users.requests import GetUserTopItemsTimeRange
 from spotantic.models.users.requests import GetUserTopItemsType
 from spotantic.types import JsonAPIResponse
+
+
+@overload
+async def get_user_top_items(
+    client: SpotanticClient,
+    *,
+    item_type: Literal[GetUserTopItemsType.ARTISTS],
+    time_range: GetUserTopItemsTimeRange,
+    limit: int = 20,
+    offset: int = 0,
+) -> APICallModel[GetUserTopItemsRequest, JsonAPIResponse, PagedResultModel[ArtistModel]]: ...
+
+
+@overload
+async def get_user_top_items(
+    client: SpotanticClient,
+    *,
+    item_type: Literal[GetUserTopItemsType.TRACKS],
+    time_range: GetUserTopItemsTimeRange,
+    limit: int = 20,
+    offset: int = 0,
+) -> APICallModel[GetUserTopItemsRequest, JsonAPIResponse, PagedResultModel[TrackModel]]: ...
 
 
 async def get_user_top_items(
