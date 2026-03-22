@@ -15,5 +15,4 @@ async def test_get_user_saved_albums(client):
     assert isinstance(result.request, GetUserSavedAlbumsRequest)
     assert isinstance(result.response, dict)
     assert isinstance(result.data, PagedResultModel)
-    if result.data.items:
-        assert isinstance(result.data.items[0], SavedAlbumModel)
+    assert all(isinstance(item, SavedAlbumModel) for item in result.data.items)

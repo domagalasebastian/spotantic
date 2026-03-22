@@ -15,5 +15,4 @@ async def test_get_user_saved_episodes(client):
     assert isinstance(result.request, GetUserSavedEpisodesRequest)
     assert isinstance(result.response, dict)
     assert isinstance(result.data, PagedResultModel)
-    if result.data.items:
-        assert isinstance(result.data.items[0], SavedEpisodeModel)
+    assert all(isinstance(item, SavedEpisodeModel) for item in result.data.items)
