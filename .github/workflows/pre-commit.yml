@@ -1,0 +1,23 @@
+name: pre-commit
+
+on: [push]
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install uv and set the Python version
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Install the project
+        run: uv sync --locked --dev
+
+      - name: Run pre-commit
+        uses: pre-commit/action@v3.0.1
+        env:
+          PRE_COMMIT_USE_UV: "1"
