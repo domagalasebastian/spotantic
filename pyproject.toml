@@ -44,6 +44,9 @@ docs = [
 
 [project.urls]
 "Homepage" = "https://github.com/domagalasebastian/spotantic"
+"Documentation" = "https://spotantic.readthedocs.io"
+"Bug Tracker" = "https://github.com/domagalasebastian/spotantic/issues"
+"Questions" = "https://github.com/domagalasebastian/spotantic/discussions"
 
 [tool.hatch.build]
 include = ["src/spotantic/py.typed"]
