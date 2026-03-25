@@ -18,18 +18,20 @@ Spotantic is an asynchronous Spotify API client built using Python. It provides 
 ### Environment Setup
 1. **Python Environment**:
    - Ensure Python 3.12 or higher is installed.
-   - Use a virtual environment:
+   - Use a virtual environment. The recommended approach is:
+     ```bash
+     uv sync --group dev
+     source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+     ```
+   - Alternatively, use pip to install dependencies:
      ```bash
      source .venv/bin/activate
-     ```
-   - Install dependencies:
-     ```bash
      uv pip install -e .
      ```
 
 2. **Install Development Dependencies** (if contributing):
    ```bash
-   uv pip install -e .[dev]
+   uv sync --group dev --group docs
    ```
 
 ### Linting
@@ -75,7 +77,8 @@ Spotantic is an asynchronous Spotify API client built using Python. It provides 
 ## Project Layout
 - **Root Directory**:
   - `pyproject.toml`: Project configuration, including dependencies, linting, and testing settings.
-  - `README.md`: Currently empty.
+  - `README.md`: Comprehensive documentation with features, prerequisites, installation, quick start examples, and authorization flow details.
+  - `.github/workflows/`: Contains CI/CD pipeline configurations for linting, testing, and documentation.
   - `docs/`: Contains Sphinx documentation source files and build outputs.
   - `examples/`: Example scripts for setting up and using the Spotantic client.
   - `logs/`: Contains log files organized by timestamp.
@@ -98,7 +101,12 @@ Spotantic is an asynchronous Spotify API client built using Python. It provides 
     ```
 
 - **Continuous Integration**:
-  - No CI/CD configuration files (e.g., GitHub Actions) were found in the repository.
+  - GitHub Actions workflows are configured in `.github/workflows/`:
+    - `commit-lint.yml`: Validates conventional commit messages
+    - `pre-commit.yml`: Runs pre-commit checks on pull requests
+    - `run-tests.yml`: Executes unit and integration tests
+    - `test-docs.yml`: Validates documentation builds
+    - `publish-pypi.yml`: Publishes releases to PyPI
 
 ## Additional Notes
 - Trust these instructions for building, testing, and running the project. Perform additional searches only if these instructions are incomplete or incorrect.
