@@ -21,7 +21,10 @@ async def save_tracks_for_current_user(
     """Save one or more tracks to the current user's 'Your Music' library.
 
     .. version-deprecated:: 0.1.0
-       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
+       This endpoint is deprecated since 11 February 2026 for new users. Existing users may be able to
+       continue using it. More information on the deprecation can be found in the Spotify API documentation:
+       `Update on Developer Access and Platform Security
+       <https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security>`_.
        Use *Save Items to Library* instead.
 
     Args:

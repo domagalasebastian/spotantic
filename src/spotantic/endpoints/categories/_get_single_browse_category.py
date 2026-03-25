@@ -10,14 +10,17 @@ from spotantic.types import JsonAPIResponse
 from spotantic.types import SpotifyLocaleID
 
 
-@deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
+@deprecated("This endpoint is deprecated since 11 February 2026 for new users.")
 async def get_single_browse_category(
     client: SpotanticClient, *, category_id: str, locale: Optional[SpotifyLocaleID] = None
 ) -> APICallModel[GetSingleBrowseCategoryRequest, JsonAPIResponse, CategoryModel]:
     """Get a single category used to tag items in Spotify (on, for example, the Spotify player’s “Browse” tab).
 
     .. version-deprecated:: 0.1.0
-       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
+       This endpoint is deprecated since 11 February 2026 for new users. Existing users may be able to
+       continue using it. More information on the deprecation can be found in the Spotify API documentation:
+       `Update on Developer Access and Platform Security
+       <https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security>`_.
 
     Args:
         client: :class:`~spotantic.client.SpotanticClient` instance.

@@ -9,14 +9,17 @@ from spotantic.models.spotify import SimplifiedAlbumModel
 from spotantic.types import JsonAPIResponse
 
 
-@deprecated("This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).")
+@deprecated("This endpoint is deprecated since 11 February 2026 for new users.")
 async def get_new_releases(
     client: SpotanticClient, *, limit: int = 20, offset: int = 0
 ) -> APICallModel[GetNewReleasesRequest, JsonAPIResponse, PagedResultModel[SimplifiedAlbumModel]]:
     """Get a list of new album releases featured in Spotify (shown, for example, on a Spotify player’s “Browse” tab).
 
     .. version-deprecated:: 0.1.0
-       This endpoint is deprecated since 11 February 2026 for new users (March 9 2026 for old users).
+       This endpoint is deprecated since 11 February 2026 for new users. Existing users may be able to
+       continue using it. More information on the deprecation can be found in the Spotify API documentation:
+       `Update on Developer Access and Platform Security
+       <https://developer.spotify.com/blog/2026-02-06-update-on-developer-access-and-platform-security>`_.
 
     Args:
         client: :class:`~spotantic.client.SpotanticClient` instance.
