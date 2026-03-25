@@ -1,5 +1,8 @@
 # Spotantic
 
+[![PyPI version](https://badge.fury.io/py/spotantic.svg)](https://badge.fury.io/py/spotantic)
+[![Documentation Status](https://readthedocs.org/projects/spotantic/badge/?version=latest)](https://spotantic.readthedocs.io/en/latest/?badge=latest)
+[![Tests](https://github.com/domagalasebastian/spotantic/actions/workflows/run-tests.yml/badge.svg)](https://github.com/domagalasebastian/spotantic/actions/workflows/run-tests.yml)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
