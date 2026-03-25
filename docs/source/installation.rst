@@ -40,8 +40,8 @@ To install the repository locally from source:
 
 .. code-block:: bash
 
-   git clone <repo-url>
-   cd spotify_async
+   git clone https://github.com/domagalasebastian/spotantic.git
+   cd spotantic
 
    # Create venv and install dependencies
    uv sync
