@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: ❓ Support Question
+    url: https://github.com/domagalasebastian/spotantic/discussions
+    about: For questions about using the library or troubleshooting issues.
+  - name: 🐛 Report a Bug
+    url: https://github.com/domagalasebastian/spotantic/issues/new
+    about: To report bugs or unexpected behavior in the library.
+  - name: 💡 Feature Request
+    url: https://github.com/domagalasebastian/spotantic/issues/new
+    about: To suggest new features or improvements to the library.
