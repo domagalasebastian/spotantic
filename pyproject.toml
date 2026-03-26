@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "spotantic"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="Sebastian Domagała"},
 ]
@@ -48,11 +48,11 @@ docs = [
 "Bug Tracker" = "https://github.com/domagalasebastian/spotantic/issues"
 "Questions" = "https://github.com/domagalasebastian/spotantic/discussions"
 
-[tool.hatch.build]
-include = ["src/spotantic/py.typed"]
-
 [tool.hatch.build.targets.wheel]
 packages = ["src/spotantic"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src"]
 
 [tool.ruff]
 line-length = 120
