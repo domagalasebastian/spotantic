@@ -53,8 +53,8 @@ class GetSeveralBrowseCategoriesRequest(RequestModel[GetSeveralBrowseCategoriesR
             limit: The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
             offset: The index of the first item to return. Default: 0 (the first item).
              Use with limit to get the next set of items.
-            locale: The desired language, consisting of an ISO 639-1 language code and an ISO 3166-1 alpha-2 country code,
-             joined by an underscore.
+            locale: The desired language, consisting of an ISO 639-1 language code and
+              an ISO 3166-1 alpha-2 country code, joined by an underscore.
 
         Returns:
             Validated Request object.

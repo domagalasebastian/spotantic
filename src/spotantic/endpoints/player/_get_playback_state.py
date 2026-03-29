@@ -16,8 +16,9 @@ async def get_playback_state(
     additional_types: Sequence[SpotifyItemType] = (SpotifyItemType.TRACK,),
     market: Optional[SpotifyMarketID] = None,
 ) -> APICallModel[GetPlaybackStateRequest, JsonAPIResponse, PlaybackStateModel]:
-    """Get information about the user’s current playback state, including track or episode, progress,
-    and active device.
+    """Get information about the user’s current playback state.
+
+    Includes track or episode, progress, and active device.
 
     Args:
         client: :class:`~spotantic.client.SpotanticClient` instance.

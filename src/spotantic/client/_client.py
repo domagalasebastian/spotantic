@@ -58,7 +58,8 @@ def retry_on_failure_decorator(
 
                 wait_time = delay * (backoff ** (attempt - 1))
                 client._logger.warning(
-                    f"Request failed due to {e.__class__.__name__}; retrying in {wait_time:.1f}s (attempt {attempt + 1}/{client.max_attempts})"
+                    f"Request failed due to {e.__class__.__name__}; retrying in {wait_time:.1f}s "
+                    f"(attempt {attempt + 1}/{client.max_attempts})"
                 )
                 await sleep(wait_time)
 

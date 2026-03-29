@@ -19,6 +19,7 @@ async def get_album_tracks(
     market: Optional[SpotifyMarketID] = None,
 ) -> APICallModel[GetAlbumTracksRequest, JsonAPIResponse, PagedResultModel[SimplifiedTrackModel]]:
     """Get Spotify catalog information about an album’s tracks.
+
     Optional parameters can be used to limit the number of tracks returned.
 
     Args:

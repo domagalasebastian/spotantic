@@ -42,8 +42,8 @@ class GetSingleBrowseCategoryRequest(RequestModel[GetSingleBrowseCategoryRequest
 
         Args:
             category_id: The Spotify ID for the browse category.
-            locale: The desired language, consisting of an ISO 639-1 language code and an ISO 3166-1 alpha-2 country code,
-             joined by an underscore.
+            locale: The desired language, consisting of an ISO 639-1 language code and
+              an ISO 3166-1 alpha-2 country code, joined by an underscore.
 
         Returns:
             Validated Request object.

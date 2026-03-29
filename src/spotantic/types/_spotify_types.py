@@ -62,8 +62,11 @@ class RepeatMode(StrEnum):
 
 
 class AuthScope(StrEnum):
-    """Scopes provide Spotify users using third-party apps the confidence that only the information
-    they choose to share will be shared, and nothing more."""
+    """Auth scopes for Spotify API endpoints.
+
+    Scopes provide Spotify users using third-party apps the confidence that only
+    the information they choose to share will be shared, and nothing more.
+    """
 
     PLAYLIST_MODIFY_PRIVATE = "playlist-modify-private"
     """Manage your private playlists."""
