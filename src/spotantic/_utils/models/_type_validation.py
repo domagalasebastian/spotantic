@@ -25,5 +25,4 @@ def validate_is_instance_of(obj: Any, expected_type: object) -> Any:
     Returns:
         Validated object instance.
     """
-
     return TypeAdapter(expected_type).validate_python(obj)

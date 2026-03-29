@@ -53,7 +53,8 @@ class RequestHeadersModel(EntityHeadersModel):
 class RequestBodyModel(BaseModel, ABC):
     """Abstract base model for request bodies.
 
-    Specific request body models should inherit from this class and implement necessary validation and serialization logic.
+    Specific request body models should inherit from this class and implement
+    necessary validation and serialization logic.
     """
 
     @abstractmethod
@@ -108,8 +109,7 @@ class RequestModel[ParamsModelT: (BaseModel, None), BodyModelT: (RequestBodyMode
 
     @model_validator(mode="after")
     def get_url_from_endpoint(self) -> RequestModel:
-        """
-        Populate `url` from `endpoint` if not explicitly provided.
+        """Populate `url` from `endpoint` if not explicitly provided.
 
         This validator runs after model initialization. If `url` is already set,
         it is left unchanged. Otherwise, the URL is constructed by joining the

@@ -49,7 +49,8 @@ class PlaylistBaseModel(BaseModel):
     """`True` the playlist is public, `False` the playlist is private, `None` the playlist status is not relevant."""
 
     snapshot_id: str
-    """The version identifier for the current playlist. Can be supplied in other requests to target a specific playlist version."""
+    """The version identifier for the current playlist.
+    Can be supplied in other requests to target a specific playlist version."""
 
     item_type: Literal["playlist"] = Field(alias="type", repr=False)
     """The item type."""
