@@ -2,6 +2,9 @@ name: Test Python Package
 
 on: [push]
 
+permissions:
+  contents: read
+
 jobs:
   pytest:
     name: Run Pytest
