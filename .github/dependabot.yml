@@ -6,3 +6,6 @@ updates:
       interval: "weekly"
     commit-message:
       prefix: "chore"
+    cooldown:
+      default-days: 14
+    open-pull-requests-limit: 10
