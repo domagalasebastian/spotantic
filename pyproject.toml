@@ -23,7 +23,7 @@ classifiers = [
 ]
 dependencies = [
     "aiohttp>=3.13.5",
-    "pydantic>=2.12.5",
+    "pydantic>=2.13.3",
     "pydantic-settings>=2.14.0",
 ]
 
