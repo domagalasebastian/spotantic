@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import pytest
 from aiohttp import BasicAuth
 from pydantic import HttpUrl
@@ -15,8 +13,6 @@ def test_auth_settings_with_all_fields():
         client_secret=SecretStr("test_client_secret_123"),
         redirect_uri=HttpUrl("http://localhost:8000/callback"),
         scope="user-read-private user-read-email",
-        store_access_token=True,
-        access_token_file_path=Path("./token_cache"),
     )
 
     assert settings.client_id is not None
@@ -25,8 +21,6 @@ def test_auth_settings_with_all_fields():
     assert settings.client_secret.get_secret_value() == "test_client_secret_123"
     assert settings.redirect_uri == HttpUrl("http://localhost:8000/callback")
     assert settings.scope == "user-read-private user-read-email"
-    assert settings.store_access_token is True
-    assert settings.access_token_file_path == Path("./token_cache")
 
 
 def test_auth_settings_get_basic_auth_success():
@@ -73,22 +67,3 @@ def test_auth_settings_get_basic_auth_missing_both():
 
     with pytest.raises(ValueError):
         settings.get_basic_auth()
-
-
-def test_auth_settings_custom_access_token_file_path():
-    """Test AuthSettings with custom access_token_file_path."""
-    custom_path = Path("./custom_token_cache")
-    settings = AuthSettings(
-        access_token_file_path=custom_path,
-    )
-
-    assert settings.access_token_file_path == custom_path
-
-
-def test_auth_settings_store_access_token_flag():
-    """Test AuthSettings store_access_token flag."""
-    settings_false = AuthSettings(store_access_token=False)
-    assert settings_false.store_access_token is False
-
-    settings_true = AuthSettings(store_access_token=True)
-    assert settings_true.store_access_token is True

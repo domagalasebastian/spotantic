@@ -98,7 +98,7 @@ class TestAuthManagerBaseGetValidAccessToken:
     @pytest.mark.asyncio
     async def test_get_valid_access_token_no_token_raises_error(self, auth_settings: AuthSettings) -> None:
         """Test that get_valid_access_token raises ValueError when no token exists."""
-        manager = ConcreteAuthManager(auth_settings=auth_settings, access_token_info=None)
+        manager = ConcreteAuthManager(auth_settings=auth_settings)
 
         with pytest.raises(ValueError, match="No access token available"):
             await manager.get_valid_access_token()
@@ -108,7 +108,8 @@ class TestAuthManagerBaseGetValidAccessToken:
         self, auth_settings: AuthSettings, valid_access_token_info: AccessTokenInfo
     ) -> None:
         """Test that get_valid_access_token returns the token when it exists."""
-        manager = ConcreteAuthManager(auth_settings=auth_settings, access_token_info=valid_access_token_info)
+        token_store = mock.Mock(load_token=mock.Mock(return_value=valid_access_token_info))
+        manager = ConcreteAuthManager(auth_settings=auth_settings, token_store=token_store)
 
         token = await manager.get_valid_access_token()
 
@@ -121,9 +122,7 @@ class TestRefreshableAuthManagerGetValidAccessToken:
     @pytest.mark.asyncio
     async def test_get_valid_access_token_no_token_raises_error(self, auth_settings: AuthSettings) -> None:
         """Test that get_valid_access_token raises ValueError when no token exists."""
-        manager = ConcreteRefreshableAuthManager(
-            auth_settings=auth_settings, access_token_info=None, allow_lazy_refresh=False
-        )
+        manager = ConcreteRefreshableAuthManager(auth_settings=auth_settings, allow_lazy_refresh=False)
 
         with pytest.raises(ValueError, match="No access token available"):
             await manager.get_valid_access_token()
@@ -133,10 +132,9 @@ class TestRefreshableAuthManagerGetValidAccessToken:
         self, auth_settings: AuthSettings, valid_access_token_info: AccessTokenInfo
     ) -> None:
         """Test that get_valid_access_token returns valid token without refresh."""
+        token_store = mock.Mock(load_token=mock.Mock(return_value=valid_access_token_info))
         manager = ConcreteRefreshableAuthManager(
-            auth_settings=auth_settings,
-            access_token_info=valid_access_token_info,
-            allow_lazy_refresh=False,
+            auth_settings=auth_settings, token_store=token_store, allow_lazy_refresh=False
         )
 
         token = await manager.get_valid_access_token()
@@ -148,10 +146,9 @@ class TestRefreshableAuthManagerGetValidAccessToken:
         self, auth_settings: AuthSettings, expired_access_token_info: AccessTokenInfo
     ) -> None:
         """Test that get_valid_access_token returns expired token and logs warning when lazy_refresh is False."""
+        token_store = mock.Mock(load_token=mock.Mock(return_value=expired_access_token_info))
         manager = ConcreteRefreshableAuthManager(
-            auth_settings=auth_settings,
-            access_token_info=expired_access_token_info,
-            allow_lazy_refresh=False,
+            auth_settings=auth_settings, token_store=token_store, allow_lazy_refresh=False
         )
 
         token = await manager.get_valid_access_token()
@@ -165,10 +162,9 @@ class TestRefreshableAuthManagerGetValidAccessToken:
         self, auth_settings: AuthSettings, expired_access_token_info: AccessTokenInfo
     ) -> None:
         """Test that get_valid_access_token calls refresh when token is expired and lazy_refresh is True."""
+        token_store = mock.Mock(load_token=mock.Mock(return_value=expired_access_token_info))
         manager = ConcreteRefreshableAuthManager(
-            auth_settings=auth_settings,
-            access_token_info=expired_access_token_info,
-            allow_lazy_refresh=True,
+            auth_settings=auth_settings, token_store=token_store, allow_lazy_refresh=True
         )
 
         new_token_info = AccessTokenInfo(
@@ -192,10 +188,9 @@ class TestRefreshableAuthManagerGetValidAccessToken:
         self, auth_settings: AuthSettings, expired_access_token_info: AccessTokenInfo
     ) -> None:
         """Test that concurrent refresh attempts are serialized with a lock."""
+        token_store = mock.Mock(load_token=mock.Mock(return_value=expired_access_token_info))
         manager = ConcreteRefreshableAuthManager(
-            auth_settings=auth_settings,
-            access_token_info=expired_access_token_info,
-            allow_lazy_refresh=True,
+            auth_settings=auth_settings, token_store=token_store, allow_lazy_refresh=True
         )
 
         refresh_count = 0
@@ -227,10 +222,9 @@ class TestRefreshableAuthManagerGetValidAccessToken:
         self, auth_settings: AuthSettings, expired_access_token_info: AccessTokenInfo
     ) -> None:
         """Test that refresh is skipped if token is no longer expired after acquiring lock."""
+        token_store = mock.Mock(load_token=mock.Mock(return_value=expired_access_token_info))
         manager = ConcreteRefreshableAuthManager(
-            auth_settings=auth_settings,
-            access_token_info=expired_access_token_info,
-            allow_lazy_refresh=True,
+            auth_settings=auth_settings, token_store=token_store, allow_lazy_refresh=True
         )
 
         refresh_called = False

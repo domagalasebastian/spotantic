@@ -128,7 +128,7 @@ class TestAuthCodePKCEFlowManagerRefresh:
         settings = AuthSettings(
             client_id=SecretStr("client_id"),
         )
-        manager = AuthCodePKCEFlowManager(auth_settings=settings, access_token_info=None)
+        manager = AuthCodePKCEFlowManager(auth_settings=settings)
 
         with pytest.raises(ValueError, match="Access Token data is unknown"):
             await manager.refresh()
@@ -145,7 +145,8 @@ class TestAuthCodePKCEFlowManagerRefresh:
         settings = AuthSettings(
             client_id=SecretStr("client_id"),
         )
-        manager = AuthCodePKCEFlowManager(auth_settings=settings, access_token_info=token_info)
+        token_store = mock.Mock(load_token=mock.Mock(return_value=token_info))
+        manager = AuthCodePKCEFlowManager(auth_settings=settings, token_store=token_store)
 
         with pytest.raises(ValueError, match="Refresh token is unknown"):
             await manager.refresh()
@@ -162,7 +163,8 @@ class TestAuthCodePKCEFlowManagerRefresh:
         settings = AuthSettings(
             client_id=SecretStr("client_id"),
         )
-        manager = AuthCodePKCEFlowManager(auth_settings=settings, access_token_info=token_info)
+        token_store = mock.Mock(load_token=mock.Mock(return_value=token_info))
+        manager = AuthCodePKCEFlowManager(auth_settings=settings, token_store=token_store)
 
         new_token_info = AccessTokenInfo(
             access_token=SecretStr("new_access_token"),

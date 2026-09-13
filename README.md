@@ -16,6 +16,7 @@ An asynchronous Python client library for the Spotify Web API with full type hin
 - **Modular Endpoints**: Clean, organized endpoint helpers for albums, artists, playlists, tracks, users, and more
 - **Request Validation**: All requests are validated before sending to Spotify's API
 - **Automatic Token Refresh**: Optional automatic refresh token handling
+- **Pluggable Token Storage**: Use the built-in file store or provide your own token storage implementation
 - **Comprehensive Documentation**: Full API reference and examples included
 
 ## 📋 Prerequisites
@@ -68,10 +69,6 @@ SPOTANTIC_AUTH_REDIRECT_URI=http://127.0.0.1:8000/callback
 # Scopes you need (space-separated)
 SPOTANTIC_AUTH_SCOPE=user-library-read user-library-modify
 
-# Optional: where to store the access token cache
-SPOTANTIC_AUTH_ACCESS_TOKEN_FILE_PATH=.token_info_cache
-SPOTANTIC_AUTH_STORE_ACCESS_TOKEN=true
-
 # Optional: logging configuration
 SPOTANTIC_LOGGING_ENABLE=true
 SPOTANTIC_LOGGING_DEBUG=false
@@ -79,6 +76,21 @@ SPOTANTIC_LOGGING_LOGS_DIR=logs/
 ```
 
 For more details on configuration options, see the [Quick Start Guide](https://spotantic.readthedocs.io/en/latest/quickstart.html).
+
+Token storage is configured on the authentication manager rather than in `AuthSettings`. The built-in
+`FileTokenStore` is suitable for simple local applications; applications can provide any object implementing
+`save_token(token)` and `load_token()` for database, secret manager, or other storage backends:
+
+```python
+from spotantic.auth import AuthCodePKCEFlowManager
+from spotantic.models.auth import AuthSettings, FileTokenStore
+
+auth_manager = AuthCodePKCEFlowManager(
+    auth_settings=AuthSettings(),
+    token_store=FileTokenStore(".token_info_cache"),
+    allow_lazy_refresh=True,
+)
+```
 
 ### 2. Create a Client
 

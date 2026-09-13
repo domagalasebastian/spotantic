@@ -27,11 +27,6 @@ Authorization step-by-step
       SPOTANTIC_AUTH_REDIRECT_URI=http://127.0.0.1:8000/callback
       # Space-separated list of scopes to be granted
       SPOTANTIC_AUTH_SCOPE=user-library-read user-library-modify
-      # File path where the access token information should be stored
-      SPOTANTIC_AUTH_ACCESS_TOKEN_FILE_PATH=.token_info_cache
-      # If `true`, Spotantic will save access token information every time the token is obtained.
-      # The token is stored in the filepath indicated by SPOTANTIC_AUTH_ACCESS_TOKEN_FILE_PATH
-      SPOTANTIC_AUTH_STORE_ACCESS_TOKEN=true
 
       # Controls package-level logging; if `false`, logging is completely disabled
       SPOTANTIC_LOGGING_ENABLE=false
@@ -96,15 +91,15 @@ Authorization step-by-step
 
    .. code-block:: python
 
-      In [1]: from spotantic.models.auth import AuthSettings, AccessTokenInfo
+      In [1]: from spotantic.models.auth import AuthSettings, FileTokenStore
 
       In [2]: from spotantic.auth import AuthCodePKCEFlowManager
 
       In [3]: auth_settings = AuthSettings()
 
-      In [4]: token_info = AccessTokenInfo.load_token(".token_info_cache")
+      In [4]: token_store = FileTokenStore(".token_info_cache")
 
-      In [5]: auth_manager = AuthCodePKCEFlowManager(auth_settings=auth_settings, allow_lazy_refresh=True, access_token_info=token_info)
+      In [5]: auth_manager = AuthCodePKCEFlowManager(auth_settings=auth_settings, allow_lazy_refresh=True, token_store=token_store)
 
       In [6]: from spotantic.client import SpotanticClient
 
