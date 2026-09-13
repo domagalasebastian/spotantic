@@ -1,12 +1,11 @@
 import asyncio
-from pathlib import Path
 
 from spotantic.auth import AuthCodeFlowManager
 from spotantic.auth import AuthCodePKCEFlowManager
 from spotantic.auth import ClientCredentialsFlowManager
 from spotantic.client import SpotanticClient
-from spotantic.models.auth import AccessTokenInfo
 from spotantic.models.auth import AuthSettings
+from spotantic.models.auth import FileTokenStore
 
 
 async def auth_code_flow_client_setup() -> SpotanticClient:
@@ -35,9 +34,9 @@ async def client_credentials_flow_client_setup() -> SpotanticClient:
 
 async def create_spotantic_client_with_existing_token() -> SpotanticClient:
     auth_settings = AuthSettings()
-    token_info = AccessTokenInfo.load_token(Path(".token_info_cache"))
+    token_store = FileTokenStore(".token_info_cache")
     auth_manager = AuthCodePKCEFlowManager(
-        auth_settings=auth_settings, allow_lazy_refresh=True, access_token_info=token_info
+        auth_settings=auth_settings, allow_lazy_refresh=True, token_store=token_store
     )
 
     return SpotanticClient(auth_manager=auth_manager, max_attempts=3, check_insufficient_scope=True)

@@ -4,8 +4,8 @@ from spotantic.auth import AuthCodePKCEFlowManager
 from spotantic.client import SpotanticClient
 from spotantic.endpoints.library import remove_items_from_library
 from spotantic.endpoints.playlists import create_playlist
-from spotantic.models.auth import AccessTokenInfo
 from spotantic.models.auth import AuthSettings
+from spotantic.models.auth import FileTokenStore
 from spotantic.types import SpotifyItemType
 
 _example_spotify_item_id = {
@@ -33,9 +33,9 @@ _example_spotify_uri = {
 def client() -> SpotanticClient:
     """Fixture that provides a SpotanticClient instance with an AuthCodePKCEFlowManager for authentication."""
     auth_settings = AuthSettings()
-    token_info = AccessTokenInfo.load_token(auth_settings.access_token_file_path)
+    token_store = FileTokenStore(".token_info_cache")
     auth_manager = AuthCodePKCEFlowManager(
-        auth_settings=auth_settings, access_token_info=token_info, allow_lazy_refresh=True
+        auth_settings=auth_settings, token_store=token_store, allow_lazy_refresh=True
     )
 
     return SpotanticClient(auth_manager=auth_manager, check_insufficient_scope=True, max_attempts=3)

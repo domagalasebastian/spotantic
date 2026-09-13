@@ -18,6 +18,7 @@ from spotantic.models.auth import AccessTokenInfo
 from spotantic.models.auth import AccessTokenRequestBody
 from spotantic.models.auth import AuthCodeRequestParams
 from spotantic.models.auth import AuthSettings
+from spotantic.models.auth import TokenStore
 from spotantic.types.exceptions import SpotanticAuthAccessTokenRequestError
 from spotantic.types.exceptions import SpotanticAuthCodeRequestError
 from spotantic.types.exceptions import SpotanticAuthSecurityError
@@ -34,14 +35,15 @@ class AuthManagerBase(ABC):
     Provides common functionality for different OAuth2 flows including token acquisition and management.
     """
 
-    def __init__(self, auth_settings: AuthSettings, access_token_info: Optional[AccessTokenInfo] = None) -> None:
+    def __init__(self, auth_settings: AuthSettings, token_store: Optional[TokenStore] = None) -> None:
         """Initialize the authentication manager.
 
         Args:
             auth_settings: Configuration settings including client credentials and other flow-specific parameters.
-            access_token_info: Access token info loaded from cache, if any.
+            token_store: Optional token store for saving and loading access tokens.
         """
-        self._access_token_info = access_token_info
+        self._token_store = token_store
+        self._access_token_info = self._token_store.load_token() if self._token_store else None
         self._auth_settings = auth_settings
         self._logger = logger.getChild("auth")
 
@@ -228,9 +230,9 @@ class AuthManagerBase(ABC):
 
         token_info = AccessTokenInfo.model_validate(access_token_data)
 
-        if self._auth_settings.store_access_token:
-            self._logger.info(f"Saving access token to file: {self._auth_settings.access_token_file_path}")
-            token_info.store_token(file_path=self._auth_settings.access_token_file_path)
+        if self._token_store is not None:
+            self._logger.info("Saving access token to token store")
+            self._token_store.save_token(token_info)
 
         return token_info
 
@@ -245,19 +247,19 @@ class RefreshableAuthManager(AuthManagerBase, ABC):
     def __init__(
         self,
         auth_settings: AuthSettings,
-        access_token_info: Optional[AccessTokenInfo] = None,
+        token_store: Optional[TokenStore] = None,
         allow_lazy_refresh: bool = False,
     ) -> None:
         """Initialize the authentication manager.
 
         Args:
             auth_settings: Configuration settings including client credentials and other flow-specific parameters.
-            access_token_info: Access token info loaded from cache, if any.
+            token_store: Optional token store for saving and loading access tokens.
             allow_lazy_refresh: If set, the expired token will be refreshed automatically before returning it.
         """
         self._lock = asyncio.Lock()
         self._allow_lazy_refresh = allow_lazy_refresh
-        super(RefreshableAuthManager, self).__init__(auth_settings=auth_settings, access_token_info=access_token_info)
+        super(RefreshableAuthManager, self).__init__(auth_settings=auth_settings, token_store=token_store)
 
     @abstractmethod
     async def refresh(self) -> None:

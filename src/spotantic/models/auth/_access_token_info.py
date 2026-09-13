@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from datetime import datetime
 from datetime import timedelta
-from pathlib import Path
 from typing import Any
 from typing import Literal
 from typing import Optional
@@ -61,33 +60,6 @@ class AccessTokenInfo(BaseModel):
             self.expires_at = datetime.now() + timedelta(seconds=self.expires_in)
 
         return super().model_post_init(context)
-
-    def store_token(self, file_path: Path) -> None:
-        """Dumps the access token info into a file.
-
-        Args:
-            file_path: File location to save the access token at.
-
-        Returns:
-            None
-        """
-        with open(file_path, "w") as fd:
-            fd.write(self.model_dump_json())
-
-    @classmethod
-    def load_token(cls, file_path: Path) -> AccessTokenInfo:
-        """Loads the access token info from a file.
-
-        Args:
-            file_path: File location to load the access token from.
-
-        Returns:
-            Validated model instance.
-        """
-        with open(file_path, "r") as fd:
-            json_data = fd.read()
-
-        return cls.model_validate_json(json_data=json_data)
 
     def is_expired(self) -> bool:
         """Checks if the token is expired.
